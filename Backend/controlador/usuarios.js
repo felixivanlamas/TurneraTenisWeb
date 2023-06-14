@@ -113,9 +113,17 @@ reservarCancha = async (req, res) => {
   try {
     const { idUsuario, titulo,  dia, horario } = req.body
     const reqReserva = {idUsuario, titulo, dia, horario}
-    await this.servicioUsuario.reservar(reqReserva);
+    const respuesta1 = await this.servicioUsuario.reservar(reqReserva);
+    if(!respuesta1){
+      throw new InvalidCredentialsError("No se pudo realizar la reserva")
+    }
     const respuesta = await this.servicioCancha.modificarCancha(titulo, dia, horario);
-    res.status(200).json(respuesta)
+    if(!respuesta){
+      throw new InvalidCredentialsError("No se pudo modificar la cancha")
+    }
+    
+    res.status(200).json(respuesta1)
+    //res.status(200).json(respuesta)
   } catch (error) {
       if (error instanceof InvalidCredentialsError) {
           res.status(400).json(error.message);

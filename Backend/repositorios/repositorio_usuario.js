@@ -192,7 +192,7 @@ class UsuarioRepositorio {
           if (!respuesta1) {
             throw new Error("Error al guardar la reserva");
           }
-          return usuario;
+          return "Reserva guardada correctamente";
         } catch (error) {
           return error;
         }
