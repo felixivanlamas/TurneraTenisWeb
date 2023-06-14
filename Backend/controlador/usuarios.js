@@ -123,7 +123,7 @@ reservarCancha = async (req, res) => {
       } else {
           res.status(500).json({
           message:
-          "Hubo un problema interno. Intente nuevamente más tarde.",
+          "Hubo un problema interno. Intente nuevamente más tarde!",
           });
       }
     }
