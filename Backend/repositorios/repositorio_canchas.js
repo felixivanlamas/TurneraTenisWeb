@@ -1,6 +1,7 @@
 import ConexionMongo from './conexionMongoDb.js';
+import {InvalidCredentialsError} from "../errores.js"
 
-class UsuarioRepositorio {
+class CanchaRepositorio {
     constructor() {
         this.canchasCollection = null;
         this.init();
@@ -43,17 +44,39 @@ class UsuarioRepositorio {
         }
     }
 
-    async getCancha(id){
+    async getCancha(titulo){
         try {
-            const filtro = {_id: id}
-            const respuesta = await this.canchasCollection.find(filtro);
+            const respuesta = await this.canchasCollection.findOne({titulo:titulo});
             return respuesta;
         } catch (error) {
-            throw new Error("Error al obtener la cancha: " + id) 
+            throw new Error("Error al obtener la cancha: " + titulo) 
         }
     }
+
+    async modificarCancha (titulo,dia,horario) {
+        try {
+          const cancha = await this.getCancha(titulo);
+          if (!cancha.reservasDisponibles.dias.hasOwnProperty(dia)) {
+            throw new InvalidCredentialsError("No hay reservas disponible para el dia : "+ dia)
+          }
+          const horariosDisponibles = cancha.reservasDisponibles.dias[dia];
+          if (horariosDisponibles.includes({horario:horario})) {
+            throw new InvalidCredentialsError("No hay horarios disponible para el dia : "+ dia)
+          }
+          
+          const nuevosDatos = {
+            $pull: {
+              [`reservasDisponibles.dias.${dia}`]: horario
+            }
+          };
+    
+        await this.canchasCollection.updateOne({ _id: cancha._id }, nuevosDatos);
+        return "Cancha actualizada correctamente";
+         } catch (error) {
+            console.error('Error al actualizar la Cancha:', error);    } 
+      };
 }
 
 
-export default UsuarioRepositorio;
+export default CanchaRepositorio;
 

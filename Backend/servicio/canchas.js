@@ -32,5 +32,14 @@ class ServicioCanchas{
             throw new Error(error);
         }
     }
+
+    modificarCancha = async(titulo,dia,horario)=>{
+        try{
+            const respuesta = await this.model.modificarCancha(titulo,dia,horario);
+            return respuesta
+        }catch(error){
+            throw new Error(error);
+        }
+    }
 }
 export default ServicioCanchas

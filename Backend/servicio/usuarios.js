@@ -66,5 +66,15 @@ class ServicioUsuario{
           throw new Error(error);
         }
       }
+
+      reservar = async (reqReserva) => {
+        try {
+          const respuesta = await this.model.guardarReserva(reqReserva) 
+          return respuesta
+        } catch (error) {
+          throw new Error(error);
+        }
+      }
+
 }
 export default ServicioUsuario

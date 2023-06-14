@@ -15,7 +15,7 @@ class RouterUsuario {
         this.router.post("/editarUsuario", this.controlador.editarUsuario)
         this.router.post("/cambiarEmail", this.controlador.cambiarEmail)
         this.router.delete("/eliminarCuenta",this.controlador.eliminarCuenta)
-        //this.router.post("/:id/reservar",this.controlador.reservarCancha)
+        this.router.post("/:username/reservar",this.controlador.reservarCancha)
         //this.router.post("/logout",this.controlador.logout)
         
         return this.router

@@ -1,4 +1,8 @@
+import { ObjectId } from 'mongodb';
+import Reserva from '../clases/reserva.js';
+import Usuario from '../clases/usuario.js';
 import ConexionMongo from './conexionMongoDb.js';
+
 
 class UsuarioRepositorio {
     constructor() {
@@ -26,13 +30,14 @@ class UsuarioRepositorio {
             if (!email || !username || !contrasenia) {
                 throw new Error('El email, nombre y pass son campos requeridos');
             }
-            const newUsuario = {
-                email: email,
-                username: username,
-                contrasenia: contrasenia,
-                reservas: []
-            };
-            await this.usuariosCollection.insertOne(newUsuario);
+            // const newUsuario = {
+            //     username: username,
+            //     email: email,
+            //     contrasenia: contrasenia,
+            //     reservas: []
+            // };
+
+            await this.usuariosCollection.insertOne(new Usuario(username, email, contrasenia));
 
             return "Usuario registrado correctamente";
         } catch (error) {
@@ -44,6 +49,7 @@ class UsuarioRepositorio {
     async login(email) {
         try {
             const user = await this.usuariosCollection.findOne({ email: email });
+            console.log(user);
             if (!user) {
                 throw new Error(`El ${email} no está registrado`);
             }
@@ -174,6 +180,25 @@ class UsuarioRepositorio {
         }
     };
       
+    guardarReserva = async (reqReserva) => {
+        try {
+          const idUsuario = new ObjectId(reqReserva.idUsuario);
+          const usuario = await this.usuariosCollection.findOne({ _id:idUsuario });
+          if(!usuario) {
+            throw new Error(`El usuario con el id: ${idUsuario} no existe`);
+          }
+          const newReserva = new Reserva(reqReserva.titulo , reqReserva.dia, reqReserva.horario);
+          const respuesta1 = await this.usuariosCollection.updateOne({ _id: idUsuario }, { $addToSet: { reservas: newReserva } });
+          if (!respuesta1) {
+            throw new Error("Error al guardar la reserva");
+          }
+          return usuario;
+        } catch (error) {
+          return error;
+        }
+      }
+      
+
 
 }
 
