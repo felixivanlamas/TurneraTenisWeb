@@ -30,8 +30,8 @@ class ControladorCanchas {
   getCancha = async(req,res) => {
     try {
         const {id} = req.params
-        const respuesta = await this.servicio.getCancha(id)
-        res.status(200).send(respuesta)
+        const cancha = await this.servicio.getCancha(id)
+        res.status(200).send(cancha)
     } catch (error) {
         console.log(error.message)
         res.status(500).send(error.message);

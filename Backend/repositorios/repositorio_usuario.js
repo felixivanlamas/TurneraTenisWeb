@@ -180,28 +180,24 @@ class UsuarioRepositorio {
         }
     };
       
-    guardarReserva = async (reqReserva) => {
+    guardarReserva = async (username, datosCancha) => {
         try {
-          const idUsuario = new ObjectId(reqReserva.idUsuario);
+          const idUsuario = new ObjectId(id);
           const usuario = await this.usuariosCollection.findOne({ _id:idUsuario });
           if(!usuario) {
-            throw new Error(`El usuario con el id: ${idUsuario} no existe`);
+            throw new Error(`El usuario con el id: ${id} no existe`);
           }
-          const newReserva = new Reserva(reqReserva.titulo , reqReserva.dia, reqReserva.horario);
-          const respuesta1 = await this.usuariosCollection.updateOne({ _id: idUsuario }, { $addToSet: { reservas: newReserva } });
-          if (!respuesta1) {
+          const newReserva = new Reserva(datosCancha.titulo , datosCancha.dia, datosCancha.horario);
+          const respuesta = await this.usuariosCollection.updateOne({ _id: idUsuario }, { $addToSet: { reservas: newReserva } });
+          if (!respuesta) {
             throw new Error("Error al guardar la reserva");
           }
-          return usuario;
+          return "Se ha echo la reserva exitosamente";
         } catch (error) {
           return error;
         }
       }
-      
-
-
 }
-
 
 export default UsuarioRepositorio;
 

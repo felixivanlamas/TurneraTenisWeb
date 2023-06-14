@@ -26,8 +26,8 @@ class ServicioCanchas{
 
     getCancha = async(id)=>{
         try {
-            const respuesta = await this.model.getCancha(id);
-            return respuesta
+            const cancha = await this.model.getCancha(id);
+            return cancha
         } catch (error) {
             throw new Error(error);
         }

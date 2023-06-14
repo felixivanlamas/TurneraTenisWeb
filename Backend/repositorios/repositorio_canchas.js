@@ -1,5 +1,6 @@
 import ConexionMongo from './conexionMongoDb.js';
 import {InvalidCredentialsError} from "../errores.js"
+import { ObjectId } from 'mongodb';
 
 class CanchaRepositorio {
     constructor() {
@@ -44,15 +45,16 @@ class CanchaRepositorio {
         }
     }
 
-    async getCancha(titulo){
+    async getCancha(id){
         try {
-            const respuesta = await this.canchasCollection.findOne({titulo:titulo});
-            return respuesta;
+            const idCancha = new ObjectId(id)
+            const cancha = await this.canchasCollection.findOne({_id:idCancha});
+            return cancha;
         } catch (error) {
             throw new Error("Error al obtener la cancha: " + titulo) 
         }
     }
-
+    //MODIFICAR GETCANCHA POR ID Y EL BODY DEL REQ
     async modificarCancha (titulo,dia,horario) {
         try {
           const cancha = await this.getCancha(titulo);
@@ -71,12 +73,12 @@ class CanchaRepositorio {
           };
     
         await this.canchasCollection.updateOne({ _id: cancha._id }, nuevosDatos);
-        return "Cancha actualizada correctamente";
+        const respuesta = {titulo,dia,horario}
+        return respuesta
          } catch (error) {
             console.error('Error al actualizar la Cancha:', error);    } 
       };
 }
-
 
 export default CanchaRepositorio;
 

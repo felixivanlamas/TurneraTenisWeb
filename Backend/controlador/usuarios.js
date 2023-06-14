@@ -109,25 +109,27 @@ class ControladorUsuario {
     }
 };
     
-reservarCancha = async (req, res) => {
-  try {
-    const { idUsuario, titulo,  dia, horario } = req.body
-    const reqReserva = {idUsuario, titulo, dia, horario}
-    await this.servicioUsuario.reservar(reqReserva);
-    const respuesta = await this.servicioCancha.modificarCancha(titulo, dia, horario);
-    res.status(200).json(respuesta)
-  } catch (error) {
-      if (error instanceof InvalidCredentialsError) {
-          res.status(400).json(error.message);
-     
-      } else {
-          res.status(500).json({
-          message:
-          "Hubo un problema interno. Intente nuevamente más tarde!",
-          });
+  reservarCancha = async (req, res) => {
+    try {
+        const { titulo,  dia, horario } = req.body
+        const { id } = req.params
+        const datosCancha = await this.servicioCancha.modificarCancha(titulo, dia, horario);
+        if (!datosCancha) {
+          throw new InvalidCredentialsError()
+        }
+        const respuesta = await this.servicioUsuario.reservar(id, respuesta);
+        res.status(200).json(respuesta)
+    } catch (error) {
+        if (error instanceof InvalidCredentialsError) {
+            res.status(400).json(error.message);
+        } else {
+            res.status(500).json({
+            message:
+            "Hubo un problema interno. Intente nuevamente más tarde!",
+            });
+        }
       }
-    }
-  };
-
+    };
 };
+
 export default ControladorUsuario 
