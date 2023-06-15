@@ -7,7 +7,7 @@
       <li v-for="reserva in reservas" :key="reserva._id">
         <div class="reserva">
           <div class="reserva-info">
-            <p>Titulo: {{ reserva.titulo }}</p>
+            <p> Reserva </p>
             <p>Dia: {{ reserva.dia }}</p>
             <p>Horario: {{ reserva.horario }}</p>
           </div>
@@ -53,7 +53,7 @@ export default {
     this.reservas = [
       {
         titulo: "Reserva 1",
-        dia: "2023-06-15",
+        dia: "Lunes",
         horario: "12:00",
         cancha: {
           titulo: "Cancha 2",
@@ -62,7 +62,7 @@ export default {
       },
       {
         titulo: "Reserva 2",
-        dia: "2023-06-15",
+        dia: "Martes",
         horario: "22:00",
         cancha: {
           titulo: "Cancha 2",
