@@ -30,12 +30,6 @@ class UsuarioRepositorio {
             if (!email || !username || !contrasenia) {
                 throw new Error('El email, nombre y pass son campos requeridos');
             }
-            // const newUsuario = {
-            //     username: username,
-            //     email: email,
-            //     contrasenia: contrasenia,
-            //     reservas: []
-            // };
 
             await this.usuariosCollection.insertOne(new Usuario(username, email, contrasenia));
 
@@ -48,117 +42,42 @@ class UsuarioRepositorio {
 
     async login(email) {
         try {
-            const user = await this.usuariosCollection.findOne({ email: email });
-            console.log(user);
-            if (!user) {
+            const usuario = await this.usuariosCollection.findOne({ email: email });
+            if (!usuario) {
                 throw new Error(`El ${email} no está registrado`);
             }
-            return user;
+            return usuario;
         } catch (error) {
             throw new Error(error.message);
         }
     }
 
+    async editarUsuario(filter, email, username, contrasenia) {
+            const usuario = await this.obtenerUsuario(filter)
+            if(!usuario) {
+                throw new Error("El usuario no existe");
+            }
+            const respuesta = await this.usuariosCollection.updateOne(filter, { $set: { email:email, username:username, contrasenia:contrasenia} });
+            if (!respuesta) {
+                   throw new Error("Error al editar el usuario");
+               }
+            return "Usuario editado correctamente";
+        }
 
-    async confirmarRegistro(email) {
+    
+    async eliminarCuenta(filter) {
         try {
-            const updateFilter = { email: email };
-            const updateData = { $set: { registro: 1 } };
-
-            await this.usuariosCollection.updateOne(updateFilter, updateData);
-
-            const usuario = await this.usuariosCollection.findOne({ email: email });
-
-            return usuario;
-        } catch (error) {
-            console.log(error);
-            throw new Error("Error en la confirmación");
+            const usuarioEliminado = await this.usuariosCollection.findOneAndDelete(filter);
+            if (!usuarioEliminado) {
+                throw new Error("Usuario no encontrado")
+            }
+            console.log("La cuenta con el email " + usuarioEliminado.value.email +" ha sido borrada correctamente");
+            return
+        }catch (error) {
+            throw new Error(error.message);
         }
     };
 
-
-    async editarUsuario(email, username, contrasenia) {
-        try {
-            const usuario = await this.usuariosCollection.findOne({ email: email });
-            if (usuario) {
-                await this.usuariosCollection.updateOne({ email: email }, { $set: { username: username, contrasenia: contrasenia } });
-                console.log("Usuario editado correctamente");
-                return
-            }
-            else {
-                console.log("No existe un usuario con ese mail");
-            }
-        } catch (error) {
-            console.log(error);
-            throw new Error("Error al editar al usuario: " + error.message);
-        }
-    }
-
-    async cambiarEmail(email, nuevoEmail) {
-        try {
-            await this.usuariosCollection.updateOne({ email: email }, { $set: { email: nuevoEmail } });
-            return;
-        } catch (error) {
-            throw new Error(error);
-        }
-    }
-
-
-    async eliminarCuenta(email) {
-        try {
-            const usuario = await this.usuariosCollection.findOne({ email });
-            if (usuario) {
-                await this.usuariosCollection.deleteOne({ email });
-                console.log(`La cuenta con el email ${email} ha sido borrada correctamente`);
-            } else {
-                throw new Error("Usuario no encontrado");
-            }
-        } catch (error) {
-            throw new Error(error);
-        }
-    };
-
-    agregarHuella = async (email, huella) => {
-        try {
-          const filter = { email: email };
-          const update = { $set: { huella: huella } };
-          await this.usuariosCollection.updateOne(filter, update);
-        } catch (error) {
-          console.log(error);
-        }
-      }
-
-
-      logout = async (email) => {
-        try {
-          const huella = '';
-          const filter = { email: email };
-          const update = { $set: { huella: huella } };
-          
-          await this.usuariosCollection.updateOne(filter, update);
-          console.log("Logout del email: " + email);
-        } catch (error) {
-          console.log(error);
-          throw new Error("Error al cerrar sesión del usuario: " + error.message);
-        }
-      }
-
-
-      devolverUsuario = async (huella) => {
-        try {
-          const filter = { huella: huella };
-          const row = await this.usuariosCollection.findOne(filter);
-      
-          if (!row) {
-            throw new Error("Ningún usuario tiene la huella guardada");
-          }
-      
-          return row;
-        } catch (error) {
-          throw new Error(error.message);
-        }
-      }
-      
       getAll = async () => {
         try {
           const result = await this.usuariosCollection.find();
@@ -168,27 +87,19 @@ class UsuarioRepositorio {
         }
       } 
 
-      obtenerUsuario = async (id) => {
+      obtenerUsuario = async (filter) => {
         try {
-            const result = await this.usuariosCollection.findOne({ _id: id });
-            if (!result) {
-                throw new Error(`No existe el usuario con el id: ${id}`);
-            }
+            const result = await this.usuariosCollection.findOne(filter);
             return result
         } catch (error) {
             return error;
         }
     };
       
-    guardarReserva = async (username, datosCancha) => {
+    guardarReserva = async (filter, titulo, dia, horario) => {
         try {
-          const idUsuario = new ObjectId(id);
-          const usuario = await this.usuariosCollection.findOne({ _id:idUsuario });
-          if(!usuario) {
-            throw new Error(`El usuario con el id: ${id} no existe`);
-          }
-          const newReserva = new Reserva(datosCancha.titulo , datosCancha.dia, datosCancha.horario);
-          const respuesta = await this.usuariosCollection.updateOne({ _id: idUsuario }, { $addToSet: { reservas: newReserva } });
+          const newReserva = new Reserva(titulo , dia, horario);
+          const respuesta = await this.usuariosCollection.updateOne(filter, { $addToSet: { reservas: newReserva } });
           if (!respuesta) {
             throw new Error("Error al guardar la reserva");
           }

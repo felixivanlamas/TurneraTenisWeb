@@ -1,5 +1,5 @@
 import ModelUsuario from "../repositorios/repositorio_usuario.js"
-
+import { ObjectId } from 'mongodb';
 class ServicioUsuario{
 
     constructor() {
@@ -29,47 +29,37 @@ class ServicioUsuario{
         }
       };
 
-      editarUsuario = async (email, username, contrasenia) => {
+      editarUsuario = async (id, email, username, contrasenia) => {
         try {
-          const usuario = await this.model.editarUsuario(email, username, contrasenia)
-        } catch (error) {
-          throw new Error(error);
-        }
-      };
-
-      cambiarEmail = async (email, nuevoEmail) => {
-        try {
-          await this.model.cambiarEmail(email, nuevoEmail);
-        } catch (error) {
-          throw new Error(error);
-        }
-      };
-
-      eliminarCuenta = async (email, contrasenia) => {
-        try {
-          const usuario = await this.model.login(email); // Obtener el usuario de la base de datos
-          if (usuario.contrasenia == contrasenia) {
-            await this.model.eliminarCuenta(email);
-          } else {
-            throw new Error("Contraseña invalida");
+          const filter = {_id:new ObjectId(id)}
+          const respuesta = await this.model.editarUsuario(filter, email, username, contrasenia)
+          if(!respuesta){
+            throw new Error("No se pudo editar el usuario")
           }
+          return "Usuario editado"
         } catch (error) {
           throw new Error(error);
         }
       };
 
-      logout = async (email) => {
+      eliminarCuenta = async (id) => {
         try {
-          const user = await this.model.logout(email);
-          return user
+          const filter = {_id:new ObjectId(id)}
+          return await this.model.eliminarCuenta(filter);
         } catch (error) {
           throw new Error(error);
         }
-      }
+      };
 
-      reservar = async (id, datosCancha) => {
+      reservar = async (id,titulo, dia, horario) => {
         try {
+<<<<<<< HEAD
           const respuesta = await this.model.guardarReserva(reqReserva) 
+=======
+          const filter = {_id:new ObjectId(id)}
+          const respuesta = await this.model.guardarReserva(filter, titulo, dia, horario) 
+          if(!respuesta)
+>>>>>>> felix
           return respuesta
         } catch (error) {
           throw new Error(error);

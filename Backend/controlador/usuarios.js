@@ -9,10 +9,6 @@ class ControladorUsuario {
     this.servicioCancha = new ServicioCanchas()
   }
 
-  inicio = async (req, res) => {
-    res.status(200).send('<div><h1>Servidor de Turnera Tenis</h1></div>');
-  }
-
   registro = async (req, res) => {
     try {
       const { email, username, contrasenia } = req.body
@@ -37,64 +33,30 @@ class ControladorUsuario {
 
   editarUsuario = async (req, res) => {
     try {
+      const {id} = req.params
       const { email, username, contrasenia } = req.body
-      const usuario = await this.servicioUsuario.editarUsuario(email, username, contrasenia);
-      res.status(200).json(usuario);
-
+      const respuesta = await this.servicioUsuario.editarUsuario(id, email, username, contrasenia);
+      res.status(200).send(respuesta);
     } catch (error) {
       console.error(error.message);
       res.status(500).send(error.message);
     }
   }
 
-  cambiarEmail = async (req, res) => {
-    try {
-      const { email, nuevoEmail} = req.body
-      await this.servicioUsuario.cambiarEmail(email, nuevoEmail);
-      res.status(200).json("Email modificado correctamente");
-    } catch (error) {
-      res.status(500).send(error.message);
-    }
-  };
-
   eliminarCuenta = async (req, res) => {
     try {
-      const { email, contrasenia } = req.body
-      await this.servicioUsuario.eliminarCuenta(email, contrasenia);
-      res.status(200).json("Cuenta eliminada  con el email " + email);
+      const {id} = req.params
+      const respuesta = await this.servicioUsuario.eliminarCuenta(id);
+      res.status(200).send(respuesta);
     } catch (error) {
-      console.log("No se elimino la cuenta")
       res.status(500).send(error.message);
     }
-  };
-
-  logout = async (req,res) => {
-     try{
-      const {email} = req.body
-      const user = await this.servicioUsuario.logout(email)
-      res.status(200).json(user);
-     }catch (error) {
-      res.status(500).send(error.message);
-    }
-    
-  }
-
-  devolverUsuario = async(req,res)=> {
-    try{
-      const {huella} = req.body
-      const usuario = await this.servicioUsuario.devolverUsuario(huella)
-      res.status(200).json(usuario);
-     }catch (error) {
-      res.status(500).send(error.message);
-    }
-
   }
 
   obtenerUsuario = async (req, res) => {
     try {
         const { id } = req.params;
         const usuario = await this.servicioUsuario.obtenerUsuario(id);
-        
         res.status(200).json(usuario);
     } catch (error) {
        if (error instanceof InvalidCredentialsError) {
@@ -109,6 +71,7 @@ class ControladorUsuario {
     }
 };
     
+<<<<<<< HEAD
 reservarCancha = async (req, res) => {
   try {
     const { idUsuario, titulo,  dia, horario } = req.body
@@ -125,6 +88,18 @@ reservarCancha = async (req, res) => {
           message:
           "Hubo un problema interno. Intente nuevamente más tarde.",
           });
+=======
+  reservarCancha = async (req, res) => {
+    try {
+        const { idCancha, titulo, dia, horario } = req.body
+        const { idUsuario } = req.params
+        await this.servicioCancha.modificarCancha(idCancha, dia, horario);
+        const respuesta = await this.servicioUsuario.reservar(idUsuario, titulo, dia, horario);
+        res.status(200).send(respuesta)
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send(error.message);
+>>>>>>> felix
       }
     }
   };
