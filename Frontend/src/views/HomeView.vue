@@ -7,8 +7,9 @@ export default {
         selectedTipo:'',
         canchas: [],
         canchaSeleccionada:null,
-        dias:[],
-      vue: this,
+        horarios: [],
+        seleccionCancha: null,
+        vue: this,
     };
   },
   created() {
@@ -25,16 +26,16 @@ export default {
   },
   methods: {
     obtenerDias(cancha) {
-      this.canchaSeleccionada = cancha;
-      if(!this.canchaSeleccionada){
-         dias=this.canchaSeleccionada.dias;
-         this.getDias(dias);
+  
+  for (const dia in cancha.reservasDisponibles.dias) {
+    const horariosDia = cancha.reservasDisponibles.dias[dia];
+    this.horarios.push({ dia, horarios: horariosDia });
+  }
+  
+console.log(this.horarios)
       }
     },
-    getDias(dias){
-      return dias;
-    }
-  }
+  
 };
 </script>
 
@@ -62,4 +63,26 @@ export default {
           </div>
         </div>
       </div>
+
+
+    <div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Día</th>
+          <th>Horarios</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="dia in this.horarios">
+          <td>{{ dia.dia }}</td>
+                <tr v-for="hora in dia.horarios">
+                   <td>{{ hora }}</td>          
+               </tr>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
 </template>
