@@ -74,7 +74,7 @@ export default {
 
   methods: {
     seleccionarCancha(cancha) {
-      for (const dia in cancha.reservasDisponibles.dias) {
+      for (const dia in cancha.reservasDisponibles.dias ) {
       const horariosDia = cancha.reservasDisponibles.dias[dia];
       this.reservasDisponibles.push({ dia, horarios: horariosDia });
       }
@@ -82,10 +82,11 @@ export default {
       this.canchaSeleccionada = cancha;
     },
     guardarDatos(dia,hora){
-      if(confirmar(dia,hora)){
+      if(confirmar(da,ihora)){
         this.selectedDia = dia;
         this.selectedHorario = hora;  
       }
+
     },
 
   },
