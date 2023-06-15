@@ -1,13 +1,16 @@
-import axiosClient from './axiosClient.js';
+import axiosClient from "./axiosClient.js";
 const apiClient = axiosClient.getApiClient();
 
 export const userService = {
-    login(usuario) {
-        //Utilizo api Client que es el objeto inicializado de axios
-        return apiClient.post('/usuarios/login', usuario);
-       // axios pero instanciado con la direccion y las caracteristicas de la peticion.
-    },
-    register(usuario){
-        return apiClient.post('/usuarios/register', usuario);
-    },
-}
+  login(usuario) {
+    //Utilizo api Client que es el objeto inicializado de axios
+    return apiClient.post("/usuarios/login", usuario);
+    // axios pero instanciado con la direccion y las caracteristicas de la peticion.
+  },
+  register(usuario) {
+    return apiClient.post("/usuarios/register", usuario);
+  },
+  get(usuario) {
+    return apiClient.get(`/usuarios/${usuario}/`);
+  },
+};
