@@ -29,6 +29,16 @@ class ServicioUsuario{
         }
       };
 
+      obtenerUsuario = async (id) => {
+        try {
+          const filter = {_id:new ObjectId(id)}
+          const usuario = await this.model.obtenerUsuario(filter);
+          return usuario;
+        } catch (error) {
+          throw new Error(error);
+        }
+      }
+
       editarUsuario = async (id, email, username, contrasenia) => {
         try {
           const filter = {_id:new ObjectId(id)}
@@ -53,13 +63,7 @@ class ServicioUsuario{
 
       reservar = async (id,titulo, dia, horario) => {
         try {
-<<<<<<< HEAD
           const respuesta = await this.model.guardarReserva(reqReserva) 
-=======
-          const filter = {_id:new ObjectId(id)}
-          const respuesta = await this.model.guardarReserva(filter, titulo, dia, horario) 
-          if(!respuesta)
->>>>>>> felix
           return respuesta
         } catch (error) {
           throw new Error(error);

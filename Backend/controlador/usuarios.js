@@ -71,7 +71,6 @@ class ControladorUsuario {
     }
 };
     
-<<<<<<< HEAD
 reservarCancha = async (req, res) => {
   try {
     const { idUsuario, titulo,  dia, horario } = req.body
@@ -88,22 +87,10 @@ reservarCancha = async (req, res) => {
           message:
           "Hubo un problema interno. Intente nuevamente más tarde.",
           });
-=======
-  reservarCancha = async (req, res) => {
-    try {
-        const { idCancha, titulo, dia, horario } = req.body
-        const { idUsuario } = req.params
-        await this.servicioCancha.modificarCancha(idCancha, dia, horario);
-        const respuesta = await this.servicioUsuario.reservar(idUsuario, titulo, dia, horario);
-        res.status(200).send(respuesta)
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).send(error.message);
->>>>>>> felix
-      }
-    }
-  };
+        }
+  }
+}
 
-};
 
+}
 export default ControladorUsuario 

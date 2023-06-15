@@ -10,4 +10,12 @@ export const userService = {
     register(usuario){
         return apiClient.post('/usuarios/register', usuario);
     },
+
+    getUser(){
+        return apiClient.get('/usuarios/:id');
+    },
+    
+    reservar(reserva){
+        return apiClient.post('/usuarios/:id',reserva);
+    }
 }

@@ -89,8 +89,8 @@ class UsuarioRepositorio {
 
       obtenerUsuario = async (filter) => {
         try {
-            const result = await this.usuariosCollection.findOne(filter);
-            return result
+            const usuario = await this.usuariosCollection.findOne(filter);
+            return usuario
         } catch (error) {
             return error;
         }
