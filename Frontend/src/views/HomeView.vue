@@ -17,11 +17,12 @@ export default {
   },
   async mounted(){ 
     try {
-        const response = await canchasService.getAll();
-        this.canchas =response.data
+        const user = await userService.getUser();
+        const canchas = await canchasService.getAll();
+        this.canchas =canchas.data
       } catch (error) {
-        console.log(error.response.data);
-        alert(error.response.data);
+        console.log(error.canchas.data);
+        alert(error.canchas.data);
       }
   },
   methods: {
