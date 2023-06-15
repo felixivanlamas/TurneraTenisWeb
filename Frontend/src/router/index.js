@@ -11,8 +11,8 @@ const router = createRouter({
     },
     {
       path: "/canchas",
-      name: "canchas",
-      component: () => import("../views/CanchasView.vue"),
+      name: "cancha",
+      component: () => import("../views/CanchaView.vue"),
     },
     {
       path: "/login",

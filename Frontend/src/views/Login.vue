@@ -26,7 +26,7 @@ export default {
         const response = await userService.login(usuario);
         const usuarioRes = response.data;
         vue.usuario = usuarioRes;
-        vue.$router.push(`/${usuarioRes.username}`);
+        vue.$router.push("/");
       } catch (error) {
         console.log(error);
         alert(error.response.data);

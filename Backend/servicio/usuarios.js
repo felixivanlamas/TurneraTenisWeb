@@ -67,10 +67,10 @@ class ServicioUsuario{
         }
       }
 
-      reservar = async (reqReserva) => {
+      reservar = async (id, datosCancha) => {
         try {
           const respuesta = await this.model.guardarReserva(reqReserva) 
-          return respuesta 
+          return respuesta
         } catch (error) {
           throw new Error(error);
         }
