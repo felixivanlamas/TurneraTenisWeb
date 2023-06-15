@@ -8,6 +8,7 @@ export const useUserStore = defineStore("usuario", {
         username: "",
         email: "",
         contrasenia:"",
+        reservas: []
       },
     };
   },
