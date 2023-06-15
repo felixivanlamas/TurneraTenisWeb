@@ -11,7 +11,8 @@ class RouterCanchas {
     start() {
         this.router.get("/",this.controlador.getAll)
         this.router.get("/:id",this.controlador.getCancha)
-        this.router.post("/crearCancha", this.controlador.crearCancha)
+        this.router.post("/", this.controlador.crearCancha)
+        /* this.router.put('/',this.controlador.modificarCancha) */
 
         return this.router
     }

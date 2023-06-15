@@ -9,14 +9,12 @@ class RouterUsuario {
     }
 
     start() {
-        this.router.get("/",this.controlador.inicio)
         this.router.post("/register", this.controlador.registro)
         this.router.post("/login", this.controlador.login)
-        this.router.post("/editarUsuario", this.controlador.editarUsuario)
-        this.router.post("/cambiarEmail", this.controlador.cambiarEmail)
-        this.router.delete("/eliminarCuenta",this.controlador.eliminarCuenta)
-        this.router.post("/:username/reservar",this.controlador.reservarCancha)
-        //this.router.post("/logout",this.controlador.logout)
+       // this.router.get("/:id", this.controlador.consultarUsuario)
+        this.router.put("/:id", this.controlador.editarUsuario)
+        this.router.delete("/:id",this.controlador.eliminarCuenta)
+        this.router.post("/:id",this.controlador.reservarCancha)
         
         return this.router
     }
