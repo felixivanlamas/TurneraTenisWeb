@@ -11,11 +11,11 @@ export const userService = {
         return apiClient.post('/usuarios/register', usuario);
     },
 
-    getUser(){
-        return apiClient.get('/usuarios/:id');
+    getUser(id){
+        return apiClient.get(`/usuarios/${id}`);
     },
     
-    reservar(reserva){
+    reservar(id,reserva){
         return apiClient.post('/usuarios/:id',reserva);
     }
 }

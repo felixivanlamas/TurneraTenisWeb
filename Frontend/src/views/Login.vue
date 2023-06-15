@@ -7,6 +7,8 @@ export default {
   setup() {
     const store = useUserStore();
     const { usuario } = storeToRefs(store);
+    //const { updateUserId } = useUserStore();
+
     return {
       usuario,
     };
@@ -26,6 +28,9 @@ export default {
         const response = await userService.login(usuario);
         const usuarioRes = response.data;
         vue.usuario = usuarioRes;
+        
+        //updateUserId(usuarioRes.id);
+        
         vue.$router.push("/");
       } catch (error) {
         console.log(error);

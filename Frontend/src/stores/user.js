@@ -5,6 +5,7 @@ export const useUserStore = defineStore("usuario", {
   state: () => {
     return {
       usuario: {
+        id: null,
         username: "",
         email: "",
         contrasenia:"",
@@ -12,7 +13,15 @@ export const useUserStore = defineStore("usuario", {
       },
     };
   },
+  mutations: {
+    setUserId(state, id) {
+      state.usuario.id = id;
+    },
+  },
   actions: {
+    updateUserId(id) {
+      this.setUserId(id);
+    },
     async editarUsuario(usuario) {
       try {
         const response = await userService.editarUsuario(usuario);
