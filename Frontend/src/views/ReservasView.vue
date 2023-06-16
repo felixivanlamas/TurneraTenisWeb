@@ -3,115 +3,197 @@
 <template>
   <div>
     <h1 class="titulo-seccion">Reservas realizadas</h1>
-    <ul v-if="reservas.length > 0">
-      <li v-for="reserva in reservas" :key="reserva._id">
+    <ul class="lista-reservas" v-if="user.reservas.length > 0">
+      <li
+        class="item-reserva"
+        v-for="(reserva, index) in user.reservas"
+        :key="reserva._id"
+      >
         <div class="reserva">
           <div class="reserva-info">
-            <p> Reserva </p>
-            <p>Dia: {{ reserva.dia }}</p>
-            <p>Horario: {{ reserva.horario }}</p>
+            <p class="reserva-label">Reserva {{ index + 1 }}</p>
+            <p class="reserva-dia">Día: {{ reserva.dia.join(", ") }}</p>
+            <p class="reserva-horario">Horario: {{ reserva.horario }}</p>
           </div>
           <div class="cancha-info">
             <div class="cancha-image">
               <img
-                :src="getCanchaImagen(reserva.cancha.tipo)"
-                :alt="getCanchaTitulo(reserva.cancha.tipo)"
+                :src="getCanchaImagen(reserva.titulo)"
+                :alt="reserva.titulo"
               />
             </div>
             <div class="cancha-details">
-              <p class="cancha-title">
-                {{ getCanchaTitulo(reserva.cancha.tipo) }}
+              <p class="cancha-title">{{ reserva.titulo }}</p>
+              <p class="cancha-type">
+                Tipo: {{ getTipoCancha(reserva.titulo) }}
               </p>
-              <p class="cancha-type">Tipo: {{ reserva.cancha.tipo }}</p>
+            </div>
+            <div class="eliminar-container">
+              <button
+                v-if="esFechaPosteriorHoy(reserva.dia[0])"
+                class="eliminar-btn"
+                @click="eliminarReserva(reserva)"
+              >
+                Eliminar reserva
+              </button>
             </div>
           </div>
         </div>
       </li>
     </ul>
-    <p v-else>No hay reservas.</p>
+    <p v-else class="sin-reservas">No hay reservas.</p>
   </div>
 </template>
 
 <script>
 import { canchasService } from "../services/canchasService.js";
+import { userService } from "../services/userService.js";
 
 export default {
   data() {
     return {
-      reservas: [],
+      user: {
+        username: "",
+        email: "",
+        contrasenia: "",
+        reservas: [
+          {
+            titulo: "",
+            dia: [],
+            horario: "",
+          },
+        ],
+      },
       canchas: [],
     };
   },
   async mounted() {
     try {
-      const response = await canchasService.getAll();
-      this.canchas = response.data;
+      const canchasResponse = await canchasService.getAll();
+      const userResponse = await userService.getUser();
+      this.canchas = canchasResponse.data;
+      this.user = userResponse;
+      console.log(this.user.reservas);
     } catch (error) {
       console.log(error.response.data);
       alert(error.response.data);
     }
-    this.reservas = [
-      {
-        titulo: "Reserva 1",
-        dia: "Lunes",
-        horario: "12:00",
-        cancha: {
-          titulo: "Cancha 2",
-          tipo: "Cesped",
-        },
-      },
-      {
-        titulo: "Reserva 2",
-        dia: "Martes",
-        horario: "22:00",
-        cancha: {
-          titulo: "Cancha 2",
-          tipo: "Ladrillo",
-        },
-      },
-    ];
   },
   methods: {
-    getCanchaByTipo(tipo) {
-      return this.canchas.find((cancha) => cancha.tipo === tipo);
+    getCanchaByTitulo(titulo) {
+      return this.canchas.find((cancha) => cancha.titulo === titulo);
     },
-    getCanchaImagen(tipo) {
-      const cancha = this.getCanchaByTipo(tipo);
+    getCanchaImagen(titulo) {
+      const cancha = this.getCanchaByTitulo(titulo);
       return cancha ? cancha.imagen : "";
     },
-    getCanchaTitulo(tipo) {
-      const cancha = this.getCanchaByTipo(tipo);
-      return cancha ? cancha.titulo : "";
+    getTipoCancha(titulo) {
+      const cancha = this.getCanchaByTitulo(titulo);
+      return cancha ? cancha.tipo : "";
+    },
+    async eliminarReserva(reserva) {
+      //que se fije también por hora
+      try {
+        await userService.eliminarReserva(reserva);
+        //hacer que se actualice la lista de reservas
+        await this.mounted();
+      } catch (error) {
+        console.log(error);
+        alert(error.response.data);
+      }
+    },
+    esFechaPosteriorHoy(fecha) {
+      if (!fecha || fecha.length === 0) {
+        return false;
+      }
+      const hoy = new Date();
+      const diaSemanaHoy = hoy.getDay();
+      const diaSemanaReserva = this.obtenerNumeroDia(fecha);
+      let diferenciaDias = diaSemanaReserva - diaSemanaHoy;
+      return diferenciaDias > 0 && diferenciaDias <= 7;
+    },
+
+    obtenerNumeroDia(dia) {
+      const diasSemana = [
+        "Lunes",
+        "Martes",
+        "Miercoles",
+        "Jueves",
+        "Viernes",
+        "Sabado",
+        "Domingo",
+      ];
+      const indice = diasSemana.indexOf(dia);
+      if (indice !== -1) {
+        return indice + 1;
+      } else {
+        return -1;
+      }
     },
   },
 };
 </script>
 
 <style>
-.reserva {
-  border-bottom: #888 1px solid;
-  margin-bottom: 50px;
+.lista-reservas {
+  list-style-type: none;
+  padding: 0;
 }
+
+.item-reserva {
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  overflow: hidden;
+  transition: box-shadow 0.3s;
+}
+
+.item-reserva:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 .titulo-seccion {
-  margin-bottom: 50px;
+  margin: 30px 0;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333333;
+  text-transform: uppercase;
 }
+
+.reserva {
+  display: flex;
+  align-items: center;
+}
+
 .reserva-info {
+  flex: 1;
+  padding: 20px;
+}
+
+.reserva-label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #555555;
   margin-bottom: 10px;
-  padding-bottom: 10px;
+}
+
+.reserva-dia,
+.reserva-horario {
+  margin-bottom: 5px;
 }
 
 .cancha-info {
+  margin-left: auto;
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
 }
 
 .cancha-image {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   overflow: hidden;
-  margin-right: 10px;
+  margin-right: 20px;
 }
 
 .cancha-image img {
@@ -125,12 +207,37 @@ export default {
 }
 
 .cancha-title {
-  font-weight: bold;
   font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
 .cancha-type {
   font-size: 14px;
-  color: #888;
+  color: #888888;
+}
+
+.eliminar-container {
+  display: fixed;
+  align-items: center;
+  margin-left: auto;
+  padding-right: 30px;
+  margin-left: 50px;
+}
+
+.eliminar-btn {
+  background-color: #f44336;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.eliminar-btn i {
+  margin-right: 5px;
 }
 </style>
