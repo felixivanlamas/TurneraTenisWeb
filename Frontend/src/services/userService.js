@@ -2,9 +2,9 @@ import axiosClient from "./axiosClient.js";
 const apiClient = axiosClient.getApiClient();
 
 export const userService = {
-  login(usuario) {
+  login(credenciales) {
     //Utilizo api Client que es el objeto inicializado de axios
-    return apiClient.post("/usuarios/login", usuario);
+    return apiClient.post("/usuarios/login", credenciales);
     // axios pero instanciado con la direccion y las caracteristicas de la peticion.
   },
   register(usuario) {
