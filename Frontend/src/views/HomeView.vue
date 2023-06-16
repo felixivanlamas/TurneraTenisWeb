@@ -1,6 +1,6 @@
 <script>
-import { canchasService } from "../services/canchasService.js"
-import { userService } from "../services/userService";
+//import { canchasService } from "../services/canchasService.js"
+import {useCanchasStore} from "../stores/canchas.js"
 
 export default {
   data() {
@@ -16,63 +16,31 @@ export default {
     };
   },
   created() {
-    this.selectedTipo = ''; // Reiniciar el valor seleccionado al crear el componente
+    this.selectedTipo = ''// Reiniciar el valor seleccionado al crear el componente
+    this.canchaSeleccionada=null
   },
   async mounted(){ 
-    try {
-        const user = await userService.getUser();
+    this.fetchCanchas();
+    /* try {
         const canchas = await canchasService.getAll();
         this.canchas =canchas.data
-        // this.canchas = [{
-        //   titulo: "Cancha n°4",
-        //   tipo: "Ladrillo",
-        //   imagen: "https://civideportes.com.co/wp-content/uploads/2020/08/asphalt-tennis-court-5354328_640.jpg",
-        //   reservasDisponibles: {
-        //       dias: {
-        //         Lunes:[ "12:00","13:00","14:00","15:00","16:00","17:00","18:00", "19:00","20:00", "21:00","22:00"],
-        //         Martes:[ "12:00","13:00","14:00","15:00","16:00","17:00","18:00", "19:00","20:00", "21:00","22:00"],
-        //         Miércoles:[ "12:00","13:00","14:00","15:00","16:00","17:00","18:00", "19:00","20:00", "21:00","22:00"],
-        //         Jueves: [ "12:00","13:00","14:00","15:00","16:00","17:00","18:00", "19:00","20:00", "21:00","22:00"],
-        //         Viernes: [ "12:00","13:00","14:00","15:00","16:00","17:00","18:00", "19:00","20:00", "21:00","22:00"]
-        //       }
-        //   }
-        //           },
-        //   {
-        //     titulo: "Cancha n°3",
-        //   tipo: "Cesped",
-        //   imagen: "https://civideportes.com.co/wp-content/uploads/2020/08/asphalt-tennis-court-5354328_640.jpg",
-        //   reservasDisponibles: {
-        //       dias: {
-        //         Lunes:[ "12:00","13:00","14:00","15:00","16:00","17:00","18:00", "19:00","20:00", "21:00","22:00"],
-        //         Martes:[ "12:00","13:00","14:00","15:00","16:00","17:00","18:00", "19:00","20:00", "21:00","22:00"],
-        //         Miércoles:[ "12:00","13:00","14:00","15:00","16:00","17:00","18:00", "19:00","20:00", "21:00","22:00"],
-        //         Jueves: [ "12:00","13:00","14:00","15:00","16:00","17:00","18:00", "19:00","20:00", "21:00","22:00"],
-        //         Viernes: [ "12:00","13:00","14:00","15:00","16:00","17:00","18:00", "19:00","20:00", "21:00","22:00"]
-        //       }
-        //   }
-        //   },
-        //   {
-        //     titulo: "Cancha n°2",
-        //   tipo: "Cemento",
-        //   imagen: "https://civideportes.com.co/wp-content/uploads/2020/08/asphalt-tennis-court-5354328_640.jpg",
-        //   reservasDisponibles: {
-        //       dias: {
-        //         Lunes:[ "12:00","13:00","14:00","15:00","16:00","17:00","18:00", "19:00","20:00", "21:00","22:00"],
-        //         Martes:[ "12:00","13:00","14:00","15:00","16:00","17:00","18:00", "19:00","20:00", "21:00","22:00"],
-        //         Miércoles:[ "12:00","13:00","14:00","15:00","16:00","17:00","18:00", "19:00","20:00", "21:00","22:00"],
-        //         Jueves: [ "12:00","13:00","14:00","15:00","16:00","17:00","18:00", "19:00","20:00", "21:00","22:00"],
-        //         Viernes: [ "12:00","13:00","14:00","15:00","16:00","17:00","18:00", "19:00","20:00", "21:00","22:00"]
-        //       }
-        //   }
-        //   }
-        // ]
       } catch (error) {
         console.log(error.canchas.data);
         alert(error.canchas.data);
-      }
+      } */
   },
 
   methods: {
+    fetchCanchas() {
+      const canchasStore = useCanchasStore();
+      canchasStore.fetchCanchas()
+        .then(() => {
+          this.canchas = canchasStore.canchas;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
     seleccionarCancha(cancha) {
       for (const dia in cancha.reservasDisponibles.dias ) {
       const horariosDia = cancha.reservasDisponibles.dias[dia];
