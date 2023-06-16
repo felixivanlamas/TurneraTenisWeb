@@ -10,6 +10,7 @@ export const useCanchasStore = defineStore('canchas', {
       try {
         const response = await canchasService.getAll();
         this.canchas = response.data;
+        this.canchas.sort((a, b) => a.titulo.localeCompare(b.titulo));
       } catch (error) {
         console.error(error);
         throw new Error('Error al obtener las canchas');

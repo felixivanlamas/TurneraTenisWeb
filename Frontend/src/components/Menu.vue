@@ -62,11 +62,6 @@ export default {
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item" v-if="usuario.username != ''">
-          <RouterLink class="nav-link" :to="'/usuarios/' + usuario.username"
-            >Canchas</RouterLink
-          >
-        </li>
-        <li class="nav-item" v-if="usuario.username != ''">
           <RouterLink class="nav-link" to="/reservations"
             >Mis Reservas</RouterLink
           >

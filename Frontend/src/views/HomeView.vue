@@ -21,13 +21,6 @@ export default {
   },
   async mounted(){ 
     this.fetchCanchas();
-    /* try {
-        const canchas = await canchasService.getAll();
-        this.canchas =canchas.data
-      } catch (error) {
-        console.log(error.canchas.data);
-        alert(error.canchas.data);
-      } */
   },
 
   methods: {
@@ -42,6 +35,7 @@ export default {
         });
     },
     seleccionarCancha(cancha) {
+      this.reservasDisponibles.splice(0)
       for (const dia in cancha.reservasDisponibles.dias ) {
       const horariosDia = cancha.reservasDisponibles.dias[dia];
       this.reservasDisponibles.push({ dia, horarios: horariosDia });
@@ -103,9 +97,9 @@ export default {
             <th class="text-center">Turnos Disponibles</th>
           </tr>
         </thead>
-        <tbody class="text-center" v-for="dia in this.reservasDisponibles">
+        <tbody class="text-justify" v-for="dia in this.reservasDisponibles">
           <tr>
-            <th class="btn btn-primary">{{ dia.dia }}
+            <th>{{ dia.dia }}:
             <div class="btn-group" v-for="hora in dia.horarios">
               <div class="btn btn-primary" @click="guardarDatos(dia.dia,hora)">{{ hora }}</div></div>
             </th>
