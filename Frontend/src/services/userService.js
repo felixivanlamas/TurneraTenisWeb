@@ -16,6 +16,6 @@ export const userService = {
     },
     
     reservar(id,reserva){
-        return apiClient.post('/usuarios/:id',reserva);
+        return apiClient.post(`/usuarios/${id}`,reserva);
     }
 }

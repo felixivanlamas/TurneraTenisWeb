@@ -13,21 +13,24 @@ export const useUserStore = defineStore("usuario", {
       },
     };
   },
-  mutations: {
-    setUserId(state, id) {
-      state.usuario.id = id;
-    },
-  },
+
   actions: {
-    updateUserId(id) {
-      this.setUserId(id);
+    async login(usuario) {
+      try {
+        const response = await userService.login(usuario);
+        this.usuario = response.data;
+      } catch (error) {
+        console.error("Error en el inicio de sesión:", error);
+        throw error;
+      }
     },
     async editarUsuario(usuario) {
       try {
         const response = await userService.editarUsuario(usuario);
-        this.usuario = response.usuario;
+        this.usuario = response.data;
       } catch (error) {
-        alert("El usuario no pudo actualizarse. Error: " + error);
+        console.error("Error al editar el usuario:", error);
+        throw error;
       }
     }
   }
