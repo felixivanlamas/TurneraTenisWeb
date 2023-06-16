@@ -15,23 +15,14 @@ export const useUserStore = defineStore("usuario", {
   },
 
   actions: {
-    async login(usuario) {
+    async login(credenciales) {
       try {
-        const response = await userService.login(usuario);
+        const response = await userService.login(credenciales);
         this.usuario = response.data;
       } catch (error) {
         console.error("Error en el inicio de sesión:", error);
         throw error;
       }
     },
-    async editarUsuario(usuario) {
-      try {
-        const response = await userService.editarUsuario(usuario);
-        this.usuario = response.data;
-      } catch (error) {
-        console.error("Error al editar el usuario:", error);
-        throw error;
-      }
-    }
   }
 });

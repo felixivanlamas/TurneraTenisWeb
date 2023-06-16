@@ -1,42 +1,39 @@
 <script>
-import { ref} from "vue";
 import { useUserStore } from "../stores/user.js";
-import { useRouter } from "vue-router";
+
 
 export default {
-  setup() {
-    const usuario = ref({
-      email: "",
-      contrasenia: "",
-    });
-
-    const store = useUserStore();
-    const router = useRouter();
-
-    const loguear = async () => {
-      try {
-        await store.login(usuario.value);
-        // Acción de inicio de sesión completada con éxito, redirigir a la página principal
-        // Aquí puedes agregar la redirección que desees, en este caso redirigiré a "/home"
-        // Asegúrate de importar y usar la instancia del enrutador adecuada en tu proyecto
-        router.push("/");
-      } catch (error) {
-        console.log(error);
-        alert(error.response.data);
+  data() {
+    return {
+      usuario:{
+        email: '',
+        contrasenia: '',
       }
     };
+  },
+  methods: {
+    async login() {
+      const userStore = useUserStore();
+      const credentials = {
+        email: this.usuario.email,
+        contrasenia: this.usuario.contrasenia
+      };
 
-    return {
-      usuario,
-      loguear,
-    };
+      try {
+        const response = await userStore.login(credentials);
+        console.log(response);
+        this.$router.push('/');
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
 };
 </script>
 
 <template>
   <h1>Login</h1>
-  <form @submit.prevent="loguear(usuario)">
+  <form @submit.prevent="login()">
     <div class="form-group">
       <label for="exampleInputEmail1">Email address</label>
       <input
