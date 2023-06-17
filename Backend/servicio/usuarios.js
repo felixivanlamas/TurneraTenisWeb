@@ -8,8 +8,8 @@ class ServicioUsuario{
 
       registro = async (email,userame,contrasenia) => {
         try {
-          const respuesta = await this.model.registro(email,userame,contrasenia) // registramos el usuario con el hash
-          return respuesta;
+          const newUser = await this.model.registro(email,userame,contrasenia)
+          return newUser;
         } catch (error) {
           throw new Error(error);
         }
@@ -17,7 +17,7 @@ class ServicioUsuario{
 
       login = async (email, contrasenia) => {
         try {
-          const usuario = await this.model.login(email); // Obtener el usuario de la base de datos
+          const usuario = await this.model.login(email); 
           if (contrasenia === usuario.contrasenia) {
             console.log("Inicio de sesión exitoso de " + email);
             return usuario;

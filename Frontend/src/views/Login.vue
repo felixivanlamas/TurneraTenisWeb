@@ -21,7 +21,7 @@ export default {
 
       try {
         const response = await userStore.login(credentials);
-        console.log(response);
+        console.log(response._id);
         this.$router.push('/');
       } catch (error) {
         console.error(error);

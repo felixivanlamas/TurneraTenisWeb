@@ -107,16 +107,5 @@ export default {
         </tbody>
       </table>
     </div>
-<!--   
-  <div v-show="canchaSeleccionada!=null" >
-    <div>
-      <h3>Día:</h3>
-      <select class="form-select" v-model="selectedDia">
-      <option disabled selected>Selecciona un día</option>
-      <option v-for="(value, dia) in this.reservasDisponibles.dias" :value="dia">{{value}}</option>
-    </select>
-    </div>
-  </div> -->
-
 
   </template>

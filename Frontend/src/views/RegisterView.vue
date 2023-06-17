@@ -1,5 +1,5 @@
 <script>
-import { userService } from "../services/userService.js"
+import { useUserStore } from "../stores/user.js";
 
 export default {
   data() {
@@ -9,18 +9,29 @@ export default {
         email: "",
         contrasenia: "",
       },
-      vue: this,
+      contraseniaRepetida: "",
     };
   },
   methods: {
-    async registrarUsuario(vue) {
+    async registrar() {
+      const userStore = useUserStore();
+      const usuario = {
+        username: this.usuario.username,
+        email: this.usuario.email,
+        contrasenia: this.usuario.contrasenia
+      }
+
+      if (this.usuario.contrasenia !== this.contraseniaRepetida) {
+        console.log("Las contraseñas no coinciden");
+        return;
+      }
+
       try {
-        const response = await userService.register(this.usuario);
-        alert(response.data);
-        vue.$router.push("/");
+        const response = await userStore.register(this.usuario);
+        console.log(response);
+        this.$router.push('/');
       } catch (error) {
         console.log(error.response.data);
-        alert(error.response.data);
       }
     }
   },
@@ -29,7 +40,7 @@ export default {
 
 <template>
     <h1>Registro de usuario</h1>
-    <form @submit.prevent="registrarUsuario(vue)">
+    <form @submit.prevent="registrar()">
         <div class="form-group">
         <label for="exampleInputEmail1">Usuario</label>
         <input
@@ -63,6 +74,7 @@ export default {
          <div class="form-group">
         <label>Repetir Contraseña</label>
         <input
+          v-model="contraseniaRepetida"
           type="password"
           class="form-control"
           id="passRep"

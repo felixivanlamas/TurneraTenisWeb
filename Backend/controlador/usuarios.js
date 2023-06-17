@@ -12,8 +12,8 @@ class ControladorUsuario {
   registro = async (req, res) => {
     try {
       const { email, username, contrasenia } = req.body
-      const respuesta = await this.servicioUsuario.registro(email, username, contrasenia);
-      res.status(200).send(respuesta);
+      const newUser = await this.servicioUsuario.registro(email, username, contrasenia);
+      res.status(200).send(newUser);
     } catch (error) {
       console.log(error.message)
       res.status(500).send(error.message);

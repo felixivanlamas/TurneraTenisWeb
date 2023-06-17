@@ -30,10 +30,9 @@ class UsuarioRepositorio {
             if (!email || !username || !contrasenia) {
                 throw new Error('El email, nombre y pass son campos requeridos');
             }
-
-            await this.usuariosCollection.insertOne(new Usuario(username, email, contrasenia));
-
-            return "Usuario registrado correctamente";
+            const newUser = new Usuario(username, email, contrasenia);
+            await this.usuariosCollection.insertOne(newUser);
+            return newUser;
         } catch (error) {
             throw new Error("Error al registrar usuario: " + error);
         }
