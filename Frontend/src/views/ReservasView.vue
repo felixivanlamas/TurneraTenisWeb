@@ -44,9 +44,8 @@
 </template>
 
 <script>
-import { canchasService } from "../services/canchasService.js";
-import { userService } from "../services/userService.js";
-
+import { useCanchasStore } from "../stores/canchas.js";
+import { useUserStore } from "../stores/user.js";
 export default {
   data() {
     return {
@@ -66,18 +65,25 @@ export default {
     };
   },
   async mounted() {
-    try {
-      const canchasResponse = await canchasService.getAll();
-      const userResponse = await userService.getUser();
-      this.canchas = canchasResponse.data;
-      this.user = userResponse;
-      console.log(this.user.reservas);
-    } catch (error) {
-      console.log(error.response.data);
-      alert(error.response.data);
-    }
+    this.fetchCanchas();
+    this.getUser();
   },
   methods: {
+    async getUser(){
+      this.user = await useUserStore().getUser();
+    },
+
+    fetchCanchas() {
+      const canchasStore = useCanchasStore();
+      canchasStore.fetchCanchas()
+        .then(() => {
+          this.canchas = canchasStore.canchas;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+
     getCanchaByTitulo(titulo) {
       return this.canchas.find((cancha) => cancha.titulo === titulo);
     },
@@ -92,7 +98,7 @@ export default {
     async eliminarReserva(reserva) {
       //que se fije también por hora
       try {
-        await userService.eliminarReserva(reserva);
+        await useUserStore().eliminarReserva(reserva);
         //hacer que se actualice la lista de reservas
         await this.mounted();
       } catch (error) {

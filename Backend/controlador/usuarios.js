@@ -74,10 +74,9 @@ class ControladorUsuario {
     
 reservarCancha = async (req, res) => {
   try {
-    const { idUsuario, titulo,  dia, horario } = req.body
-    const reqReserva = {idUsuario, titulo, dia, horario}
-    await this.servicioUsuario.reservar(reqReserva);
-    const respuesta = await this.servicioCancha.modificarCancha(titulo, dia, horario);
+    const { idUsuario, idCancha,  dia, horario } = req.body
+    const canchaModificada = await this.servicioCancha.modificarCancha(idCancha, dia, horario);
+    const respuesta = await this.servicioUsuario.reservar(idUsuario, canchaModificada.titulo , dia, horario);
     res.status(200).json(respuesta)
   } catch (error) {
       if (error instanceof InvalidCredentialsError) {

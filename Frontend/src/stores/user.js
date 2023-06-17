@@ -62,6 +62,16 @@ export const useUserStore = defineStore("usuario", {
       } catch (error) {
         throw error;
       }
+    },
+
+    async eliminarReserva(reserva){
+      try {
+        const response = await userService.eliminarReserva(this.usuario._id,reserva);
+        this.usuario = response.data;
+        return this.usuario;
+      } catch (error) {
+        throw error;
+      }
     }
 
   }

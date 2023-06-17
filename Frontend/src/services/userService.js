@@ -17,7 +17,7 @@ export const userService = {
     return apiClient.post(`/usuarios/${id}`, reserva);
   },
 
-  eliminarReserva(reserva) {
-    //
+  eliminarReserva(id,reserva) {
+    return apiClient.delete(`/usuarios/${id}`, reserva);
   },
 };

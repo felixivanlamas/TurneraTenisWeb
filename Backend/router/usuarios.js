@@ -15,7 +15,6 @@ class RouterUsuario {
         this.router.put("/:id", this.controlador.editarUsuario)
         this.router.delete("/:id",this.controlador.eliminarCuenta)
         this.router.post("/:id",this.controlador.reservarCancha)
-        
         return this.router
     }
 }

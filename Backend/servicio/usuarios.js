@@ -61,9 +61,10 @@ class ServicioUsuario{
         }
       };
 
-      reservar = async (id,titulo, dia, horario) => {
+      reservar = async (id, titulo, dia, horario) => {
         try {
-          const respuesta = await this.model.guardarReserva(reqReserva) 
+          const filter = {_id:new ObjectId(id)}
+          const respuesta = await this.model.guardarReserva(filter, titulo, dia, horario) 
           return respuesta
         } catch (error) {
           throw new Error(error);

@@ -29,8 +29,8 @@ class ServicioCanchas{
     getCancha = async(id)=>{
         try {
             const filter={_id:new ObjectId(id)}
-            const res = await this.model.getCancha(filter)
-            return res
+            const respuesta = await this.model.getCancha(filter)
+            return respuesta
         } catch (error) {
             throw new Error(error);
         }
@@ -48,7 +48,9 @@ class ServicioCanchas{
             if(!cancha.reservasDisponibles.dias[dia].includes(horario)){
                 throw new InvalidCredentialsError("El horario"+ horario +" no se encuentra disponible")
             }
-            await this.model.modificarCancha(cancha,dia,horario);
+            const filter= {_id:new ObjectId(id)}
+            const canchaModificada = await this.model.modificarCancha(filter,dia,horario);
+            return canchaModificada
         }catch(error){
             throw new Error(error);
         }
