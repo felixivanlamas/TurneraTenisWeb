@@ -57,16 +57,17 @@ class ControladorUsuario {
     try {
         const { id } = req.params;
         const usuario = await this.servicioUsuario.obtenerUsuario(id);
-        res.status(200).json(usuario);
+        if (!usuario) {
+          res.status(401).json({
+            message: "Usuario no autenticado",
+          });
+        } else {
+          res.status(200).json(usuario);
+        }
     } catch (error) {
        if (error instanceof InvalidCredentialsError) {
             res.status(400).json(error.message);
            
-        } else {
-             res.status(500).json({
-            message:
-                "Hubo un problema interno. Intente nuevamente más tarde.",
-        });
         }
     }
 };

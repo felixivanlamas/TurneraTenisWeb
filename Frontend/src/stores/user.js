@@ -39,16 +39,29 @@ export const useUserStore = defineStore("usuario", {
 
     async getUser() {
       try {
-        response = await userService.getUser(this.usuario._id);        
-        this.usuario = response.data
+        if(this.usuario._id==null){
+          response = await userService.getUser(this.usuario._id);        
+          if (response.status === 401) {
+            // Usuario no autenticado
+            return null;
+          }
+
+          this.usuario = response.data;
+        }
         return this.usuario;
       } catch (error) {
         throw error;
       }
     },
 
-    async reservar(id,reserva) {
-      
+    async reservar(reserva) {
+      try {
+        const response = await userService.reservar(this.usuario._id,reserva);
+        this.usuario = response.data;
+        return this.usuario;
+      } catch (error) {
+        throw error;
+      }
     }
 
   }

@@ -1,5 +1,3 @@
-//npm run dev para front y node main.js para back
-
 <template>
   <div>
     <h1 class="titulo-seccion">Reservas realizadas</h1>

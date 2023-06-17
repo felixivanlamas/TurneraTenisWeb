@@ -1,6 +1,8 @@
 <script>
 //import { canchasService } from "../services/canchasService.js"
 import {useCanchasStore} from "../stores/canchas.js"
+import {useUserStore} from "../stores/user.js"
+import {useReservaStore} from "../stores/reserva.js"
 
 export default {
   data() {
@@ -9,10 +11,7 @@ export default {
         canchas: [],
         canchaSeleccionada:null,
         reservasDisponibles:[],
-        selectedDia:"",
-        selectedHorario:"",
-
-        vue: this,
+        usuario:{},
     };
   },
   created() {
@@ -21,9 +20,13 @@ export default {
   },
   async mounted(){ 
     this.fetchCanchas();
+    this.getUser();
   },
 
   methods: {
+    async getUser(){
+      this.usuario = await useUserStore().getUser();
+    },
     fetchCanchas() {
       const canchasStore = useCanchasStore();
       canchasStore.fetchCanchas()
@@ -40,27 +43,18 @@ export default {
       const horariosDia = cancha.reservasDisponibles.dias[dia];
       this.reservasDisponibles.push({ dia, horarios: horariosDia });
       }
-
       this.canchaSeleccionada = cancha;
     },
-    guardarDatos(dia,hora){
-      if(confirmar(da,ihora)){
-        this.selectedDia = dia;
-        this.selectedHorario = hora;  
+    async guardarDatos(titulo,dia,hora){
+      await this.getUser();
+      if(this.usuario._id!==null){
+        useReservaStore().guardarDatos(titulo,dia,hora)
+        this.$router.push('/reserva')
+      }else{
       }
-
     },
 
   },
-  confirmar(dia,hora){
-    var retVal = confirm(`¿Esta seguro que quiere hacer la reserva el dia {dia} en el horario de las {hora}?`);
-    if( retVal == true ){
-        return true;
-    }else{
-        return false;
-    }
-}
-  
 };
 </script>
 
@@ -101,7 +95,7 @@ export default {
           <tr>
             <th>{{ dia.dia }}:
             <div class="btn-group" v-for="hora in dia.horarios">
-              <div class="btn btn-primary" @click="guardarDatos(dia.dia,hora)">{{ hora }}</div></div>
+              <div class="btn btn-primary" @click="guardarDatos(canchaSeleccionada.titulo,dia.dia,hora)">{{ hora }}</div></div>
             </th>
           </tr>
         </tbody>
