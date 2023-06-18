@@ -15,16 +15,18 @@ export default {
   methods: {
     async registrar() {
       const userStore = useUserStore();
+
+      const nuevoUsername = document.getElementById('exampleInputEmail1').value;
+      const nuevaPassword = document.getElementById('exampleInputPassword1').value;
+      const nuevoEmail = document.getElementById('exampleInputPassword2').value;
+
       const usuario = {
-        username: this.usuario.username,
-        email: this.usuario.email,
-        contrasenia: this.usuario.contrasenia
+        username: nuevoUsername,
+        email: nuevoEmail,
+        contrasenia: nuevaPassword
       }
 
-      if (this.usuario.contrasenia !== this.contraseniaRepetida) {
-        console.log("Las contraseñas no coinciden");
-        return;
-      }
+      console.log(nuevoUsername)
 
       try {
         const response = await userStore.register(this.usuario);

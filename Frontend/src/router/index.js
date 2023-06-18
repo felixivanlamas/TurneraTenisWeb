@@ -30,10 +30,16 @@ const router = createRouter({
       component: () => import("../views/ReservasView.vue"),
     },
     {
+      //esta vista hay que ver que tan necesaria es
       path: "/reserva",
       name: "reserva",
       component: () => import("../views/Reservar.vue"),
       
+    },
+    {
+      path: "/editProfile",
+      name: "editProfile",
+      component: () => import("../views/EditarPerfilView.vue"),
     }
   ],
 });
