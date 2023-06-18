@@ -82,25 +82,22 @@ export default {
               </div>
           </div>
         </div>
+
+        <table v-show="canchaSeleccionada!=null" class="table col-sm-6">
+          <thead>
+            <tr>
+              <th class="text-center">Turnos Disponibles</th>
+            </tr>
+          </thead>
+          <tbody class="text-justify" v-for="dia in this.reservasDisponibles">
+            <tr>
+              <th>{{ dia.dia }}:
+              <div class="btn-group" v-for="hora in dia.horarios">
+                <div class="btn btn-primary" @click="guardarDatos(canchaSeleccionada.titulo,dia.dia,hora)">{{ hora }}</div></div>
+              </th>
+            </tr>
+          </tbody>
+        </table>
       </div>
-
-
-    <div>
-      <table v-show="canchaSeleccionada!=null" class="table">
-        <thead>
-          <tr>
-            <th class="text-center">Turnos Disponibles</th>
-          </tr>
-        </thead>
-        <tbody class="text-justify" v-for="dia in this.reservasDisponibles">
-          <tr>
-            <th>{{ dia.dia }}:
-            <div class="btn-group" v-for="hora in dia.horarios">
-              <div class="btn btn-primary" @click="guardarDatos(canchaSeleccionada.titulo,dia.dia,hora)">{{ hora }}</div></div>
-            </th>
-          </tr>
-        </tbody>
-      </table>
-    </div>
 
   </template>
