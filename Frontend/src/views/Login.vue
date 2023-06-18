@@ -21,7 +21,9 @@ export default {
 
       try {
         const response = await userStore.login(credentials);
-        console.log(response._id);
+        if (!response) {
+          alert("Email y/o contraseña es incorrecto!")
+        }
         this.$router.push('/');
       } catch (error) {
         console.error(error);

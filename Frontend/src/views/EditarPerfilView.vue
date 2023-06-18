@@ -57,38 +57,35 @@ export default {
 <form @submit.prevent="cambioDePerfil()">
     <div class="form-group">
         <label for="exampleInputEmail1">Username Actual:</label>
-        {{ this.usuario.username }}
         <input
         type="text"
         v-model="this.usuarioNuevo.username"
         class="form-control"
         id="exampleInputEmail1"
         aria-describedby="emailHelp"
-        placeholder="Username Nuevo"
+        :placeholder="usuario.username"
         required
         />
     </div>
     <div class="form-group">
         <label for="exampleInputPassword1">Password Actual:</label>
-        {{  this.usuario.contrasenia }}
         <input
         type="password"
         v-model="this.usuarioNuevo.contrasenia"
         class="form-control"
         id="exampleInputPassword1"
-        placeholder="Nueva Password"
+        :placeholder='usuario.contrasenia'
         required
         />
     </div>
     <div class="form-group">
         <label for="exampleInputPassword1">Email Actual:</label>
-        {{  this.usuario.email }}
         <input
         type="email"
         v-model="this.usuarioNuevo.email"
         class="form-control"
         id="exampleInputPassword1"
-        placeholder="Nuevo Email"
+        :placeholder="usuario.email"
         required
         />
     </div>
