@@ -3,7 +3,6 @@
 import {useCanchasStore} from "../stores/canchas.js"
 import {useUserStore} from "../stores/user.js"
 import {useReservaStore} from "../stores/reserva.js"
-import { RouterLink } from "vue-router";
 
 export default {
   data() {
@@ -101,25 +100,4 @@ export default {
           </tbody>
         </table>
       </div>
-
-
-    <div>
-      <table style="margin-top: 20px;" v-show="canchaSeleccionada!=null" class="table">
-        <thead>
-          <tr>
-            <th class="text-center">Turnos Disponibles</th>
-          </tr>
-        </thead>
-        <tbody class="text-justify" v-for="dia in this.reservasDisponibles">
-          <tr>
-            <th>{{ dia.dia }}:
-            <div style="margin: 0px 2px;" class="btn-group btn-outline-primary" v-for="hora in dia.horarios">
-              <RouterLink to="/reservations"><div class="btn btn-info" @click="guardarDatos(canchaSeleccionada.titulo,dia.dia,hora)">{{ hora }}</div></RouterLink>
-            </div>
-            </th>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
   </template>

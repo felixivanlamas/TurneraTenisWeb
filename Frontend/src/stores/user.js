@@ -27,7 +27,7 @@ export const useUserStore = defineStore("usuario", {
         this.usuario = response.data;
         return this.usuario;
       } catch (error) {
-        console.error("Error en el inicio de sesión:", error);
+        alert("Email y/o contraseña es incorrecto!")
         throw error;
       }
     },

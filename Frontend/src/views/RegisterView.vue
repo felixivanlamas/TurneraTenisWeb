@@ -16,9 +16,9 @@ export default {
     async registrar() {
       const userStore = useUserStore();
 
-      const nuevoUsername = document.getElementById('exampleInputEmail1').value;
-      const nuevaPassword = document.getElementById('exampleInputPassword1').value;
-      const nuevoEmail = document.getElementById('exampleInputPassword2').value;
+      const nuevoUsername = document.getElementById('exampleInputEmail1');
+      const nuevaPassword = document.getElementById('exampleInputPassword1');
+      const nuevoEmail = document.getElementById('exampleInputPassword2');
 
       const usuario = {
         username: nuevoUsername,
@@ -34,6 +34,7 @@ export default {
         this.$router.push('/');
       } catch (error) {
         console.log(error.response.data);
+        alert(error.response.data);
       }
     }
   },

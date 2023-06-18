@@ -62,33 +62,46 @@ export default {
       }
     },
     esFechaPosteriorHoy(dia) {
-      if (!dia) {
-        return false;
-      }
-      const hoy = new Date();
-      const diaSemanaHoy = hoy.getDay();
-      const diaSemanaReserva = this.obtenerNumeroDia(dia);
-      let diferenciaDias = diaSemanaReserva - diaSemanaHoy;
-      return diferenciaDias > 0 && diferenciaDias <= 7;
-    },
+  // Verificar si el parámetro 'dia' está presente
+  if (!dia) {
+    return false;
+  }
 
-    obtenerNumeroDia(dia) {
-      const diasSemana = [
-        "Lunes",
-        "Martes",
-        "Miercoles",
-        "Jueves",
-        "Viernes",
-        "Sabado",
-        "Domingo",
-      ];
-      const indice = diasSemana.indexOf(dia);
-      if (indice !== -1) {
-        return indice + 1;
-      } else {
-        return -1;
-      }
-    },
+  const hoy = new Date();
+  const diaSemanaHoy = hoy.getDay();
+  const diaSemanaReserva = this.obtenerNumeroDia(dia);
+
+  // Verificar si el día proporcionado es válido
+  if (diaSemanaReserva === -1) {
+    return false;
+  }
+
+  let diferenciaDias = diaSemanaReserva - diaSemanaHoy;
+
+  // Verificar si la diferencia está dentro de los próximos 7 días
+  return diferenciaDias > 0 && diferenciaDias <= 7;
+},
+obtenerNumeroDia(dia) {
+  const diasSemana = [
+    "Domingo",
+    "Lunes",
+    "Martes",
+    "Miércoles",
+    "Jueves",
+    "Viernes",
+    "Sábado",
+  ];
+  
+  const indice = diasSemana.indexOf(dia);
+  // Si se encuentra el día en el array, se devuelve el índice + 1
+  // para que el Domingo sea 1 y el Sábado sea 7
+  if (indice !== -1) {
+    return indice + 1;
+  } else {
+    return -1; // Si el día no se encuentra, se devuelve -1
+  }
+}
+
   },
 };
 </script>
@@ -105,7 +118,7 @@ export default {
         <div class="reserva">
           <div class="reserva-info">
             <p class="reserva-label">Reserva {{ index + 1 }}</p>
-            <p class="reserva-dia">Día: {{ reserva.dia.join(", ") }}</p>
+            <p class="reserva-dia">Día: {{ reserva.dia }}</p>
             <p class="reserva-horario">Horario: {{ reserva.horario }}</p>
           </div>
           <div class="cancha-info">
@@ -123,7 +136,7 @@ export default {
             </div>
             <div class="eliminar-container">
               <button
-                v-if="esFechaPosteriorHoy(reserva.dia[0])"
+                v-if="esFechaPosteriorHoy(reserva.dia)"
                 class="eliminar-btn"
                 @click="eliminarReserva(reserva)"
               >

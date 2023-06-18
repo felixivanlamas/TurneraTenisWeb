@@ -19,15 +19,8 @@ export default {
         contrasenia: this.usuario.contrasenia
       };
 
-      try {
-        const response = await userStore.login(credentials);
-        if (!response) {
-          alert("Email y/o contraseña es incorrecto!")
-        }
-        this.$router.push('/');
-      } catch (error) {
-        console.error(error);
-      }
+      await userStore.login(credentials);
+      this.$router.push('/');
     },
   },
 };
