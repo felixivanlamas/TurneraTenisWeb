@@ -46,7 +46,8 @@ export const useUserStore = defineStore("usuario", {
     async getUser() {
       try {
         if(this.usuario._id==null){
-          response = await userService.getUser(this.usuario._id);        
+          response = await userService.getUser(this.usuario._id); 
+          console.log(usuario.username)         
           if (response.status === 401) {
             // Usuario no autenticado
             return null;
@@ -56,7 +57,7 @@ export const useUserStore = defineStore("usuario", {
         }
         return this.usuario;
       } catch (error) {
-        throw error;
+        throw new Error(error);
       }
     },
 
@@ -73,6 +74,16 @@ export const useUserStore = defineStore("usuario", {
     async eliminarReserva(reserva){
       try {
         const response = await userService.eliminarReserva(this.usuario._id,reserva);
+        this.usuario = response.data;
+        return this.usuario;
+      } catch (error) {
+        throw error;
+      }
+    },
+
+    async cambioDePerfil(usuario){
+      try {
+        const response = await userService.cambioDePerfil(this.usuario._id,usuario);
         this.usuario = response.data;
         return this.usuario;
       } catch (error) {

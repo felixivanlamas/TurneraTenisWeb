@@ -45,7 +45,7 @@ export default {
 
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <RouterLink class="navbar-brand" to="/"> <img src="../assets/IconoTT.jpg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+    <RouterLink class="navbar-brand" style="font-size: 30px;" to="/"> <img src="../assets/IconoTT.jpg" style="widows:50px; height: 50px;" alt="Logo" class="d-inline-block align-text-top">
       TurneraTenis</RouterLink>
     <button
       class="navbar-toggler"
@@ -63,7 +63,7 @@ export default {
       <ul class="navbar-nav mr-auto">
         <li class="nav-item" v-if="usuario.username != ''">
           <RouterLink class="nav-link" to="/reservations"
-            >Mis Reservas</RouterLink
+            > <button class=" btn btn-info">Mis Reservas</button></RouterLink
           >
         </li>
         <li v-if="usuario.username != ''" class="nav-item dropdown">
@@ -77,21 +77,22 @@ export default {
             <h4>{{usuario.username}}</h4>
           </a>
           <div class="dropdown-menu">
-            <RouterLink to="/editProfile" class="dropdown-item" href="#">Editar Perfil</RouterLink>
+            <RouterLink to="/editProfile" class="dropdown-item" href="#"> <button class="btn btn-info">Editar Perfil</button></RouterLink>
             <div class="dropdown-divider"></div>
-            <RouterLink to="/" class="dropdown-item"><button @click="usuario.username = ''" class="nav-link btn btn-outline-danger">Cerrar Sesion</button></RouterLink>
+            <RouterLink to="/" class="dropdown-item"><button @click="usuario.username = ''" class="btn btn-outline btn-info">Cerrar Sesion</button></RouterLink>
           </div>
         </li>
       </ul>
       <div class="d-flex align-items-center my-2 my-lg-0" v-if="usuario.username == ''">
         <RouterLink to="/login"
-          ><button class="nav-link btn" >
+          ><button style="margin: 0px 10px;" class="btn btn-warning" >
             Iniciar Sesion
           </button></RouterLink
         >
+        
         <RouterLink to="/register"
           ><button
-            class="nav-link btn"
+            class="btn btn-warning"
             >
             Registrarse
           </button></RouterLink

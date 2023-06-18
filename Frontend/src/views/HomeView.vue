@@ -3,6 +3,7 @@
 import {useCanchasStore} from "../stores/canchas.js"
 import {useUserStore} from "../stores/user.js"
 import {useReservaStore} from "../stores/reserva.js"
+import { RouterLink } from "vue-router";
 
 export default {
   data() {
@@ -46,6 +47,7 @@ export default {
       this.canchaSeleccionada = cancha;
     },
     async guardarDatos(titulo,dia,hora){
+      
       await this.getUser();
       if(this.usuario._id!==null){
         //alerta para decirle al user que se loguee
@@ -60,8 +62,8 @@ export default {
 </script>
 
 <template>
-  <button  @click="canchaSeleccionada = null" v-if="canchaSeleccionada!=null">Volver</button>
-    <select v-model="selectedTipo" v-if="canchaSeleccionada==null">
+  <button style="margin-top: 20px;" class="btn btn-secondary" @click="canchaSeleccionada = null" v-if="canchaSeleccionada!=null">Volver</button>
+    <select style="margin-top: 20px;" class="btn btn-info" v-model="selectedTipo" v-if="canchaSeleccionada==null">
       <option value='' selected>Filtrar por tipo de Cancha</option>
       <option value="Cemento">Cemento</option>
       <option value="Cesped">Cesped</option>
@@ -72,7 +74,7 @@ export default {
           <br>
           <div class="card" v-if="selectedTipo === '' || cancha.tipo === selectedTipo">
             <div class="card-lg border-primary" style="text-decoration: none; color: black;" ></div>
-              <img class="card-img-top w-100 " :src="cancha.imagen" @click="seleccionarCancha(cancha)">
+              <img class="card-img-top w-100 w" style="width: 640px; height: 427px;" :src="cancha.imagen" @click="seleccionarCancha(cancha)">
               <div class="card-body">
                 <h5 class="card-title">{{ cancha.titulo }}</h5>
                 <h6 class="card-text row">
@@ -86,7 +88,7 @@ export default {
 
 
     <div>
-      <table v-show="canchaSeleccionada!=null" class="table">
+      <table style="margin-top: 20px;" v-show="canchaSeleccionada!=null" class="table">
         <thead>
           <tr>
             <th class="text-center">Turnos Disponibles</th>
@@ -95,8 +97,9 @@ export default {
         <tbody class="text-justify" v-for="dia in this.reservasDisponibles">
           <tr>
             <th>{{ dia.dia }}:
-            <div class="btn-group" v-for="hora in dia.horarios">
-              <div class="btn btn-primary" @click="guardarDatos(canchaSeleccionada.titulo,dia.dia,hora)">{{ hora }}</div></div>
+            <div style="margin: 0px 2px;" class="btn-group btn-outline-primary" v-for="hora in dia.horarios">
+              <RouterLink to="/reservations"><div class="btn btn-info" @click="guardarDatos(canchaSeleccionada.titulo,dia.dia,hora)">{{ hora }}</div></RouterLink>
+            </div>
             </th>
           </tr>
         </tbody>
