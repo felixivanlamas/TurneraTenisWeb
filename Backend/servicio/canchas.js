@@ -36,21 +36,17 @@ class ServicioCanchas{
         }
     }
 
-    modificarCancha = async(id,dia,horario)=>{
+    modificarCancha = async(idCancha,dia,horario)=>{
         try{
-            const cancha = await this.getCancha(id);
-            if(!cancha){
-                throw new InvalidCredentialsError("Cancha no encontrada")
-            }
+            const cancha = await this.getCancha(idCancha);
             if(!cancha.reservasDisponibles.dias.hasOwnProperty(dia)){
                 throw new InvalidCredentialsError("El dia"+ dia +" no se encuentra disponible")
             }
             if(!cancha.reservasDisponibles.dias[dia].includes(horario)){
                 throw new InvalidCredentialsError("El horario"+ horario +" no se encuentra disponible")
             }
-            const filter= {_id:new ObjectId(id)}
-            const canchaModificada = await this.model.modificarCancha(filter,dia,horario);
-            return canchaModificada
+            const canchaModificada = await this.model.modificarCancha(cancha,dia,horario);
+            return canchaModificada.value.titulo
         }catch(error){
             throw new Error(error);
         }

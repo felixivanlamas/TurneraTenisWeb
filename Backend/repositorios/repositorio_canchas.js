@@ -57,19 +57,28 @@ class CanchaRepositorio {
         }
     }
    
-    async modificarCancha (filter,dia,horario) {
+    async modificarCancha(cancha, dia, horario) {
+        //modificacion arreglada
         try {
           const nuevosDatos = {
             $pull: {
-              [`cancha.reservasDisponibles.dias.${dia}`]: horario
+              [`reservasDisponibles.dias.${dia}`]: horario
             }
           };
-        await this.canchasCollection.findOneAndUpdate(filter, nuevosDatos);
-        return this.getCancha(filter);
+      
+          const opciones = { returnDocument: "after" };
+      
+          return await this.canchasCollection.findOneAndUpdate(
+            { titulo: cancha.titulo },
+            nuevosDatos,
+            opciones
+          );
         } catch (error) {
-            console.error('Error al actualizar la Cancha:', error);  
-          } 
-      };
+          console.error('Error al actualizar la Cancha:', error);
+          throw error;
+        }
+      }
+      
 }
 
 export default CanchaRepositorio;

@@ -9,7 +9,13 @@ export const useUserStore = defineStore("usuario", {
         username: "",
         email: "",
         contrasenia:"",
-        reservas: []
+        reservas: [
+          {
+            titulo: "",
+            dia: "",
+            horario: "",
+          },
+        ]
       },
     };
   },

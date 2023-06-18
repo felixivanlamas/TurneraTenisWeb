@@ -10,7 +10,7 @@
         <div class="reserva">
           <div class="reserva-info">
             <p class="reserva-label">Reserva {{ index + 1 }}</p>
-            <p class="reserva-dia">Día: {{ reserva.dia.join(", ") }}</p>
+            <p class="reserva-dia">Día: {{ reserva.dia }}</p>
             <p class="reserva-horario">Horario: {{ reserva.horario }}</p>
           </div>
           <div class="cancha-info">
@@ -28,7 +28,7 @@
             </div>
             <div class="eliminar-container">
               <button
-                v-if="esFechaPosteriorHoy(reserva.dia[0])"
+                v-if="esFechaPosteriorHoy(reserva.dia)"
                 class="eliminar-btn"
                 @click="eliminarReserva(reserva)"
               >
@@ -56,7 +56,7 @@ export default {
         reservas: [
           {
             titulo: "",
-            dia: [],
+            dia: "",
             horario: "",
           },
         ],
@@ -106,13 +106,13 @@ export default {
         alert(error.response.data);
       }
     },
-    esFechaPosteriorHoy(fecha) {
-      if (!fecha || fecha.length === 0) {
+    esFechaPosteriorHoy(dia) {
+      if (!dia) {
         return false;
       }
       const hoy = new Date();
       const diaSemanaHoy = hoy.getDay();
-      const diaSemanaReserva = this.obtenerNumeroDia(fecha);
+      const diaSemanaReserva = this.obtenerNumeroDia(dia);
       let diferenciaDias = diaSemanaReserva - diaSemanaHoy;
       return diferenciaDias > 0 && diferenciaDias <= 7;
     },

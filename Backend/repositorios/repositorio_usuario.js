@@ -95,18 +95,25 @@ class UsuarioRepositorio {
         }
     };
       
-    guardarReserva = async (filter, titulo, dia, horario) => {
+    async guardarReserva(filter, titulo, dia, horario) {
         try {
-          const newReserva = new Reserva(titulo , dia, horario);
-          const respuesta = await this.usuariosCollection.updateOne(filter, { $addToSet: { reservas: newReserva } });
-          if (!respuesta) {
+          const newReserva = new Reserva(titulo, dia, horario);
+          const usuario = await this.usuariosCollection.findOneAndUpdate(
+            filter,
+            { $push: { reservas: newReserva } },
+            { returnDocument: "after" }
+          );
+      
+          if (usuario.value==null) {
             throw new Error("Error al guardar la reserva");
           }
           return usuario;
         } catch (error) {
-          return error;
+          console.error("Error al guardar la reserva:", error);
+          throw error;
         }
       }
+      
 }
 
 export default UsuarioRepositorio;

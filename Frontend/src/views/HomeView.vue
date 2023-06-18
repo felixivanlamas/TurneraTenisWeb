@@ -48,8 +48,9 @@ export default {
     async guardarDatos(titulo,dia,hora){
       await this.getUser();
       if(this.usuario._id!==null){
+        //alerta para decirle al user que se loguee
         useReservaStore().guardarDatos(titulo,dia,hora)
-        this.$router.push('/reserva')
+        this.$router.push('/reservations')
       }else{
       }
     },
