@@ -45,11 +45,11 @@ class CanchaRepositorio {
         }
     }
 
-    async getCancha(filter){
+    async getCancha(titulo){
         try {
-            const cancha = await this.canchasCollection.findOne(filter);
+            const cancha = await this.canchasCollection.findOne({titulo: titulo});
             if (!cancha) {
-                throw new Error("No existe una cancha con ese id")
+                throw new Error("No existe una cancha con ese titulo")
             }
             return cancha;
         } catch (error) {
@@ -57,7 +57,7 @@ class CanchaRepositorio {
         }
     }
    
-    async modificarCancha(cancha, dia, horario) {
+    async modificarCancha(titulo, dia, horario) {
         //modificacion arreglada
         try {
           const nuevosDatos = {
@@ -69,7 +69,7 @@ class CanchaRepositorio {
           const opciones = { returnDocument: "after" };
       
           return await this.canchasCollection.findOneAndUpdate(
-            { titulo: cancha.titulo },
+            { titulo: titulo },
             nuevosDatos,
             opciones
           );

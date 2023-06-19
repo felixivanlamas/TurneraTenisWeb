@@ -10,8 +10,8 @@ class ControladorUsuario {
   }
 
   registro = async (req, res) => {
+    const { email, username, contrasenia } = req.body
     try {
-      const { email, username, contrasenia } = req.body
       const newUser = await this.servicioUsuario.registro(email, username, contrasenia);
       res.status(200).send(newUser);
     } catch (error) {
@@ -21,8 +21,8 @@ class ControladorUsuario {
   };
 
   login = async (req, res) => {
+    const { email, contrasenia } = req.body
     try {
-      const { email, contrasenia } = req.body
       const usuario = await this.servicioUsuario.login(email, contrasenia);
       res.status(200).json(usuario);
     } catch (error) {
@@ -32,9 +32,9 @@ class ControladorUsuario {
   };
 
   editarUsuario = async (req, res) => {
+    const {id} = req.params
+    const { email, username, contrasenia } = req.body
     try {
-      const {id} = req.params
-      const { email, username, contrasenia } = req.body
       const respuesta = await this.servicioUsuario.editarUsuario(id, email, username, contrasenia);
       res.status(200).send(respuesta);
     } catch (error) {
@@ -44,8 +44,8 @@ class ControladorUsuario {
   }
 
   eliminarCuenta = async (req, res) => {
+    const {id} = req.params
     try {
-      const {id} = req.params
       const respuesta = await this.servicioUsuario.eliminarCuenta(id);
       res.status(200).send(respuesta);
     } catch (error) {
@@ -54,8 +54,8 @@ class ControladorUsuario {
   }
 
   obtenerUsuario = async (req, res) => {
+    const { id } = req.params;
     try {
-        const { id } = req.params;
         const usuario = await this.servicioUsuario.obtenerUsuario(id);
         if (!usuario) {
           res.status(401).json({
@@ -73,21 +73,21 @@ class ControladorUsuario {
 };
     
 reservarCancha = async (req, res) => {
+  const {id} = req.params
+  const {titulo,  dia, horario } = req.body
+  const reqReserva={id,titulo,dia, horario}
   try {
-    const {idUsuario} = req.params
-    const {idCancha,  dia, horario } = req.body
-    const tituloCancha = await this.servicioCancha.modificarCancha(idCancha, dia, horario);
+    const tituloCancha = await this.servicioCancha.modificarCancha(titulo, dia, horario);
     if(!tituloCancha) {
       res.status(401).json({
         message: "Cancha no encontrada",
       });
     }
-    const usuario = await this.servicioUsuario.reservar(idUsuario, tituloCancha, dia, horario);
+    const usuario = await this.servicioUsuario.reservar(reqReserva);
     res.status(200).json(usuario)
   } catch (error) {
       if (error instanceof InvalidCredentialsError) {
-          res.status(400).json(error.message);
-     
+          res.status(400).json(error.message);   
       } else {
           res.status(500).json({
           message:

@@ -86,26 +86,27 @@ class UsuarioRepositorio {
         }
       } 
 
-      obtenerUsuario = async (filter) => {
+      obtenerUsuario = async (idUsuario) => {
         try {
-            const usuario = await this.usuariosCollection.findOne(filter);
+            const usuario = await this.usuariosCollection.findOne(idUsuario);
             return usuario
         } catch (error) {
             return error;
         }
     };
       
-    async guardarReserva(filter, titulo, dia, horario) {
+    async guardarReserva(reqReserva) {
+        const idUsuario = new ObjectId(reqReserva.id);
+        const newReserva = new Reserva(reqReserva.titulo, reqReserva.dia,reqReserva.horario);
         try {
-          const newReserva = new Reserva(titulo, dia, horario);
           const usuario = await this.usuariosCollection.findOneAndUpdate(
-            filter,
+            { _id: idUsuario },
             { $push: { reservas: newReserva } },
             { returnDocument: "after" }
           );
       
           if (usuario.value==null) {
-            throw new Error("Error al guardar la reserva");
+            throw new Error("El usuario es null");
           }
           return usuario;
         } catch (error) {

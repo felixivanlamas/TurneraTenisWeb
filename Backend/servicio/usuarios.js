@@ -31,8 +31,8 @@ class ServicioUsuario{
 
       obtenerUsuario = async (id) => {
         try {
-          const filter = {_id:new ObjectId(id)}
-          const usuario = await this.model.obtenerUsuario(filter);
+          const idUsuario = new ObjectId(id)
+          const usuario = await this.model.obtenerUsuario(idUsuario);
           return usuario;
         } catch (error) {
           throw new Error(error);
@@ -61,11 +61,10 @@ class ServicioUsuario{
         }
       };
 
-      reservar = async (id, titulo, dia, horario) => {
+      reservar = async (reqReserva) => {
         try {
-          const filter = {_id:new ObjectId(id)}
-          const usuario = await this.model.guardarReserva(filter, titulo, dia, horario) 
-          return usuario
+          const usuarioActualizado = await this.model.guardarReserva(reqReserva) 
+          return usuarioActualizado
         } catch (error) {
           throw new Error(error);
         }
