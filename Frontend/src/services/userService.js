@@ -21,7 +21,7 @@ export const userService = {
     return apiClient.delete(`/usuarios/${id}`, reserva);
   },
 
-  cambioDePerfil(id, usuario){
-    return apiClient.put(`/usuarios/${id}`, usuario)
+  cambioDeUsername(id, usuario){
+    return apiClient.put(`/usuarios/${id}`, usuario);
   }
 };

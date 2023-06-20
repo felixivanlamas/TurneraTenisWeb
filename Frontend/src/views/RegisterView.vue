@@ -16,6 +16,7 @@ export default {
     async registrar() {
       const userStore = useUserStore();
 
+      //¿es necesario esto acá?
       const nuevoUsername = document.getElementById('exampleInputEmail1');
       const nuevaPassword = document.getElementById('exampleInputPassword1');
       const nuevoEmail = document.getElementById('exampleInputPassword2');

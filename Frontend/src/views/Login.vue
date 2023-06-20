@@ -30,7 +30,7 @@ export default {
   <h1>Login</h1>
   <form @submit.prevent="login()">
     <div class="form-group">
-      <label for="exampleInputEmail1">Email address</label>
+      <label for="exampleInputEmail1">Dirección de Email</label>
       <input
         v-model="usuario.email"
         type="email"
@@ -41,7 +41,7 @@ export default {
       />
     </div>
     <div class="form-group">
-      <label for="exampleInputPassword1">Password</label>
+      <label for="exampleInputPassword1">Contraseña</label>
       <input
         v-model="usuario.contrasenia"
         type="password"

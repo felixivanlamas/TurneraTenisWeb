@@ -71,10 +71,12 @@ export default {
   const diaSemanaHoy = hoy.getDay();
   const diaSemanaReserva = this.obtenerNumeroDia(dia);
 
+
   // Verificar si el día proporcionado es válido
   if (diaSemanaReserva === -1) {
     return false;
   }
+
 
   let diferenciaDias = diaSemanaReserva - diaSemanaHoy;
 
@@ -136,9 +138,9 @@ obtenerNumeroDia(dia) {
             </div>
             <div class="eliminar-container">
               <button
-                v-if="esFechaPosteriorHoy(reserva.dia)"
+                v-if="!esFechaPosteriorHoy(reserva.dia)"
                 class="eliminar-btn"
-                @click="eliminarReserva(reserva)"
+                @click="eliminarReserva(reserva.horario)"
               >
                 Eliminar reserva
               </button>
