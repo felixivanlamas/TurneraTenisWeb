@@ -32,6 +32,7 @@ export default {
       canchasStore.fetchCanchas()
         .then(() => {
           this.canchas = canchasStore.canchas;
+          this.canchas = this.ordenar(this.canchas)
         })
         .catch(error => {
           console.error(error);
@@ -55,6 +56,16 @@ export default {
       }else{
       }
     },
+    ordenar(canchas){
+      for (const cancha of canchas) {
+        for (const dia in cancha.reservasDisponibles.dias) {
+          const horariosDia = cancha.reservasDisponibles.dias[dia];
+          horariosDia.sort();
+        }
+      }
+
+      return canchas;
+    }
 
   },
 };

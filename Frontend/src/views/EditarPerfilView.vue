@@ -24,13 +24,13 @@ export default {
       this.usuario = await useUserStore().getUser();
       console.log(this.usuario.username)
     },
-    cambioDeUsername(){
-        const usuario= {
-          username: this.usuarioNuevo.username,
-          contrasenia: this.usuarioNuevo.contrasenia,
-          email: this.usuarioNuevo.contrasenia
-        }
-        return this.editorDePerfil(usuario);
+    cambioDePerfil(){
+
+        this.usuario.username = this.usuarioNuevo.username;
+        this.usuario.contrasenia = this.usuarioNuevo.contrasenia;
+        this.usuario.email = this.usuarioNuevo.email;
+        
+        return this.editorDePerfil(this.usuario);
 
   },
  
@@ -55,7 +55,7 @@ export default {
 <h2>Edición de perfil</h2>
 <br>
 <!--Formulario para cambiar el username-->
-<form @submit.prevent="cambioDeUsername()">
+<form @submit.prevent="cambioDePerfil()">
     <div class="form-group">
         <label for="exampleInputEmail1">Username:</label>
         <input
@@ -72,7 +72,7 @@ export default {
 </form>
 <br>
 <!--Formulario para cambiar las password-->
-<form @submit.prevent="cambioDePassword()">
+<form @submit.prevent="cambioDePerfil()">
     <div class="form-group">
         <label for="exampleInputPassword1">Password:</label>
         <input
@@ -87,7 +87,7 @@ export default {
 </form>
 <br>
 <!--Formulario para cambiar el email-->
-<form @submit.prevent="cambioDeEmail()">
+<form @submit.prevent="cambioDePerfil()">
     <div class="form-group">
         <label for="exampleInputPassword1">Email:</label>
         <input

@@ -36,7 +36,7 @@ class ControladorUsuario {
     const { email, username, contrasenia } = req.body
     try {
       const respuesta = await this.servicioUsuario.editarUsuario(id, email, username, contrasenia);
-      res.status(200).send(respuesta);
+      res.status(200).json(respuesta);
     } catch (error) {
       console.error(error.message);
       res.status(500).send(error.message);

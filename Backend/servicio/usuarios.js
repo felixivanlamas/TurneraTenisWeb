@@ -42,11 +42,11 @@ class ServicioUsuario{
       editarUsuario = async (id, email, username, contrasenia) => {
         try {
           const filter = {_id:new ObjectId(id)}
-          const respuesta = await this.model.editarUsuario(filter, email, username, contrasenia)
-          if(!respuesta){
+          const usuarioEditado = await this.model.editarUsuario(filter, email, username, contrasenia)
+          if(!usuarioEditado){
             throw new Error("No se pudo editar el usuario")
           }
-          return "Usuario editado"
+          return usuarioEditado;
         } catch (error) {
           throw new Error(error);
         }

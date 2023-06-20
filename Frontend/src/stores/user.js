@@ -83,9 +83,12 @@ export const useUserStore = defineStore("usuario", {
 
     async cambioDeUsername(usuario){
       try {
-        const response = await userService.cambioDeUsername(this.usuario._id,usuario);
-        this.usuario = response.data;
-        return this.usuario;
+        console.log(this.usuario)
+        await userService.cambioDeUsername(this.usuario._id,usuario);
+       if(usuario.username != ''){
+        this.usuario.username = usuario.username;
+       }
+
       } catch (error) {
         throw error;
       }

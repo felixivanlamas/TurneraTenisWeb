@@ -56,11 +56,21 @@ class UsuarioRepositorio {
             if(!usuario) {
                 throw new Error("El usuario no existe");
             }
-            const respuesta = await this.usuariosCollection.updateOne(filter, { $set: { email:email, username:username, contrasenia:contrasenia} });
-            if (!respuesta) {
+            const usuarioEditado= null;
+
+                if(username != ''){
+                 usuarioEditado = await this.usuariosCollection.findOneAndUpdate(filter, { $set: {username:username} }, { returnDocument: "after" });
+              } 
+                else if(email != ''){
+                 usuarioEditado = await this.usuariosCollection.findOneAndUpdate(filter, { $set: {email:email} }, { returnDocument: "after" });
+              } else {
+                 usuarioEditado = await this.usuariosCollection.findOneAndUpdate(filter, { $set: {contrasenia:contrasenia} }, { returnDocument: "after" });
+              }
+      
+            if (!usuarioEditado) {
                    throw new Error("Error al editar el usuario");
                }
-            return "Usuario editado correctamente";
+            return usuarioEditado;
         }
 
     

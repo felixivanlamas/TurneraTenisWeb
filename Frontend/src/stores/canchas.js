@@ -12,10 +12,15 @@ export const useCanchasStore = defineStore('canchas', {
         console.log(response.data);
         this.canchas = response.data;
         this.canchas.sort((a, b) => a.titulo.localeCompare(b.titulo));
+
       } catch (error) {
         console.error(error);
         throw new Error('Error al obtener las canchas');
       }
     },
+
   },
 });
+
+
+
