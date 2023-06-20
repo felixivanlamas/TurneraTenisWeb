@@ -53,8 +53,8 @@ class ServicioUsuario{
       };
 
       eliminarCuenta = async (id) => {
+        const filter = {_id:new ObjectId(id)}
         try {
-          const filter = {_id:new ObjectId(id)}
           return await this.model.eliminarCuenta(filter);
         } catch (error) {
           throw new Error(error);
@@ -65,6 +65,16 @@ class ServicioUsuario{
         try {
           const usuarioActualizado = await this.model.guardarReserva(reqReserva) 
           return usuarioActualizado
+        } catch (error) {
+          throw new Error(error);
+        }
+      }
+
+      eliminarReserva= async (id,datos) => {
+        const filter = {_id:new ObjectId(id)}
+        try {
+          const respuesta = await this.model.eliminarReserva(filter,datos)
+          return respuesta
         } catch (error) {
           throw new Error(error);
         }

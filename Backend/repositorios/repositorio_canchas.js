@@ -78,6 +78,30 @@ class CanchaRepositorio {
           throw error;
         }
       }
+
+      async agregarDatos(datos) {
+        try {
+          const { titulo, dia, horario } = datos;
+      
+          const nuevosDatos = {
+            $addToSet: {
+              [`reservasDisponibles.dias.${dia}`]: horario
+            }
+          };
+      
+          const opciones = { returnDocument: "after" };
+      
+          return await this.canchasCollection.findOneAndUpdate(
+            { titulo: titulo },
+            nuevosDatos,
+            opciones
+          );
+        } catch (error) {
+          console.error('Error al agregar los datos:', error);
+          throw error;
+        }
+      }
+      
       
 }
 

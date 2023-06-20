@@ -77,7 +77,7 @@ class UsuarioRepositorio {
         }
     };
 
-      getAll = async () => {
+    async getAll(){
         try {
           const result = await this.usuariosCollection.find();
           return result
@@ -86,7 +86,7 @@ class UsuarioRepositorio {
         }
       } 
 
-      obtenerUsuario = async (idUsuario) => {
+      async obtenerUsuario(idUsuario) {
         try {
             const usuario = await this.usuariosCollection.findOne(idUsuario);
             return usuario
@@ -114,6 +114,24 @@ class UsuarioRepositorio {
           throw error;
         }
       }
+
+      async eliminarReserva(filter, datos) {
+        const reservaAEliminar = new Reserva(datos.titulo, datos.dia, datos.horario);
+        try {
+          const usuario = await this.usuariosCollection.findOneAndUpdate(
+            filter,
+            { $pull: { reservas: reservaAEliminar } },
+            { returnDocument: "after" }
+          );
+          if (!usuario) {
+            throw new Error("Reserva no encontrada");
+          }
+          return usuario;
+        } catch (error) {
+          throw new Error(error.message);
+        }
+      }
+      
       
 }
 

@@ -5,6 +5,7 @@ export default {
   data() {
     return {
       user: {
+        id:null,
         username: "",
         email: "",
         contrasenia: "",
@@ -22,6 +23,7 @@ export default {
   async mounted() {
     this.fetchCanchas();
     this.getUser();
+    this.eliminarReserva();
   },
   methods: {
     async getUser(){
@@ -53,12 +55,9 @@ export default {
     async eliminarReserva(reserva) {
       //que se fije también por hora
       try {
-        await useUserStore().eliminarReserva(reserva);
-        //hacer que se actualice la lista de reservas
-        await this.mounted();
+        this.user = await useUserStore().eliminarReserva(reserva);
       } catch (error) {
         console.log(error);
-        alert(error.response.data);
       }
     },
     esFechaPosteriorHoy(dia) {

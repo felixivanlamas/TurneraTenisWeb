@@ -71,32 +71,6 @@ class ControladorUsuario {
         }
     }
 };
-    
-reservarCancha = async (req, res) => {
-  const {id} = req.params
-  const {titulo,  dia, horario } = req.body
-  const reqReserva={id,titulo,dia, horario}
-  try {
-    const tituloCancha = await this.servicioCancha.modificarCancha(titulo, dia, horario);
-    if(!tituloCancha) {
-      res.status(401).json({
-        message: "Cancha no encontrada",
-      });
-    }
-    const usuario = await this.servicioUsuario.reservar(reqReserva);
-    res.status(200).json(usuario)
-  } catch (error) {
-      if (error instanceof InvalidCredentialsError) {
-          res.status(400).json(error.message);   
-      } else {
-          res.status(500).json({
-          message:
-          "Hubo un problema interno. Intente nuevamente más tarde.",
-          });
-        }
-  }
-}
-
 
 }
 export default ControladorUsuario 

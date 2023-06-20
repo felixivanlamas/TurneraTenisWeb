@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { userService } from "../services/userService.js"
+import { reservasService } from "../services/reservaService.js";
 
 export const useUserStore = defineStore("usuario", {
   state: () => {
@@ -63,8 +64,9 @@ export const useUserStore = defineStore("usuario", {
 
     async reservar(reserva) {
       try {
-        const response = await userService.reservar(this.usuario._id,reserva);
+        const response = await reservasService.reservar(this.usuario._id,reserva);
         this.usuario = response.data;
+        console.log(this.usuario);
         return this.usuario;
       } catch (error) {
         throw error;
@@ -73,7 +75,7 @@ export const useUserStore = defineStore("usuario", {
 
     async eliminarReserva(reserva){
       try {
-        const response = await userService.eliminarReserva(this.usuario._id,reserva);
+        const response = await reservasService.eliminarReserva(this.usuario._id,reserva);
         this.usuario = response.data;
         return this.usuario;
       } catch (error) {

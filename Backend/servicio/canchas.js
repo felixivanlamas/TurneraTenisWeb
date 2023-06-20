@@ -35,6 +35,7 @@ class ServicioCanchas{
         }
     }
 
+    //elimina los datos reservados
     modificarCancha = async(titulo,dia,horario)=>{
         try{
             const cancha = await this.getCancha(titulo);
@@ -50,5 +51,15 @@ class ServicioCanchas{
             throw new Error(error);
         }
     }
+
+    //agrega los datos de reserva eliminada
+    agregarDatos = async(datos) => {
+        try {
+            const respuesta = await this.model.agregarDatos(datos)
+            return respuesta
+        } catch (error) {
+            throw new Error(error);
+        }
+      }
 }
 export default ServicioCanchas
