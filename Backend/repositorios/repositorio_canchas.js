@@ -12,13 +12,11 @@ class CanchaRepositorio {
         if (conexionMongo) {
           // Verificar si ya existe una instancia de conexión
           this.canchasCollection = conexionMongo.canchasColeccion();
-          console.log('Conexión existosa a MongoDB2');
         } else {
           // Si no existe una instancia, crear una nueva
           const nuevaConexionMongo = new ConexionMongo();
           await nuevaConexionMongo.conectar();
           this.canchasCollection = nuevaConexionMongo.canchasColeccion();
-          console.log('Conexión existosa a MongoDB4');
         }
       } catch (error) {
         console.error(error);

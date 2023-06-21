@@ -17,30 +17,43 @@ export default {
   },
   async mounted(){ 
     this.getUser();
+    this.cambioDePerfil();
   },
 
   methods: {
     async getUser(){
       this.usuario = await useUserStore().getUser();
-      console.log(this.usuario.username)
     },
     async cambioDePerfil(){
         const userStore = useUserStore();
-
-        const usuario = {
-        username: this.usuarioNuevo.username,
-        email: this.usuarioNuevo.email,
-        contrasenia: this.usuarioNuevo.contrasenia
+        const usuarioEditado = {
+        username: '',
+        email: '',
+        contrasenia: ''
+      }
+      if(this.usuarioNuevo.username){
+        usuarioEditado.username = this.usuarioNuevo.username
+      }else{
+        delete usuarioEditado.username
+      }
+      if(this.usuarioNuevo.email ){
+        usuarioEditado.email = this.usuarioNuevo.email
+      }else{
+        delete usuarioEditado.email
+      }
+      if(this.usuarioNuevo.contrasenia ){
+        usuarioEditado.contrasenia = this.usuarioNuevo.contrasenia
+      }else{
+        delete usuarioEditado.contrasenia
       }
 
-        console.log(usuario)
-
       try {
-        const response = await userStore.cambioDePerfil(usuario);
-        console.log(response);
+        const response = await userStore.cambioDePerfil(usuarioEditado);
+        this.usuario = response;
+        console.log(this.usuario)
         this.$router.push('');
       } catch (error) {
-        console.log(error.response.data);
+        console.log(error.response);
       }
     }
 
@@ -56,37 +69,32 @@ export default {
 <br>
 <form @submit.prevent="cambioDePerfil()">
     <div class="form-group">
-        <label for="exampleInputEmail1">Username Actual:</label>
+        <label for="exampleInputEmail1">Username</label>
         <input
         type="text"
         v-model="this.usuarioNuevo.username"
         class="form-control"
         id="exampleInputEmail1"
         aria-describedby="emailHelp"
-        :placeholder="usuario.username"
-        required
+        
         />
     </div>
     <div class="form-group">
-        <label for="exampleInputPassword1">Password Actual:</label>
+        <label for="exampleInputPassword1">Password</label>
         <input
         type="password"
         v-model="this.usuarioNuevo.contrasenia"
         class="form-control"
-        id="exampleInputPassword1"
-        :placeholder='usuario.contrasenia'
-        required
+        id="exampleInputPassword1"        
         />
     </div>
     <div class="form-group">
-        <label for="exampleInputPassword1">Email Actual:</label>
+        <label for="exampleInputPassword1">Email</label>
         <input
         type="email"
         v-model="this.usuarioNuevo.email"
         class="form-control"
-        id="exampleInputPassword1"
-        :placeholder="usuario.email"
-        required
+        id="exampleInputPassword1"        
         />
     </div>
     <button type="submit" class="btn btn-primary">Guardar</button>

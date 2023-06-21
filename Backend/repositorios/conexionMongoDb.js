@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 class ConexionMongo {
   constructor() {
     if (ConexionMongo.instance) {
-      this.conectar();
       return ConexionMongo.instance;
     }
 
@@ -20,7 +19,7 @@ class ConexionMongo {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       });
-      console.log(conexion);
+      console.log('Conectado a la base de datos');
     } catch (error) {
       console.log('No se pudo conectar a la base de datos:', error);
     }

@@ -15,7 +15,6 @@ class UsuarioRepositorio {
       if (conexionMongo) {
         // Verificar si ya existe una instancia de conexión
         this.usuariosCollection = conexionMongo.usuariosColeccion();
-        console.log("Conexion existente");
       } else {
         // Si no existe una instancia, crear una nueva
         const nuevaConexionMongo = new ConexionMongo();
@@ -58,17 +57,27 @@ class UsuarioRepositorio {
         }
     }
 
-    async editarUsuario(filter, email, username, contrasenia) {
-            const usuario = await this.obtenerUsuario(filter)
-            if(!usuario) {
-                throw new Error("El usuario no existe");
-            }
-            const respuesta = await this.usuariosCollection.updateOne(filter, { $set: { email:email, username:username, contrasenia:contrasenia} });
-            if (!respuesta) {
-                   throw new Error("Error al editar el usuario");
-               }
-            return "Usuario editado correctamente";
-        }
+    async editarUsuario(filter, datos) {
+      const datosAEditar = {};
+  
+      if (datos.email !== undefined) {
+          datosAEditar.$set = { email: datos.email };
+      }
+      if (datos.contrasenia !== undefined) {
+          datosAEditar.$set = { contrasenia: datos.contrasenia };
+      }
+      if (datos.username !== undefined) {
+          datosAEditar.$set = { username: datos.username };
+      }
+  
+      const usuarioEditado = await this.usuariosCollection.findOneAndUpdate(filter, datosAEditar, { returnDocument: "after" });
+      if (!usuarioEditado) {
+          throw new Error("Error al editar el usuario");
+      }
+      return usuarioEditado.value;
+  }
+  
+  
 
     
     async eliminarCuenta(filter) {

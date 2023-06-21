@@ -83,10 +83,10 @@ export const useUserStore = defineStore("usuario", {
       }
     },
 
-    async cambioDePerfil(usuario){
+    async cambioDePerfil(usuarioAEditar){
       try {
-        const response = await userService.cambioDePerfil(this.usuario._id,usuario);
-        this.usuario = response.data;
+        const response = await userService.cambioDePerfil(this.usuario._id,usuarioAEditar);
+        this.usuario = response.data; 
         return this.usuario;
       } catch (error) {
         throw error;
