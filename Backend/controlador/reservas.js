@@ -21,8 +21,7 @@ class ControladorReserva {
         });
       }
       const usuario = await this.servicioUsuario.reservar(reqReserva);
-      console.log(usuario);
-      res.status(200).json(usuario)
+      res.status(200).json(usuario.value);
     } catch (error) {
         if (error instanceof InvalidCredentialsError) {
             res.status(400).json(error.message);   

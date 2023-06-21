@@ -45,8 +45,8 @@ export default {
       }
       this.canchaSeleccionada = cancha;
     },
-    async guardarDatos(titulo,dia,hora){
-      const reserva={titulo,dia,hora}
+    async guardarDatos(titulo,dia,horario){
+      const reserva={titulo,dia,horario}
       await this.getUser();
       if(this.usuario._id!==null){
         //alerta para decirle al user que se loguee
@@ -94,8 +94,8 @@ export default {
           <tbody class="text-justify" v-for="dia in this.reservasDisponibles">
             <tr>
               <th>{{ dia.dia }}:
-              <div class="btn-group" v-for="hora in dia.horarios">
-                <div class="btn btn-primary" @click="guardarDatos(canchaSeleccionada.titulo,dia.dia,hora)">{{ hora }}</div></div>
+              <div class="btn-group" v-for="horario in dia.horarios">
+                <div class="btn btn-primary" @click="guardarDatos(canchaSeleccionada.titulo,dia.dia,horario)">{{ horario }}</div></div>
               </th>
             </tr>
           </tbody>

@@ -67,7 +67,6 @@ export const useUserStore = defineStore("usuario", {
     },
 
     async reservar(reserva) {
-      console.log(reserva);
       try {
         const response = await reservasService.reservar(this.usuario._id,reserva);
         this.usuario = response.data;
