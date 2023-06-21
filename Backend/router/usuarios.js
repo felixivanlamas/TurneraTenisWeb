@@ -14,6 +14,7 @@ class RouterUsuario {
         this.router.get("/:id", this.controlador.obtenerUsuario)
         this.router.put("/:id", this.controlador.editarUsuario)
         this.router.delete("/:id",this.controlador.eliminarCuenta)
+        this.router.get("/", this.controlador.getAll)
         
         return this.router
     }

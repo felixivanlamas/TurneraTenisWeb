@@ -81,5 +81,15 @@ class ServicioUsuario{
         }
       }
 
+      getAll= async () => {
+        try {
+          const listaUsuarios = await this.model.getAll()
+          return listaUsuarios
+        } catch (error) {
+          throw new Error(error);
+        }
+      }
+
+
 }
 export default ServicioUsuario

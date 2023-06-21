@@ -5,6 +5,7 @@ import { reservasService } from "../services/reservaService.js";
 export const useUserStore = defineStore("usuario", {
   state: () => {
     return {
+      listaUsuarios:[],
       usuario: {
         _id: null,
         username: "",
@@ -22,6 +23,14 @@ export const useUserStore = defineStore("usuario", {
   },
 
   actions: {
+    async getAll(){
+      try {
+        const response = await userService.getAll();
+        this.listaUsuarios = response.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async login(credenciales) {
       try {
         const response = await userService.login(credenciales);
