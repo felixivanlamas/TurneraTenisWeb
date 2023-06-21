@@ -51,7 +51,7 @@ export default {
         const response = await userStore.cambioDePerfil(usuarioEditado);
         this.usuario = response;
         console.log(this.usuario)
-        this.$router.push('');
+        this.$router.push('/');
       } catch (error) {
         console.log(error.response);
       }
