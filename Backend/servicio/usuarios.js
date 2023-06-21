@@ -71,10 +71,10 @@ class ServicioUsuario{
         }
       }
 
-      eliminarReserva= async (id,datos) => {
-        const filter = {_id:new ObjectId(id)}
+      eliminarReserva= async (reqReserva ) => {
+        const filter = {_id:new ObjectId(reqReserva.id)}
         try {
-          const respuesta = await this.model.eliminarReserva(filter,datos)
+          const respuesta = await this.model.eliminarReserva(filter,reqReserva)
           return respuesta
         } catch (error) {
           throw new Error(error);

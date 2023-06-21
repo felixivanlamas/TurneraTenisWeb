@@ -22,7 +22,6 @@ export default {
   async mounted() {
     this.fetchCanchas();
     this.getUser();
-    this.eliminarReserva();
   },
   methods: {
     async getUser(){
@@ -51,10 +50,16 @@ export default {
       const cancha = this.getCanchaByTitulo(titulo);
       return cancha ? cancha.tipo : "";
     },
-    async eliminarReserva(reserva) {
+    async eliminarReserva(titulo,dia,horario) {
       //que se fije también por hora
+      const reserva={
+        titulo: titulo,
+        dia: dia,
+        horario: horario
+      }
       try {
         this.user = await useUserStore().eliminarReserva(reserva);
+        this.$router.push('/reservations');
       } catch (error) {
         console.log(error);
       }
@@ -136,7 +141,7 @@ obtenerNumeroDia(dia) {
               <button
                 v-if="esFechaPosteriorHoy(reserva.dia)"
                 class="eliminar-btn"
-                @click="eliminarReserva(reserva)"
+                @click="eliminarReserva(reserva.titulo, reserva.dia,reserva.horario)"
               >
                 Eliminar reserva
               </button>

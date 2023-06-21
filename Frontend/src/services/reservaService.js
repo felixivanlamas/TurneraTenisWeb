@@ -8,6 +8,6 @@ export const reservasService = {
   },
 
   eliminarReserva(id,reserva) {
-    return apiClient.delete(`/reservas/${id}`, reserva);
+    return apiClient.delete(`/reservas/${id}`, { data: reserva });
   },
 };

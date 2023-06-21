@@ -37,8 +37,8 @@ class ServicioCanchas{
 
     //elimina los datos reservados
     modificarCancha = async(titulo,dia,horario)=>{
+        const cancha = await this.getCancha(titulo);
         try{
-            const cancha = await this.getCancha(titulo);
             if(!cancha.reservasDisponibles.dias.hasOwnProperty(dia)){
                 throw new InvalidCredentialsError("El dia"+ dia +" no se encuentra disponible")
             }
@@ -53,9 +53,9 @@ class ServicioCanchas{
     }
 
     //agrega los datos de reserva eliminada
-    agregarDatos = async(datos) => {
+    agregarDatos = async(reqReserva) => {
         try {
-            const respuesta = await this.model.agregarDatos(datos)
+            const respuesta = await this.model.agregarDatos(reqReserva)
             return respuesta
         } catch (error) {
             throw new Error(error);

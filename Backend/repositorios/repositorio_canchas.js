@@ -84,23 +84,22 @@ class CanchaRepositorio {
         }
       }
 
-      async agregarDatos(datos) {
+      async agregarDatos(reqReserva) {
+        const nuevosDatos = {
+          $push: {
+            [`reservasDisponibles.dias.${reqReserva.dia}`]: reqReserva.horario
+          }
+        };
         try {
-          const { titulo, dia, horario } = datos;
-      
-          const nuevosDatos = {
-            $addToSet: {
-              [`reservasDisponibles.dias.${dia}`]: horario
-            }
-          };
-      
+          
           const opciones = { returnDocument: "after" };
       
-          return await this.canchasCollection.findOneAndUpdate(
-            { titulo: titulo },
+          const canchasActualizada = await this.canchasCollection.findOneAndUpdate(
+            { titulo: reqReserva.titulo },
             nuevosDatos,
             opciones
-          );
+            );
+          return canchasActualizada.value
         } catch (error) {
           console.error('Error al agregar los datos:', error);
           throw error;

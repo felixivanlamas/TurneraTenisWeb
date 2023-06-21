@@ -149,8 +149,8 @@ class UsuarioRepositorio {
         }
       }
 
-      async eliminarReserva(filter, datos) {
-        const reservaAEliminar = new Reserva(datos.titulo, datos.dia, datos.horario);
+      async eliminarReserva(filter, reqReserva) {
+        const reservaAEliminar = new Reserva(reqReserva.titulo, reqReserva.dia, reqReserva.horario);
         try {
           const usuario = await this.usuariosCollection.findOneAndUpdate(
             filter,
@@ -160,7 +160,7 @@ class UsuarioRepositorio {
           if (!usuario) {
             throw new Error("Reserva no encontrada");
           }
-          return usuario;
+          return usuario.value;
         } catch (error) {
           throw new Error(error.message);
         }

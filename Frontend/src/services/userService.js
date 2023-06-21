@@ -17,14 +17,6 @@ export const userService = {
     return apiClient.get("/usuarios");
   },
 
-  reservar(id,reserva) {
-    return apiClient.post(`/usuarios/${id}`, reserva);
-  },
-
-  eliminarReserva(id,reserva) {
-    return apiClient.delete(`/reservas/${id}`, reserva);
-  },
-
   cambioDePerfil(id, usuario){
     return apiClient.put(`/usuarios/${id}`, usuario)
   }

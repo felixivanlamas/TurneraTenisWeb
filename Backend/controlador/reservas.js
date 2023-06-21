@@ -48,15 +48,11 @@ class ControladorReserva {
 
   eliminarReserva = async (req, res) => {
     const {id} = req.params
-    const datos = req.body
+    const { titulo, dia, horario } = req.body
+    const reqReserva={id,titulo,dia, horario}
     try {
-      const respuesta = await this.servicioUsuario.eliminarReserva(id)
-      if(!respuesta){
-        res.status(401).send('No se puede eliminar la reserva');
-      }
-      if(!(await this.servicioCancha.agregarDatos(datos))){
-        res.status(401).send('No se puedo agregar los datos a reservasDisponibles');
-      }
+      const respuesta = await this.servicioUsuario.eliminarReserva(reqReserva )
+      await this.servicioCancha.agregarDatos( reqReserva)
       res.status(200).send(respuesta);
     } catch (error) {
       res.status(500).send(error.message);

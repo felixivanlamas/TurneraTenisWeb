@@ -80,7 +80,7 @@ export const useUserStore = defineStore("usuario", {
     async eliminarReserva(reserva){
       try {
         const response = await reservasService.eliminarReserva(this.usuario._id,reserva);
-        this.usuario = response.data;
+        this.usuario = response.data; // Acceder al usuario actualizado
         return this.usuario;
       } catch (error) {
         throw error;
