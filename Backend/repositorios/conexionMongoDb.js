@@ -1,35 +1,40 @@
 import mongoose from 'mongoose';
 
 class ConexionMongo {
-
   constructor() {
-      this.url = 'mongodb+srv://turneraTenis:turneraTenis@turneratenis.yn0yl79.mongodb.net/TurneraTenis'
+    if (ConexionMongo.instance) {
+      this.conectar();
+      return ConexionMongo.instance;
+    }
+
+    this.url =
+      'mongodb+srv://turneraTenis:turneraTenis@turneratenis.yn0yl79.mongodb.net/TurneraTenis';
+
+    ConexionMongo.instance = this;
+    this.conectar();
   }
 
-  async conectar (){
+  async conectar() {
     try {
-      await mongoose.connect(this.url, {
+      const conexion = await mongoose.connect(this.url, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       });
-      console.log('Conexion existosa a MongoDB');
+      console.log(conexion);
     } catch (error) {
       console.log('No se pudo conectar a la base de datos:', error);
     }
-}; 
+  }
 
+  usuariosColeccion() {
+    this.usuariosDB = mongoose.connection.collection('usuarios');
+    return this.usuariosDB;
+  }
 
-
-usuariosColeccion() {
-  this.usuariosDB = mongoose.connection.collection('usuarios');
-  return this.usuariosDB;
-}
-
-canchasColeccion() {
-  this.canchasDB = mongoose.connection.collection('canchas');
- return this.canchasDB;
-}
-
+  canchasColeccion() {
+    this.canchasDB = mongoose.connection.collection('canchas');
+    return this.canchasDB;
+  }
 }
 
 export default ConexionMongo;
