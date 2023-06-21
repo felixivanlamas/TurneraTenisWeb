@@ -57,7 +57,24 @@ class UsuarioRepositorio {
         }
     }
 
-    async editarUsuario(filter, datos) {
+    async editarUsuario(filter, conditions) {
+      const datosAEditar = { $set: { } };
+      const usuarioViejo = await this.obtenerUsuario(filter);
+      
+      datosAEditar.$set.email = conditions.email ?? usuarioViejo.email;
+      datosAEditar.$set.contrasenia = conditions.contrasenia ?? usuarioViejo.contrasenia;
+      datosAEditar.$set.username = conditions.username ?? usuarioViejo.username;
+      
+      const usuarioEditado = await this.usuariosCollection.findOneAndUpdate(filter, datosAEditar, { returnDocument: "after" });
+      if (!usuarioEditado) {
+        throw new Error("Error al editar el usuario");
+      }
+      return usuarioEditado.value;
+    }
+    
+
+
+/*    async editarUsuario(filter, datos) {
       const datosAEditar = {};
       const usuarioViejo = this.obtenerUsuario(filter);
       if (datos.email !== undefined) {
@@ -67,7 +84,7 @@ class UsuarioRepositorio {
           }else{
             datosAEditar.$set = { email: datos.email, contrasenia: datos.contrasenia , username: usuarioViejo.username};
           }
-        }else if (conditions.username !== undefined) {
+        }else if (datos.username !== undefined) {
           datosAEditar.$set = { email: datos.email, username: datos.username,contrasenia: usuarioViejo.contrasenia };
         }else{
           datosAEditar.$set = { email: datos.email, contrasenia: usuarioViejo.contrasenia , username: usuarioViejo.username};
@@ -79,7 +96,7 @@ class UsuarioRepositorio {
           }else{
             datosAEditar.$set = { email: usuarioViejo.email, contrasenia: datos.contrasenia , username: usuarioViejo.username};
           }
-        }else if (conditions.username !== undefined) {
+        }else if (datos.username !== undefined) {
           datosAEditar.$set = {  email: usuarioViejo.email, username: usuarioViejo.username,contrasenia: datos.contrasenia };
         }else{
           datosAEditar.$set = {  email: usuarioViejo.email, username: usuarioViejo.username,contrasenia: usuarioViejo.contrasenia };
@@ -92,7 +109,7 @@ class UsuarioRepositorio {
             throw new Error("Error al editar el usuario");
         }
         return usuarioEditado.value;   
-      }
+      }*/
   
   
   
