@@ -113,7 +113,7 @@ class UsuarioRepositorio {
 
     async getAll(){
         try {
-          const result = await this.usuariosCollection.find();
+          const result = await this.usuariosCollection.find().toArray();
           return result
         } catch (error) {
           throw new Error(error);

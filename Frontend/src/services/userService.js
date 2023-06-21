@@ -13,6 +13,10 @@ export const userService = {
     return apiClient.get(`/usuarios/${id}`);
   },
 
+  getAll() {
+    return apiClient.get("/usuarios");
+  },
+
   reservar(id,reserva) {
     return apiClient.post(`/usuarios/${id}`, reserva);
   },

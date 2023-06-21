@@ -70,7 +70,16 @@ class ControladorUsuario {
            
         }
     }
-};
+  };
+  
+  getAll = async(req, res) => {
+    try {
+      const listaUsuarios = await this.servicioUsuario.getAll();
+      res.status(200).json(listaUsuarios);
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  }
 
 }
 export default ControladorUsuario 
