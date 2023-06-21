@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-
 export const useReservaStore = defineStore("reserva", {
   state: () => {
     return {
@@ -20,7 +19,7 @@ export const useReservaStore = defineStore("reserva", {
 
     async obtenerReserva(){
         return this.reserva
-    }
+    },
 
   }
 });

@@ -48,12 +48,6 @@ export const useUserStore = defineStore("usuario", {
       try {
         if(this.usuario._id==null){
           response = await userService.getUser(this.usuario._id); 
-          console.log(usuario.username)         
-          if (response.status === 401) {
-            // Usuario no autenticado
-            return null;
-          }
-
           this.usuario = response.data;
         }
         return this.usuario;

@@ -47,13 +47,16 @@ export default {
         delete usuarioEditado.contrasenia
       }
 
-      try {
-        const response = await userStore.cambioDePerfil(usuarioEditado);
-        this.usuario = response;
-        console.log(this.usuario)
-        this.$router.push('/');
-      } catch (error) {
-        console.log(error.response);
+      if(usuarioEditado == {}){
+        alert("Completa los campos por favor");
+      }else{
+        try {
+          const response = await userStore.cambioDePerfil(usuarioEditado);
+          this.usuario = response;
+          this.$router.push('/');
+        } catch (error) {
+          console.log(error.response);
+        }
       }
     }
 

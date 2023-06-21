@@ -59,23 +59,41 @@ class UsuarioRepositorio {
 
     async editarUsuario(filter, datos) {
       const datosAEditar = {};
-  
+      const usuarioViejo = this.obtenerUsuario(filter);
       if (datos.email !== undefined) {
-          datosAEditar.$set = { email: datos.email };
+        if(datos.contrasenia !== undefined){
+          if (datos.username !== undefined) {
+            datosAEditar.$set = { email: datos.email, contrasenia: datos.contrasenia , username: datos.username };
+          }else{
+            datosAEditar.$set = { email: datos.email, contrasenia: datos.contrasenia , username: usuarioViejo.username};
+          }
+        }else if (conditions.username !== undefined) {
+          datosAEditar.$set = { email: datos.email, username: datos.username,contrasenia: usuarioViejo.contrasenia };
+        }else{
+          datosAEditar.$set = { email: datos.email, contrasenia: usuarioViejo.contrasenia , username: usuarioViejo.username};
+        }
+      }else {
+        if(datos.contrasenia !== undefined){
+          if (datos.username !== undefined) {
+            datosAEditar.$set = { email: usuarioViejo.email, contrasenia: datos.contrasenia , username: datos.username };
+          }else{
+            datosAEditar.$set = { email: usuarioViejo.email, contrasenia: datos.contrasenia , username: usuarioViejo.username};
+          }
+        }else if (conditions.username !== undefined) {
+          datosAEditar.$set = {  email: usuarioViejo.email, username: usuarioViejo.username,contrasenia: datos.contrasenia };
+        }else{
+          datosAEditar.$set = {  email: usuarioViejo.email, username: usuarioViejo.username,contrasenia: usuarioViejo.contrasenia };
+        }
+
       }
-      if (datos.contrasenia !== undefined) {
-          datosAEditar.$set = { contrasenia: datos.contrasenia };
-      }
-      if (datos.username !== undefined) {
-          datosAEditar.$set = { username: datos.username };
+        
+        const usuarioEditado = await this.usuariosCollection.findOneAndUpdate(filter, datosAEditar, { returnDocument: "after" });
+        if (!usuarioEditado) {
+            throw new Error("Error al editar el usuario");
+        }
+        return usuarioEditado.value;   
       }
   
-      const usuarioEditado = await this.usuariosCollection.findOneAndUpdate(filter, datosAEditar, { returnDocument: "after" });
-      if (!usuarioEditado) {
-          throw new Error("Error al editar el usuario");
-      }
-      return usuarioEditado.value;
-  }
   
   
 

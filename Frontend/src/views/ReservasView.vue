@@ -5,7 +5,6 @@ export default {
   data() {
     return {
       user: {
-        id:null,
         username: "",
         email: "",
         contrasenia: "",

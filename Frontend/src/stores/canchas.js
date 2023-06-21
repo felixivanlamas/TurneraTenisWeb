@@ -9,7 +9,6 @@ export const useCanchasStore = defineStore('canchas', {
     async fetchCanchas() {
       try {
         const response = await canchasService.getAll();
-        console.log(response.data);
         this.canchas = response.data;
         this.canchas.sort((a, b) => a.titulo.localeCompare(b.titulo));
       } catch (error) {
