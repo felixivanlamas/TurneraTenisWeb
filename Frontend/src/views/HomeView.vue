@@ -46,11 +46,12 @@ export default {
       this.canchaSeleccionada = cancha;
     },
     async guardarDatos(titulo,dia,hora){
-      
+      const reserva={titulo,dia,hora}
       await this.getUser();
       if(this.usuario._id!==null){
         //alerta para decirle al user que se loguee
-        useReservaStore().guardarDatos(titulo,dia,hora)
+        const response = await useUserStore().reservar(reserva);
+        this.usuario = response
         this.$router.push('/reservations')
       }else{
       }
