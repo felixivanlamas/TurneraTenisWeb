@@ -46,8 +46,9 @@ class ControladorUsuario {
   eliminarCuenta = async (req, res) => {
     const {id} = req.params
     try {
-      const respuesta = await this.servicioUsuario.eliminarCuenta(id);
-      res.status(200).send(respuesta);
+      const usuarioEliminado = await this.servicioUsuario.eliminarCuenta(id);
+      await this.servicioCancha.agregarArrayDatos(usuarioEliminado.reservas)
+      res.status(200).send(usuarioEliminado);
     } catch (error) {
       res.status(500).send(error.message);
     }

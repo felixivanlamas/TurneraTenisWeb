@@ -52,7 +52,7 @@ class ControladorReserva {
     const reqReserva={id,titulo,dia, horario}
     try {
       const respuesta = await this.servicioUsuario.eliminarReserva(reqReserva )
-      await this.servicioCancha.agregarDatos( reqReserva)
+      await this.servicioCancha.agregarDatos(reqReserva)
       res.status(200).send(respuesta);
     } catch (error) {
       res.status(500).send(error.message);

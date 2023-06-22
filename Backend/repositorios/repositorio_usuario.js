@@ -122,7 +122,7 @@ class UsuarioRepositorio {
                 throw new Error("Usuario no encontrado")
             }
             console.log("La cuenta con el email " + usuarioEliminado.value.email +" ha sido borrada correctamente");
-            return
+            return usuarioEliminado.value
         }catch (error) {
             throw new Error(error.message);
         }

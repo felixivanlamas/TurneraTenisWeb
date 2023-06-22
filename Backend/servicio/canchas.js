@@ -39,8 +39,8 @@ class ServicioCanchas{
     modificarCancha = async(titulo,dia,horario)=>{
         const cancha = await this.getCancha(titulo);
         try{
-            if(!cancha.reservasDisponibles.dias.hasOwnProperty(dia)){
-                throw new InvalidCredentialsError("El dia"+ dia +" no se encuentra disponible")
+            if(!cancha.reservasDisponibles.dias[dia]){
+                throw new InvalidCredentialsError("El dia"+ dia +" no tiene mas reservas")
             }
             if(!cancha.reservasDisponibles.dias[dia].includes(horario)){
                 throw new InvalidCredentialsError("El horario"+ horario +" no se encuentra disponible")
@@ -48,7 +48,7 @@ class ServicioCanchas{
             const canchaModificada = await this.model.modificarCancha(cancha.titulo,dia,horario);
             return canchaModificada.value.titulo
         }catch(error){
-            throw new Error(error);
+            throw new Error(error.menssage);
         }
     }
 
@@ -61,5 +61,16 @@ class ServicioCanchas{
             throw new Error(error);
         }
       }
+
+    agregarArrayDatos = async(arrayReserva)=>{
+        try {
+            arrayReserva.forEach(r => {
+                this.model.agregarDatos(r);
+            });
+            return "Reservas agregadas Correctamente"
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
 }
 export default ServicioCanchas
