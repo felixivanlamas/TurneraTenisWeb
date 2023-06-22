@@ -31,6 +31,7 @@ export default {
       canchasStore.fetchCanchas()
         .then(() => {
           this.canchas = canchasStore.canchas;
+          this.canchas = this.ordenar(this.canchas);
         })
         .catch(error => {
           console.error(error);
@@ -52,10 +53,17 @@ export default {
         const response = await useUserStore().reservar(reserva);
         this.usuario = response
         this.$router.push('/reservations')
-      }else{
       }
     },
-
+    ordenar(canchas){
+      for (const cancha of canchas) {
+        for (const dia in cancha.reservasDisponibles.dias) {
+          const horariosDia = cancha.reservasDisponibles.dias[dia];
+          horariosDia.sort();
+        }
+      }
+      return canchas;
+    },
   },
 };
 </script>
