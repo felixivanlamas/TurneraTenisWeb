@@ -8,13 +8,7 @@ export default {
         username: "",
         email: "",
         contrasenia: "",
-        reservas: [
-          {
-            titulo: "",
-            dia: "",
-            horario: "",
-          },
-        ],
+        reservas: [],
       },
       canchas: [],
     };

@@ -9,15 +9,6 @@ export const useUserStore = defineStore("usuario", {
       usuario: {
         _id: null,
         username: "",
-        email: "",
-        contrasenia:"",
-        reservas: [
-          {
-            titulo: "",
-            dia: "",
-            horario: "",
-          },
-        ]
       },
     };
   },
@@ -94,6 +85,21 @@ export const useUserStore = defineStore("usuario", {
       } catch (error) {
         throw error;
       }
+    },
+
+    logout () {
+      return this.usuario={ 
+        _id: null,
+        username: "",
+        email: "",
+        contrasenia:"",
+        reservas: [
+          {
+            titulo: "",
+            dia: "",
+            horario: "",
+          },
+        ]};
     }
 
   }

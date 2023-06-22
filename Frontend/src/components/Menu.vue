@@ -1,7 +1,6 @@
 <script>
 import { storeToRefs } from "pinia";
 import { RouterLink } from "vue-router";
-import { userService } from "../services/userService.js"
 import { useUserStore } from "../stores/user.js";
 
 
@@ -15,25 +14,23 @@ export default {
       usuario,
     }
   },
-  
-  methods: {
-    async salir() {
-      await userService.logout(this.usuario.email);
 
-      this.usuario.username = '';
-      this.usuario.email = '';
-      this.usuario.contrasenia = '';
-      this.$router.push('/');
-    },
-  },
+  methods:{
+    logout() {
+      const store = useUserStore();
+      this.usuario = store.logout()
+    }
+  }
 
 };
 </script>
 
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <RouterLink class="navbar-brand" style="font-size: 30px;" to="/"> <img src="../assets/IconoTT.jpg" style="widows:50px; height: 50px;" alt="Logo" class="d-inline-block align-text-top">
-      TurneraTenis</RouterLink>
+    <RouterLink class="navbar-brand" to="/">
+      <img src="../assets/IconoTT.jpg" class="logo" alt="Logo" />
+      <span class="brand-text">TurneraTenis</span>
+    </RouterLink>
     <button
       class="navbar-toggler"
       type="button"
@@ -47,11 +44,11 @@ export default {
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
+      <ul class="navbar-nav ml-auto">
         <li class="nav-item" v-if="usuario.username != ''">
-          <RouterLink class="nav-link" to="/reservations"
-            > <button class=" btn btn-info">Mis Reservas</button></RouterLink
-          >
+          <RouterLink class="nav-link" to="/reservations">
+            <button class="btn btn-info">Mis Reservas</button>
+          </RouterLink>
         </li>
         <li v-if="usuario.username != ''" class="nav-item dropdown">
           <a
@@ -61,32 +58,100 @@ export default {
             data-toggle="dropdown"
             aria-expanded="false"
           >
-            <h4>{{usuario.username}}</h4>
+            <h4>{{ usuario.username }}</h4>
           </a>
-          <div class="dropdown-menu">
-            <RouterLink to="/editProfile" class="dropdown-item" > <button class="btn btn-info">Editar Perfil</button></RouterLink>
+          <div class="dropdown-menu dropdown-menu-right">
+            <RouterLink to="/editProfile" class="dropdown-item">
+              <button class="btn btn-info btn-block">Editar Perfil</button>
+            </RouterLink>
             <div class="dropdown-divider"></div>
-            <RouterLink to="/" class="dropdown-item"><button @click="usuario.username = ''" class="btn btn-outline btn-info">Cerrar Sesion</button></RouterLink>
+            <RouterLink to="/" class="dropdown-item">
+              <button
+                @click="logout()"
+                class="btn btn-outline-info btn-block"
+              >
+                Cerrar Sesión
+              </button>
+            </RouterLink>
           </div>
         </li>
       </ul>
-      <div class="d-flex align-items-center my-2 my-lg-0" v-if="usuario.username == ''">
-        <RouterLink to="/login"
-          ><button style="margin: 0px 10px;" class="btn btn-warning" >
-            Iniciar Sesion
-          </button></RouterLink
-        >
-        
-        <RouterLink to="/register"
-          ><button
-            class="btn btn-warning"
-            >
-            Registrarse
-          </button></RouterLink
-        >
+      <div
+        class="d-flex align-items-center my-2 my-lg-0"
+        v-if="usuario.username == ''"
+      >
+        <RouterLink to="/login">
+          <button class="btn btn-warning">Iniciar Sesión</button>
+        </RouterLink>
+        <RouterLink to="/register">
+          <button class="btn btn-warning">Registrarse</button>
+        </RouterLink>
       </div>
     </div>
   </nav>
 </template>
 
-<style></style>
+<style scoped>
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+}
+
+.brand-text {
+  font-size: 20px;
+  margin-left: 10px;
+}
+
+.nav-link {
+  color: #000;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+.dropdown-item {
+  color: #000;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: #f0f0f0;
+}
+
+.btn-info {
+  background-color: #2196f3;
+  border-color: #2196f3;
+}
+
+.btn-outline-info {
+  background-color: transparent;
+  border-color: #2196f3;
+  color: #2196f3;
+}
+
+.btn-outline-info:hover,
+.btn-outline-info:focus {
+  background-color: #2196f3;
+  color: #fff;
+}
+
+.btn-warning {
+  background-color: #ff9800;
+  border-color: #ff9800;
+}
+
+.btn-warning:hover,
+.btn-warning:focus {
+  background-color: #fb8c00;
+  border-color: #fb8c00;
+}
+
+.btn {
+  margin-right: 20px;
+}
+</style>
