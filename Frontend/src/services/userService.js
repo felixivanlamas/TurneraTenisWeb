@@ -19,5 +19,9 @@ export const userService = {
 
   cambioDePerfil(id, usuario){
     return apiClient.put(`/usuarios/${id}`, usuario)
+  },
+
+  borrarCuenta(){
+    return apiClient.delete(`/usuarios/${id}`)
   }
 };

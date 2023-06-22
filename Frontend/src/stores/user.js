@@ -87,6 +87,15 @@ export const useUserStore = defineStore("usuario", {
       }
     },
 
+    async borrarCuenta(){
+      try {
+        const res = await userService.borrarCuenta()
+        return res
+      } catch (error) {
+        console.error("Error al eliminar la cuenta:", error);
+      }  
+    },
+
     logout () {
       return this.usuario={ 
         _id: null,

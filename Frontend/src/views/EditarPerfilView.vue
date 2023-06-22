@@ -1,6 +1,7 @@
 <script>
 import {useUserStore} from "../stores/user.js"
 
+
 export default {
   data() {
     return {
@@ -23,6 +24,16 @@ export default {
     async getUser(){
       this.usuario = await useUserStore().getUser();
     },
+
+    async borrarCuenta(){
+      if (confirm("Esta seguro que desea borrar esta cuenta?")) {
+        const res = await useUserStore().borrarCuenta();
+        if (res) {
+          useUserStore().logout();
+        }
+      }
+    },
+   
     async cambioDePerfil(){
         const userStore = useUserStore();
         const usuarioEditado = {
@@ -100,5 +111,7 @@ export default {
         />
     </div>
     <button type="submit" class="btn btn-primary">Guardar</button>
+
+    <button class="btn btn-danger">Eliminar Cuenta</button>
 </form>
 </template>

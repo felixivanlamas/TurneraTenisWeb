@@ -5,7 +5,6 @@ const axiosClient = axios.create({
     headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
-        // configurar el token y pasarle user.token
     }
 })
 
