@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { userService } from "../services/userService.js"
 import { reservasService } from "../services/reservaService.js";
-import {useReservaStore} from "./reserva.js";
 
 export const useUserStore = defineStore("usuario", {
   state: () => {
