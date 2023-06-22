@@ -17,7 +17,6 @@ export default {
   },
   async mounted(){ 
     this.getUser();
-    this.cambioDePerfil();
   },
 
   methods: {

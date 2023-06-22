@@ -26,19 +26,6 @@ export default {
       this.$router.push('/');
     },
   },
-  /* created() {
-    if (this.usuario.nombre === '') {
-      userService.devolverUsuario(id)
-        .then(response => {
-          if (response.data) {
-            this.usuario = response.data;
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-  }, */
 
 };
 </script>
@@ -77,7 +64,7 @@ export default {
             <h4>{{usuario.username}}</h4>
           </a>
           <div class="dropdown-menu">
-            <RouterLink to="/editProfile" class="dropdown-item" href="#"> <button class="btn btn-info">Editar Perfil</button></RouterLink>
+            <RouterLink to="/editProfile" class="dropdown-item" > <button class="btn btn-info">Editar Perfil</button></RouterLink>
             <div class="dropdown-divider"></div>
             <RouterLink to="/" class="dropdown-item"><button @click="usuario.username = ''" class="btn btn-outline btn-info">Cerrar Sesion</button></RouterLink>
           </div>
