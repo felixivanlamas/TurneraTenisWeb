@@ -57,11 +57,13 @@ export default {
         dia: dia,
         horario: horario
       }
-      try {
+      if (confirm("¿Estás seguro de que deseas eliminar esta reserva?")) {
+        try {
         this.user = await useUserStore().eliminarReserva(reserva);
         this.$router.push('/reservations');
       } catch (error) {
         console.log(error);
+      }
       }
     },
     esFechaPosteriorHoy(dia) {

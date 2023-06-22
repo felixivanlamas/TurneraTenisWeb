@@ -8,4 +8,3 @@ import Menu from "./components/Menu.vue";
   <RouterView />
 </template>
 
-<style></style>

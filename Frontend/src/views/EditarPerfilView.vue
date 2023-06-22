@@ -66,7 +66,7 @@ export default {
 </script>
 
 <template>
-
+<br>
 <h2>Edición de perfil</h2>
 <br>
 <form @submit.prevent="cambioDePerfil()">
@@ -101,7 +101,4 @@ export default {
     </div>
     <button type="submit" class="btn btn-primary">Guardar</button>
 </form>
-
-
-
 </template>
