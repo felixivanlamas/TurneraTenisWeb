@@ -21,7 +21,7 @@ export const userService = {
     return apiClient.put(`/usuarios/${id}`, usuario)
   },
 
-  borrarCuenta(){
+  borrarCuenta(id){
     return apiClient.delete(`/usuarios/${id}`)
   }
 };

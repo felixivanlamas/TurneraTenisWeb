@@ -30,6 +30,7 @@ export default {
         const res = await useUserStore().borrarCuenta();
         if (res) {
           useUserStore().logout();
+          this.$router.push("/")
         }
       }
     },
@@ -112,6 +113,6 @@ export default {
     </div>
     <button type="submit" class="btn btn-primary">Guardar</button>
 
-    <button class="btn btn-danger">Eliminar Cuenta</button>
+    <button class="btn btn-danger" @click="borrarCuenta()">Eliminar Cuenta</button>
 </form>
 </template>

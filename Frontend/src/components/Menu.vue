@@ -58,7 +58,7 @@ export default {
             data-toggle="dropdown"
             aria-expanded="false"
           >
-            <h4>{{ usuario.username }}</h4>
+            <h4 class="btn btn-username">{{ usuario.username }}</h4>
           </a>
           <div class="dropdown-menu dropdown-menu-right">
             <RouterLink to="/editProfile" class="dropdown-item">
@@ -149,6 +149,17 @@ export default {
 .btn-warning:focus {
   background-color: #fb8c00;
   border-color: #fb8c00;
+}
+
+.btn-username {
+  background-color: #2196f3;
+  color: #fff;
+  width: 100px;
+}
+
+.btn-username:hover {
+  background-color: #072944;
+  color: #fff;
 }
 
 .btn {

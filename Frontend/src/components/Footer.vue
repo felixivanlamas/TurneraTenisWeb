@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer">
+  <div class="footer">
     <div class="container">
       <div class="footer-content">
         <p class="footer-text">&copy; 2023 Grupo4 PNT2</p>
@@ -7,7 +7,7 @@
         <p class="footer-text">Yatay 240, Almagro, CABA</p>
       </div>
     </div>
-  </footer>
+  </div>
 </template>
 
 <style scoped>
