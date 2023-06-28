@@ -1,4 +1,5 @@
 import ServicioCanchas from "../servicio/canchas.js"
+import canchasValidacion from "../validaciones/canchasValidacion.js";
 
 class ControladorCanchas {
 
@@ -19,6 +20,11 @@ class ControladorCanchas {
   crearCancha = async(req,res) => {
     try {
         const {titulo, tipo, imagen} = req.body
+        const cancha = { titulo, tipo, imagen };
+        const validacion = canchasValidacion.validarCancha(cancha);
+        if (!validacion.result) {
+          throw validacion.error;
+        }
         const respuesta = await this.servicio.crearCancha(titulo,tipo,imagen)
         res.status(200).send(respuesta)
     } catch (error) {
@@ -38,6 +44,7 @@ class ControladorCanchas {
     }
   }
 
+   
 };
 
 

@@ -28,9 +28,13 @@ class UsuarioRepositorio {
 
     async registro(email, username, contrasenia) {
         try {
-            const existingUser = await this.usuariosCollection.findOne({ email: email });
-            if (existingUser) {
+            const userEmail = await this.usuariosCollection.findOne({ email: email });
+            if (userEmail) {
                 throw new Error(`El correo ${email} ya fue ingresado`);
+            }
+            const userUsername = await this.usuariosCollection.findOne({ username: username });
+            if (userUsername) {
+              throw new Error(`El username ${username} ya fue ingresado`)
             }
             const newUser = new Usuario(username, email, contrasenia);
             await this.usuariosCollection.insertOne(newUser);
@@ -67,49 +71,6 @@ class UsuarioRepositorio {
       }
       return usuarioEditado.value;
     }
-    
-
-
-/*    async editarUsuario(filter, datos) {
-      const datosAEditar = {};
-      const usuarioViejo = this.obtenerUsuario(filter);
-      if (datos.email !== undefined) {
-        if(datos.contrasenia !== undefined){
-          if (datos.username !== undefined) {
-            datosAEditar.$set = { email: datos.email, contrasenia: datos.contrasenia , username: datos.username };
-          }else{
-            datosAEditar.$set = { email: datos.email, contrasenia: datos.contrasenia , username: usuarioViejo.username};
-          }
-        }else if (datos.username !== undefined) {
-          datosAEditar.$set = { email: datos.email, username: datos.username,contrasenia: usuarioViejo.contrasenia };
-        }else{
-          datosAEditar.$set = { email: datos.email, contrasenia: usuarioViejo.contrasenia , username: usuarioViejo.username};
-        }
-      }else {
-        if(datos.contrasenia !== undefined){
-          if (datos.username !== undefined) {
-            datosAEditar.$set = { email: usuarioViejo.email, contrasenia: datos.contrasenia , username: datos.username };
-          }else{
-            datosAEditar.$set = { email: usuarioViejo.email, contrasenia: datos.contrasenia , username: usuarioViejo.username};
-          }
-        }else if (datos.username !== undefined) {
-          datosAEditar.$set = {  email: usuarioViejo.email, username: usuarioViejo.username,contrasenia: datos.contrasenia };
-        }else{
-          datosAEditar.$set = {  email: usuarioViejo.email, username: usuarioViejo.username,contrasenia: usuarioViejo.contrasenia };
-        }
-
-      }
-        
-        const usuarioEditado = await this.usuariosCollection.findOneAndUpdate(filter, datosAEditar, { returnDocument: "after" });
-        if (!usuarioEditado) {
-            throw new Error("Error al editar el usuario");
-        }
-        return usuarioEditado.value;   
-      }*/
-  
-  
-  
-
     
     async eliminarCuenta(filter) {
         try {
@@ -151,10 +112,6 @@ class UsuarioRepositorio {
             { $push: { reservas: newReserva } },
             { returnDocument: "after" }
           );
-      
-          if (usuario.value==null) {
-            throw new Error("El usuario es null");
-          }
           return usuario;
         } catch (error) {
           console.error("Error al guardar la reserva:", error);

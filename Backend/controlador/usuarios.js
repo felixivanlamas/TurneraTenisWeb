@@ -30,7 +30,12 @@ class ControladorUsuario {
 
   login = async (req, res) => {
     const { email, contrasenia } = req.body
+    const usuarioAValidar = { email, password };
     try {
+      const validacion = usuariosValidacion.validarUsuario(usuarioAValidar);
+      if (!validacion.result) {
+        throw validacion.error;
+      }
       const usuario = await this.servicioUsuario.login(email, contrasenia);
       res.status(200).json(usuario);
     } catch (error) {

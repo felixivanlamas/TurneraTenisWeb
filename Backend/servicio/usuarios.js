@@ -64,7 +64,7 @@ class ServicioUsuario{
 
       reservar = async (reqReserva) => {
         try {
-          const usuarioActualizado = await this.model.guardarReserva(reqReserva) 
+          const usuarioActualizado = await this.model.guardarReserva(reqReserva)
           return usuarioActualizado
         } catch (error) {
           throw new Error(error);

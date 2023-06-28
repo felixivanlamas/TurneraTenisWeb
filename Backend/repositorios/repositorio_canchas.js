@@ -1,5 +1,5 @@
 import ConexionMongo from './conexionMongoDb.js';
-
+import Cancha from '../clases/cancha.js'
 
 class CanchaRepositorio {
     constructor() {
@@ -38,11 +38,7 @@ class CanchaRepositorio {
             if (existingCancha) {
                 throw new Error(`El correo ${titulo} ya fue ingresado`);
             }
-            const newCancha = {
-                titulo: titulo,
-                tipo: tipo,
-                imagen: imagen,
-            }
+            const newCancha = new Cancha(titulo,tipo,imagen)
             await this.canchasCollection.insertOne(newCancha)
             return "Cancha creada exitosamente"
         } catch(error){

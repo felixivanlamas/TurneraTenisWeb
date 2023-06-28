@@ -39,15 +39,16 @@ class ServicioCanchas{
         const cancha = await this.getCancha(titulo);
         try{
             if(!cancha.reservasDisponibles.dias[dia]){
-                throw new InvalidCredentialsError("El dia"+ dia +" no tiene mas reservas")
+                throw new Error("El dia "+ dia +" no tiene mas reservas")
             }
             if(!cancha.reservasDisponibles.dias[dia].includes(horario)){
-                throw new InvalidCredentialsError("El horario"+ horario +" no se encuentra disponible")
+                console.log('canchaseris2');
+                throw new Error("El horario "+ horario +" no se encuentra disponible")
             }
             const canchaModificada = await this.model.modificarCancha(cancha.titulo,dia,horario);
             return canchaModificada.value.titulo
         }catch(error){
-            throw new Error(error.menssage);
+            throw new Error(error.message);
         }
     }
 
