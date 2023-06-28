@@ -12,7 +12,7 @@ class ControladorCanchas {
       res.status(200).json(respuesta);
     } catch (error) {
       console.log(error.message)
-      res.status(500).send(error.message);
+      res.status(400).send(error.message);
     }
   }
 
@@ -23,7 +23,7 @@ class ControladorCanchas {
         res.status(200).send(respuesta)
     } catch (error) {
         console.log(error.message)
-        res.status(500).send(error.message);
+        res.status(400).send(error.message);
     }
   }
 
@@ -34,7 +34,7 @@ class ControladorCanchas {
         res.status(200).send(cancha)
     } catch (error) {
         console.log(error.message)
-        res.status(500).send(error.message);
+        res.status(400).send(error.message);
     }
   }
 

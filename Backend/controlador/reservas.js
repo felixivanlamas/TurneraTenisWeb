@@ -8,7 +8,7 @@ class ControladorReserva {
     this.servicioCancha = new ServicioCanchas()
     this.servicioUsuario = new ServicioUsuario()
   }
-
+encontrada
   reservarCancha = async (req, res) => {
     const {id} = req.params
     const {titulo,  dia, horario } = req.body
@@ -23,14 +23,7 @@ class ControladorReserva {
       const usuario = await this.servicioUsuario.reservar(reqReserva);
       res.status(200).json(usuario.value);
     } catch (error) {
-        if (error instanceof InvalidCredentialsError) {
-            res.status(400).json(error.message);   
-        } else {
-            res.status(500).json({
-            message:
-            "Hubo un problema interno. Intente nuevamente más tarde.",
-            });
-          }
+      res.status(400).json(error.message);
     }
   }
 
@@ -42,7 +35,7 @@ class ControladorReserva {
       res.status(200).send(respuesta);
     } catch (error) {
       console.error(error.message);
-      res.status(500).send(error.message);
+      res.status(400).send(error.message);
     }
   }
 
@@ -55,7 +48,7 @@ class ControladorReserva {
       await this.servicioCancha.agregarDatos(reqReserva)
       res.status(200).send(respuesta);
     } catch (error) {
-      res.status(500).send(error.message);
+      res.status(400).send(error.message);
     }
   }
 

@@ -16,7 +16,7 @@ class ControladorUsuario {
       res.status(200).send(newUser);
     } catch (error) {
       console.log(error.message)
-      res.status(500).send(error.message);
+      res.status(400).send(error.message);
     }
   };
 
@@ -27,7 +27,7 @@ class ControladorUsuario {
       res.status(200).json(usuario);
     } catch (error) {
       console.log(error.message)
-      res.status(500).send(error.message);
+      res.status(400).send(error.message);
     }
   };
 
@@ -39,7 +39,7 @@ class ControladorUsuario {
       res.status(200).send(respuesta);
     } catch (error) {
       console.error(error.message);
-      res.status(500).send(error.message);
+      res.status(400).send(error.message);
     }
   }
 
@@ -50,7 +50,7 @@ class ControladorUsuario {
       await this.servicioCancha.agregarArrayDatos(usuarioEliminado.reservas)
       res.status(200).send(usuarioEliminado);
     } catch (error) {
-      res.status(500).send(error.message);
+      res.status(400).send(error.message);
     }
   }
 
@@ -78,7 +78,7 @@ class ControladorUsuario {
       const listaUsuarios = await this.servicioUsuario.getAll();
       res.status(200).json(listaUsuarios);
     } catch (error) {
-      res.status(500).send(error.message);
+      res.status(400).send(error.message);
     }
   }
 
