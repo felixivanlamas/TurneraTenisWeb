@@ -1,6 +1,7 @@
 import ServicioUsuario from "../servicio/usuarios.js"
 import {InvalidCredentialsError} from "../errores.js"
 import ServicioCanchas from "../servicio/canchas.js"
+import validaciones from '../validaciones/usuarioValidacion.js'
 
 class ControladorUsuario {
 
@@ -10,13 +11,20 @@ class ControladorUsuario {
   }
 
   registro = async (req, res) => {
-    const { email, username, contrasenia } = req.body
     try {
+    const { email, username, contrasenia } = req.body
+    const usuario = req.body
+    const validado = validaciones.validar(usuario)
+    if (validado.result) {
       const newUser = await this.servicioUsuario.registro(email, username, contrasenia);
       res.status(200).send(newUser);
+    }
+    else {
+      throw validado.error;
+    }
     } catch (error) {
       console.log(error.message)
-      res.status(500).send(error.message);
+      res.status(400).send(error.message);
     }
   };
 
