@@ -90,6 +90,18 @@ class ServicioUsuario{
         }
       }
 
+      puedeReservar = async (id, dia) => {
+        const usuario = await this.obtenerUsuario(id);
+        const puedeReservar={dia:true,capacidad:true}
+        for (const reserva of usuario.reservas) {
+          if (reserva.dia === dia) {
+            puedeReservar.dia=false; // El usuario ya tiene una reserva con el mismo día
+          }
+        }
+        puedeReservar.capacidad=(usuario.reservas.length < 3)
+        return puedeReservar; // No se encontró ninguna reserva con el mismo día
+      };
+
 
 }
 export default ServicioUsuario

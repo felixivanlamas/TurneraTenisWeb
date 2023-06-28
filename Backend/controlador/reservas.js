@@ -16,6 +16,15 @@ class ControladorReserva {
     const reqReserva={id,titulo,dia, horario}
     const reserva = { titulo, dia, horario };
     try {
+      //Regla de Negocio reserva
+      const puedeReservar = await this.servicioUsuario.puedeReservar(reqReserva.id, reqReserva.dia);
+      if(!puedeReservar.dia || !puedeReservar.capacidad){
+        if(!puedeReservar.dia){
+          throw new Error("El usuario no puede reservar el mismo dia")
+        }else if(!puedeReservar.capacidad){
+          throw new Error("El usuario excedio la capacidad max de reservas(3)")
+        }
+      }
       const validacion = reservasValidacion.validarReserva(reserva);
       if (!validacion.result) {
         throw validacion.error;

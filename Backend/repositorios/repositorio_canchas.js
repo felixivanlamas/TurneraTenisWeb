@@ -36,7 +36,7 @@ class CanchaRepositorio {
         try{
             const existingCancha = await this.canchasCollection.findOne({titulo: titulo})
             if (existingCancha) {
-                throw new Error(`El correo ${titulo} ya fue ingresado`);
+                throw new Error(`La cancha ${titulo} ya existe`);
             }
             const newCancha = new Cancha(titulo,tipo,imagen)
             await this.canchasCollection.insertOne(newCancha)

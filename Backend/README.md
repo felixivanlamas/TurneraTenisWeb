@@ -45,19 +45,10 @@ disfrutar de su deporte favorito.
 - Cumplimiento normativo: la aplicación debe cumplir con las regulaciones y leyes
   aplicables para garantizar la protección de datos personales y la seguridad en los pagos.
   \# 3. Reglas de negocio
-- Política de cancelación: los usuarios pueden cancelar sus reservas sin costo alguno si
-  lo hacen con al menos 24 horas de anticipación. Si cancelan con menos de 24 horas de
-  anticipación, se les cobrará una tarifa de cancelación.
-- Política de reservas: los usuarios solo pueden reservar una pista por día, y las
-  reservas están limitadas a una hora por persona. Si hay disponibilidad, los usuarios
-  pueden solicitar una extensión de tiempo.
-- Política de puntualidad: los usuarios deben presentarse a la pista a tiempo para su
-  reserva. Si llegan tarde, su tiempo de juego se reducirá en función del tiempo de retraso.
-- Política de conducta: los usuarios deben seguir las reglas de conducta apropiadas
-  mientras están en las instalaciones, incluyendo el uso de vestimenta adecuada y el respeto a otros jugadores.
-- Política de pago: los usuarios deben pagar por sus reservas antes de comenzar su juego.
-  Si no se ha realizado el pago, la reserva se cancelará automáticamente.
-- Política de mantenimiento: las instalaciones deben mantenerse en buenas condiciones en
-  todo momento, y cualquier problema técnico o de mantenimiento debe resolverse de manera
-  oportuna para garantizar que los usuarios puedan utilizar las pistas de manera segura y
-  eficiente.
+- Política de reservas:
+-item1: los usuarios solo pueden reservar una pista por día
+-item2: los usuarios pueden tener un maximo de 3 reservas
+
+- Politica de Cancelacion:
+
+
