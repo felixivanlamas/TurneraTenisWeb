@@ -1,5 +1,4 @@
 import ServicioUsuario from "../servicio/usuarios.js"
-import {InvalidCredentialsError} from "../errores.js"
 import ServicioCanchas from "../servicio/canchas.js"
 
 class ControladorReserva {

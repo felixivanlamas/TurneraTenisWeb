@@ -32,10 +32,6 @@ class UsuarioRepositorio {
             if (existingUser) {
                 throw new Error(`El correo ${email} ya fue ingresado`);
             }
-
-            if (!email || !username || !contrasenia) {
-                throw new Error('El email, nombre y pass son campos requeridos');
-            }
             const newUser = new Usuario(username, email, contrasenia);
             await this.usuariosCollection.insertOne(newUser);
             return newUser;

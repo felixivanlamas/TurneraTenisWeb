@@ -1,6 +1,5 @@
 import ModelCancha from "../repositorios/repositorio_canchas.js"
 import { InvalidCredentialsError } from "../errores.js"
-import { ObjectId } from 'mongodb';
 
 class ServicioCanchas{
 
