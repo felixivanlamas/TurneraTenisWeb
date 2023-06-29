@@ -18,11 +18,13 @@ class ControladorReserva {
     try {
       //Regla de Negocio reserva
       const puedeReservar = await this.servicioUsuario.puedeReservar(reqReserva.id, reqReserva.dia);
-      if(!puedeReservar.dia || !puedeReservar.capacidad){
+      if(!puedeReservar.dia || !puedeReservar.capacidad || puedeReservar.debe !== 0){
         if(!puedeReservar.dia){
           throw new Error("El usuario no puede reservar el mismo dia")
         }else if(!puedeReservar.capacidad){
           throw new Error("El usuario excedio la capacidad max de reservas(3)")
+        }else{
+          throw new Error("El usuario debe "+puedeReservar.debe +" pesos")
         }
       }
       const validacion = reservasValidacion.validarReserva(reserva);
@@ -68,6 +70,14 @@ class ControladorReserva {
     const { titulo, dia, horario } = req.body
     const reqReserva={id,titulo,dia, horario}
     try {
+
+      //Regla de Negocio eliminarReserva
+      const noTienemulta = await this.servicioUsuario.multar(reqReserva.id,reqReserva.dia,reqReserva.horario);
+      if(!noTienemulta){
+        await this.servicioUsuario.eliminarReserva(reqReserva)
+        await this.servicioCancha.agregarDatos(reqReserva)
+        throw new Error("Debes una multa de 2000$")
+      }
       const respuesta = await this.servicioUsuario.eliminarReserva(reqReserva )
       await this.servicioCancha.agregarDatos(reqReserva)
       res.status(200).send(respuesta);

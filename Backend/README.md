@@ -45,10 +45,12 @@ disfrutar de su deporte favorito.
 - Cumplimiento normativo: la aplicación debe cumplir con las regulaciones y leyes
   aplicables para garantizar la protección de datos personales y la seguridad en los pagos.
   \# 3. Reglas de negocio
+
 - Política de reservas:
 -item1: los usuarios solo pueden reservar una pista por día
 -item2: los usuarios pueden tener un maximo de 3 reservas
+-item3: si los usuarios debe no puede realizar una reserva
 
-- Politica de Cancelacion:
-
+- Politica de Cancelacion: 
+-item1: al usuario se le da la posibilidad de cancelar la reserva, con menos de 24hs de anticipacion se le cobra una multa de 2000$(valor de la reserva)
 

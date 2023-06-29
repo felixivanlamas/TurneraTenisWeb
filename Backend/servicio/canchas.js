@@ -42,7 +42,6 @@ class ServicioCanchas{
                 throw new Error("El dia "+ dia +" no tiene mas reservas")
             }
             if(!cancha.reservasDisponibles.dias[dia].includes(horario)){
-                console.log('canchaseris2');
                 throw new Error("El horario "+ horario +" no se encuentra disponible")
             }
             const canchaModificada = await this.model.modificarCancha(cancha.titulo,dia,horario);

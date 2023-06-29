@@ -136,6 +136,14 @@ class UsuarioRepositorio {
         }
       }
       
+      async multar(id) {
+        await this.usuariosCollection.findOneAndUpdate(
+          { _id: id },
+          { $inc: { debe: 2000 } },
+          { returnDocument: "after" }
+        );
+        return ;
+      }
       
 }
 

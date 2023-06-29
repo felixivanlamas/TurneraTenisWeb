@@ -92,16 +92,59 @@ class ServicioUsuario{
 
       puedeReservar = async (id, dia) => {
         const usuario = await this.obtenerUsuario(id);
-        const puedeReservar={dia:true,capacidad:true}
+        const puedeReservar={dia:true,capacidad:true,debe:0}
         for (const reserva of usuario.reservas) {
           if (reserva.dia === dia) {
             puedeReservar.dia=false; // El usuario ya tiene una reserva con el mismo día
           }
         }
         puedeReservar.capacidad=(usuario.reservas.length < 3)
+        puedeReservar.debe = usuario.debe
         return puedeReservar; // No se encontró ninguna reserva con el mismo día
       };
 
 
+      multar = async (id, dia, horario) => {
+        const usuario = await this.obtenerUsuario(id);
+        let noTieneMulta = true;
+        for (const reserva of usuario.reservas) {
+          if (reserva.dia === dia && reserva.horario === horario) {
+            const fechaReserva = this.calcularFechaLimite(dia, horario);
+            const fechaActual = new Date();
+            
+            if (fechaActual > fechaReserva) {
+              noTieneMulta = false;
+              await this.model.multar(usuario.id);
+            }
+          }
+        } 
+        return noTieneMulta;
+      };
+      
+
+      calcularFechaLimite = (dia, horario) => {
+        const diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+        const horasMinutos = horario.split(":");
+        const fechaReserva = new Date();
+        
+        // Obtener el índice del día de la semana en base a su nombre
+        const diaSemana = diasSemana.findIndex((d) => d === dia);
+        
+        // Establecer el día de la semana y la hora en la fecha de reserva
+        fechaReserva.setDate(fechaReserva.getDate() - (fechaReserva.getDay() - diaSemana));
+        fechaReserva.setHours(horasMinutos[0]);
+        fechaReserva.setMinutes(horasMinutos[1]);
+        fechaReserva.setSeconds(0);
+        fechaReserva.setMilliseconds(0);
+        
+        // Agregar 24 horas a la fecha de reserva
+        fechaReserva.setDate(fechaReserva.getDate() + 1);
+        
+        return fechaReserva;
+      };
+
+
+      
+      
 }
 export default ServicioUsuario
