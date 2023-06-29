@@ -3,7 +3,8 @@ class Usuario{
         this.username=username
         this.email=email
         this.contrasenia=contrasenia,
-        this.reservas=[]
+        this.reservas=[],
+        this.debe=0;
     }
 
 }
