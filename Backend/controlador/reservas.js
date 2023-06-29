@@ -7,7 +7,7 @@ class ControladorReserva {
     this.servicioCancha = new ServicioCanchas()
     this.servicioUsuario = new ServicioUsuario()
   }
-encontrada
+
   reservarCancha = async (req, res) => {
     const {id} = req.params
     const {titulo,  dia, horario } = req.body
