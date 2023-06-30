@@ -33,20 +33,20 @@ const validarLogin = usuario => {
 //Valicadiciones del Servicio
 
 const puedeReservar = async (usuario,dia) =>{
-  var usuarioDeuda={debe:usuario.debe}
-  if(validarDeuda(usuarioDeuda)){
-    for (const reserva of usuario.reservas) {
-      if (reserva.dia === dia) {
-        puedeReservar.dia=false; // El usuario ya tiene una reserva con el mismo día
-      }
+  for (const reserva of usuario.reservas) {
+    if (reserva.dia === dia) {
+      throw new Error("El usuario ya tiene una reserva con el mismo día")
+    }else if(usuario.reservas.length > 3){
+      throw new Error("El usuario supero la cantidad de reservas maximas(3)")
+    }else if(usuario.debe > 0){
+      throw new Error("El usuario debe plata")
     }
-  }
+    }
+  return 
 }
 
-
-
 const multar = async ( dia, horario) => {
-  return this.calcularFechaLimite(dia, horario);
+  return calcularFechaLimite(dia, horario);
 };
 
 
@@ -77,6 +77,7 @@ const calcularFechaLimite = (dia, horario) => {
 
   return false;
 };
+
 
 
 export default {

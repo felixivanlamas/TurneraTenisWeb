@@ -20,8 +20,6 @@ const validarReserva = (titulo,  dia, horario) => {
 };
 
 
-//Valicadiciones del Servicio
-
 
 
 

@@ -10,7 +10,6 @@ class RouterReserva {
 
     start() {
         this.router.delete("/:id",this.controlador.eliminarReserva)
-        this.router.put("/:id",this.controlador.editarReserva)
         this.router.post("/:id",this.controlador.reservarCancha)
         return this.router
     }

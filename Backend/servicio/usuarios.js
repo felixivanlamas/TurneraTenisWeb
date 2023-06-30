@@ -83,6 +83,10 @@ class ServicioUsuario{
       reservar = async (reqReserva) => {
         try {
           const usuarioActualizado = await this.model.guardarReserva(reqReserva)
+          if(!usuarioActualizado){
+            this.servicioCanchas.agregarDatos(reqReserva)
+            throw new Error("No se pudo guardar la reserva")
+          }
           return usuarioActualizado
         } catch (error) {
           throw new Error(error);
@@ -91,17 +95,14 @@ class ServicioUsuario{
 
 
       puedeReservar = async (id, dia) => {
-        const usuario = await this.obtenerUsuario(id);
-        const puedeReservar={dia:true,capacidad:true,debe:0}
-        for (const reserva of usuario.reservas) {
-          if (reserva.dia === dia) {
-            puedeReservar.dia=false; // El usuario ya tiene una reserva con el mismo día
-          }
+        try {
+          const usuario = await this.obtenerUsuario(id)
+          await usuarioValidacion.puedeReservar(usuario,dia);
+          return
+        } catch (error) {
+          throw new Error(error);
         }
-        puedeReservar.capacidad=(usuario.reservas.length < 3)
-        puedeReservar.debe = usuario.debe
-        return puedeReservar; // No se encontró ninguna reserva con el mismo día
-      };
+      }
       
 
 
