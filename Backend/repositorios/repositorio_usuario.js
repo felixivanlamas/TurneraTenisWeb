@@ -123,13 +123,14 @@ class UsuarioRepositorio {
         const reservaAEliminar = new Reserva(reqReserva.titulo, reqReserva.dia, reqReserva.horario);
         try {
           const usuario = await this.usuariosCollection.findOneAndUpdate(
-            filter,
+            {_id: filter},
             { $pull: { reservas: reservaAEliminar } },
             { returnDocument: "after" }
           );
           if (!usuario) {
             throw new Error("Reserva no encontrada");
           }
+          console.log(usuario.value);
           return usuario.value;
         } catch (error) {
           throw new Error(error.message);
@@ -142,7 +143,7 @@ class UsuarioRepositorio {
           { $inc: { debe: 2000 } },
           { returnDocument: "after" }
         );
-        return ;
+        return
       }
       
 }

@@ -1,9 +1,14 @@
 import ModelUsuario from "../repositorios/repositorio_usuario.js"
 import { ObjectId } from 'mongodb';
+import  ServicioCanchas  from "./canchas.js"
+
+
+
 class ServicioUsuario{
 
     constructor() {
         this.model = new ModelUsuario()
+        this.servicioCanchas = new ServicioCanchas()
       }
 
       registro = async (email,userame,contrasenia) => {
@@ -62,25 +67,8 @@ class ServicioUsuario{
         }
       };
 
-      reservar = async (reqReserva) => {
-        try {
-          const usuarioActualizado = await this.model.guardarReserva(reqReserva)
-          return usuarioActualizado
-        } catch (error) {
-          throw new Error(error);
-        }
-      }
-
-      eliminarReserva= async (reqReserva ) => {
-        const filter = {_id:new ObjectId(reqReserva.id)}
-        try {
-          const respuesta = await this.model.eliminarReserva(filter,reqReserva)
-          return respuesta
-        } catch (error) {
-          throw new Error(error);
-        }
-      }
-
+      
+      
       getAll= async () => {
         try {
           const listaUsuarios = await this.model.getAll()
@@ -90,6 +78,15 @@ class ServicioUsuario{
         }
       }
 
+      //Logica reservar
+      reservar = async (reqReserva) => {
+        try {
+          const usuarioActualizado = await this.model.guardarReserva(reqReserva)
+          return usuarioActualizado
+        } catch (error) {
+          throw new Error(error);
+        }
+      }
       puedeReservar = async (id, dia) => {
         const usuario = await this.obtenerUsuario(id);
         const puedeReservar={dia:true,capacidad:true,debe:0}
@@ -102,47 +99,69 @@ class ServicioUsuario{
         puedeReservar.debe = usuario.debe
         return puedeReservar; // No se encontró ninguna reserva con el mismo día
       };
+      
 
 
+      //Logica Eliminar Reservas
+      eliminarReserva= async (reqReserva ) => {
+        const filter = new ObjectId(reqReserva.id)
+        try {
+          const tieneMulta = await this.multar(reqReserva.id,reqReserva.dia,reqReserva.horario)
+          if (tieneMulta) {
+            await this.model.multar(filter);
+            await this.model.eliminarReserva(filter, reqReserva);
+            await this.servicioCanchas.agregarDatos(reqReserva)
+            throw new Error("Debe una multa de 2000$")
+          }
+          const respuesta = await this.model.eliminarReserva(filter,reqReserva)
+          await this.servicioCanchas.agregarDatos(reqReserva)
+          return respuesta
+        } catch (error) {
+          throw new Error(error);
+        }
+      }
+      
       multar = async (id, dia, horario) => {
         const usuario = await this.obtenerUsuario(id);
-        let noTieneMulta = true;
+        let tieneMulta = false;
         for (const reserva of usuario.reservas) {
           if (reserva.dia === dia && reserva.horario === horario) {
-            const fechaReserva = this.calcularFechaLimite(dia, horario);
-            const fechaActual = new Date();
+            tieneMulta = this.calcularFechaLimite(dia, horario);
             
-            if (fechaActual > fechaReserva) {
-              noTieneMulta = false;
-              await this.model.multar(usuario.id);
-            }
           }
-        } 
-        return noTieneMulta;
+        }
+        return tieneMulta;
       };
       
 
       calcularFechaLimite = (dia, horario) => {
         const diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
         const horasMinutos = horario.split(":");
+        const fechaActual = new Date();
         const fechaReserva = new Date();
-        
         // Obtener el índice del día de la semana en base a su nombre
         const diaSemana = diasSemana.findIndex((d) => d === dia);
-        
         // Establecer el día de la semana y la hora en la fecha de reserva
-        fechaReserva.setDate(fechaReserva.getDate() - (fechaReserva.getDay() - diaSemana));
+        fechaReserva.setDate(fechaActual.getDate() - (fechaActual.getDay() - diaSemana));
         fechaReserva.setHours(horasMinutos[0]);
         fechaReserva.setMinutes(horasMinutos[1]);
         fechaReserva.setSeconds(0);
         fechaReserva.setMilliseconds(0);
-        
-        // Agregar 24 horas a la fecha de reserva
-        fechaReserva.setDate(fechaReserva.getDate() + 1);
-        
-        return fechaReserva;
+        // Comparar la fecha de reserva con la fecha actual
+        const diferenciaHoras = Math.abs(fechaReserva - fechaActual) / 36e5; // Obtener la diferencia en horas
+        if (diaSemana === fechaActual.getDay()) {
+          if (0 < diferenciaHoras < 24) {
+            return true;
+          }
+        } else {
+          if (0 < diferenciaHoras < 24) {
+            return true;
+          }
+        }
+      
+        return false;
       };
-
+      
 
       
       

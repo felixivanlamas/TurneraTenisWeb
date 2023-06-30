@@ -58,10 +58,10 @@ class ControladorReserva {
         throw validacion.error;
       }
       const respuesta = await this.servicioUsuario.editarReserva(id,titulo, dia, horario);
-      res.status(200).send(respuesta);
+      res.status(200).json(respuesta);
     } catch (error) {
       console.error(error.message);
-      res.status(400).send(error.message);
+      res.status(400).json(error.message);
     }
   }
 
@@ -69,21 +69,22 @@ class ControladorReserva {
     const {id} = req.params
     const { titulo, dia, horario } = req.body
     const reqReserva={id,titulo,dia, horario}
+    const reserva = { titulo, dia, horario };
     try {
-
-      //Regla de Negocio eliminarReserva
-      const noTienemulta = await this.servicioUsuario.multar(reqReserva.id,reqReserva.dia,reqReserva.horario);
-      if(!noTienemulta){
-        await this.servicioUsuario.eliminarReserva(reqReserva)
-        await this.servicioCancha.agregarDatos(reqReserva)
-        throw new Error("Debes una multa de 2000$")
+      const validacion = reservasValidacion.validarReserva(reserva);
+      if (!validacion.result) {
+        throw validacion.error;
       }
-      const respuesta = await this.servicioUsuario.eliminarReserva(reqReserva )
-      await this.servicioCancha.agregarDatos(reqReserva)
-      res.status(200).send(respuesta);
-    } catch (error) {
-      res.status(400).send(error.message);
+      respuesta = await this.servicioUsuario.eliminarReserva(reqReserva )
+      res.status(200).json(respuesta);
+    }catch (error) {
+      if (error.message === "Debes una multa de 2000$") {
+        res.status(400).json({ error: error.message, respuesta: respuesta });
+      } else {
+        res.status(401).json(error.message);
+      }
     }
+    
   }
 
 
