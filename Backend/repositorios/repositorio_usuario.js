@@ -130,7 +130,6 @@ class UsuarioRepositorio {
           if (!usuario) {
             throw new Error("Reserva no encontrada");
           }
-          console.log(usuario.value);
           return usuario.value;
         } catch (error) {
           throw new Error(error.message);
