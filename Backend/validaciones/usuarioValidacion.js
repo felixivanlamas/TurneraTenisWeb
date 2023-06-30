@@ -14,8 +14,21 @@ const validar = usuario => {
     return { result: true };
 }
 
+const usuarioSchemaLogin = Joi.object({
+  email: Joi.string().email().required(),
+  contrasenia: Joi.string().required(),
+});
+
+const validarLogin = usuario => {
+  const { error } = usuarioSchemaLogin.validate(usuario);
+  if (error) {
+    return { result: false, error };
+  }
+  return { result: true };
+}
 
 export default {
     validar,
+    validarLogin
   };
   
