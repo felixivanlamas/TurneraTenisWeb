@@ -42,16 +42,16 @@ class ServicioCanchas{
     }
 
     //elimina los datos reservados
-    modificarCancha = async(titulo,dia,horario)=>{
-        const cancha = await this.getCancha(titulo);
+    modificarCancha = async(reqReserva)=>{
+        const cancha = await this.getCancha(reqReserva.titulo);
         try{
-            if(!cancha.reservasDisponibles.dias[dia]){
+            if(!cancha.reservasDisponibles.dias[reqReserva.dia]){
                 throw new Error("El dia "+ dia +" no tiene mas reservas")
             }
-            if(!cancha.reservasDisponibles.dias[dia].includes(horario)){
+            if(!cancha.reservasDisponibles.dias[reqReserva.dia].includes(reqReserva.horario)){
                 throw new Error("El horario "+ horario +" no se encuentra disponible")
             }
-            const canchaModificada = await this.model.modificarCancha(cancha.titulo,dia,horario);
+            const canchaModificada = await this.model.modificarCancha(cancha.titulo,reqReserva.dia,reqReserva.horario);
             return canchaModificada.value.titulo
         }catch(error){
             throw new Error(error.message);

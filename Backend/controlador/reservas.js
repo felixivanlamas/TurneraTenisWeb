@@ -28,9 +28,10 @@ class ControladorReserva {
   }
 
   eliminarReserva = async (req, res) => {
+    // terminar de modificar lo necesario para que funcione
     const {id} = req.params
-    const { titulo, dia, horario } = req.body
-    const reqReserva={id,titulo,dia, horario}
+    const reserva = req.body
+    const reqReserva={id,reserva}
     try {
       reservasValidacion.validarReserva(titulo, dia, horario);
       const respuesta = await this.servicioUsuario.eliminarReserva(reqReserva)
