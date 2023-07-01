@@ -111,6 +111,7 @@ class ServicioUsuario{
         const filter = new ObjectId(reqReserva.id)
         try {
           const tieneMulta = await usuarioValidacion.multar(reqReserva.dia,reqReserva.horario)
+          console.log(tieneMulta);
           if (tieneMulta) {
             await this.model.multar(filter);
           }

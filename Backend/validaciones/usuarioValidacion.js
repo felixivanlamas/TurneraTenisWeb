@@ -66,11 +66,11 @@ const calcularFechaLimite = (dia, horario) => {
   // Comparar la fecha de reserva con la fecha actual
   const diferenciaHoras = Math.abs(fechaReserva - fechaActual) / 36e5; // Obtener la diferencia en horas
   if (diaSemana === fechaActual.getDay()) {
-    if (0 < diferenciaHoras < 24) {
+    if (0 < diferenciaHoras && diferenciaHoras < 24) {
       return true;
     }
   } else {
-    if (0 < diferenciaHoras < 24) {
+    if (0 < diferenciaHoras && diferenciaHoras < 24) {
       return true;
     }
   }
