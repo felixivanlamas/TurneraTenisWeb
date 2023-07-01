@@ -14,9 +14,8 @@ const validarReserva = (titulo,  dia, horario) => {
 
   const { error } = reservaSchema.validate({titulo,  dia, horario});
   if (error) {
-    return { result: false, error };
+    throw new Error(error)
   }
-  return { result: true };
 };
 
 

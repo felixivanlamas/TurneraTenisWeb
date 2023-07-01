@@ -18,9 +18,11 @@ class ControladorCanchas {
   }
 
   crearCancha = async(req,res) => {
+    const {titulo, tipo, imagen} = req.body
+    const cancha = { titulo, tipo, imagen };
+    
+    
     try {
-        const {titulo, tipo, imagen} = req.body
-        const cancha = { titulo, tipo, imagen };
         const validacion = canchasValidacion.validarCancha(cancha);
         if (!validacion.result) {
           throw validacion.error;
@@ -28,8 +30,11 @@ class ControladorCanchas {
         const respuesta = await this.servicio.crearCancha(titulo,tipo,imagen)
         res.status(200).send(respuesta)
     } catch (error) {
-        console.log(error.message)
-        res.status(400).send(error.message);
+      if(error.message === "Esta cancha ya existe"){
+        res.status(400).send(error.message)
+      }else{
+        res.status(422).send(error.message);
+      }
     }
   }
 
@@ -38,9 +43,8 @@ class ControladorCanchas {
         const {id} = req.params
         const cancha = await this.servicio.getCancha(id)
         res.status(200).send(cancha)
-    } catch (error) {
-        console.log(error.message)
-        res.status(400).send(error.message);
+    } catch (error) { 
+      res.status(400).send(error.message);
     }
   }
 

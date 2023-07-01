@@ -49,7 +49,6 @@ class ServicioUsuario{
         const filter = {_id:new ObjectId(id)}
         try {
           const respuesta = await this.model.editarUsuario(filter, datos)
-
           if(!respuesta){
             throw new Error("No se pudo editar el usuario")
           }
@@ -98,7 +97,6 @@ class ServicioUsuario{
         try {
           const usuario = await this.obtenerUsuario(id)
           await usuarioValidacion.puedeReservar(usuario,dia);
-          return
         } catch (error) {
           throw new Error(error);
         }
@@ -107,11 +105,10 @@ class ServicioUsuario{
 
 
       //Logica Eliminar Reservas
-      eliminarReserva= async (reqReserva ) => {
+      eliminarReserva = async (reqReserva ) => {
         const filter = new ObjectId(reqReserva.id)
         try {
           const tieneMulta = await usuarioValidacion.multar(reqReserva.dia,reqReserva.horario)
-          console.log(tieneMulta);
           if (tieneMulta) {
             await this.model.multar(filter);
           }

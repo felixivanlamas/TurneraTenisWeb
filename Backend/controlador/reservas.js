@@ -16,10 +16,7 @@ class ControladorReserva {
     const reqReserva={id, titulo, dia, horario}
     try {
       //Regla de Negocio reserva
-      const validacion = reservasValidacion.validarReserva(titulo,  dia, horario);
-      if (!validacion.result) {
-        throw validacion.error;
-      }
+      reservasValidacion.validarReserva(titulo,  dia, horario);
       await this.servicioUsuario.puedeReservar(reqReserva.id, reqReserva.dia);
       await this.servicioCancha.modificarCancha(titulo, dia, horario);
       const usuario = await this.servicioUsuario.reservar(reqReserva);
@@ -37,14 +34,11 @@ class ControladorReserva {
     const { titulo, dia, horario } = req.body
     const reqReserva={id,titulo,dia, horario}
     try {
-      const validacion = reservasValidacion.validarReserva(titulo, dia, horario);
-      if (!validacion.result) {
-        throw validacion.error;
-      }
+      reservasValidacion.validarReserva(titulo, dia, horario);
       const respuesta = await this.servicioUsuario.eliminarReserva(reqReserva)
       res.status(200).json(respuesta);
     }catch (error) {
-      if (error.message === "Debes una multa de 2000$") {
+      if (error.message === "2000$ fueron agregados a tu deuda") {
         res.status(400).json({ error: error.message, respuesta: respuesta });
       } else {
         res.status(401).json(error.message);

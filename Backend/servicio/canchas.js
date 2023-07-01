@@ -18,6 +18,10 @@ class ServicioCanchas{
 
     crearCancha = async(titulo,tipo,imagen)=>{
         try {
+            const cancha = await this.getCancha(titulo)
+            if(cancha){
+                throw new Error("Esta cancha ya existe")
+            }
             const respuesta = await this.model.crearCancha(titulo,tipo,imagen);
             return respuesta
         } catch (error) {
@@ -27,8 +31,11 @@ class ServicioCanchas{
 
     getCancha = async(titulo)=>{
         try {
-            const respuesta = await this.model.getCancha(titulo);
-            return respuesta
+            const cancha = await this.model.getCancha(titulo);
+            if(!cancha){
+                throw new Error("Esta cancha no existe")
+            }
+            return cancha
         } catch (error) {
             throw new Error(error);
         }

@@ -32,17 +32,19 @@ const validarLogin = usuario => {
 
 //Valicadiciones del Servicio
 
-const puedeReservar = async (usuario,dia) =>{
-  for (const reserva of usuario.reservas) {
-    if (reserva.dia === dia) {
-      throw new Error("El usuario ya tiene una reserva con el mismo día")
-    }else if(usuario.reservas.length > 3){
-      throw new Error("El usuario supero la cantidad de reservas maximas(3)")
-    }else if(usuario.debe > 0){
-      throw new Error("El usuario debe plata")
+const puedeReservar = async (usuario, dia) => {
+  if (usuario.debe > 0) {
+    throw new Error('El usuario debe '+ usuario.debe+'$');
+  }
+  if (usuario.reservas.length >= 3) {
+    throw new Error('El usuario ya tiene 3 reservas');
+  } else {
+    for (const reserva of usuario.reservas) {
+      if (reserva.dia === dia) {
+        throw new Error('El usuario no puede reservar dos veces un mismo dia');
+      }
     }
-    }
-  return 
+  }
 }
 
 const multar = async ( dia, horario) => {
