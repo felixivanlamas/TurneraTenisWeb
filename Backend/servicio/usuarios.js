@@ -3,8 +3,6 @@ import { ObjectId } from 'mongodb';
 import  ServicioCanchas  from "./canchas.js"
 import usuarioValidacion from "../validaciones/usuarioValidacion.js";
 
-
-
 class ServicioUsuario{
 
     constructor() {
@@ -12,24 +10,33 @@ class ServicioUsuario{
         this.servicioCanchas = new ServicioCanchas()
       }
 
-      registro = async (email,userame,contrasenia) => {
+      registro = async (usuario) => {
         try {
-          const newUser = await this.model.registro(email,userame,contrasenia)
+          const validarEmail = await this.model.buscarEmail(usuario.email)
+          const validarUsername = await this.model.buscarUsername(usuario.username)
+          if (validarEmail){
+            throw new Error("El email " + usuario.email + " ya se encuentra registrado!")
+          } 
+          if (validarUsername) {
+            throw new Error("El username " + usuario.username + " ya se encuentra registrado!")
+          }
+          const newUser = await this.model.registro(usuario)
           return newUser;
         } catch (error) {
           throw new Error(error);
         }
       };
 
-      login = async (email, contrasenia) => {
+      login = async (usuario) => {
         try {
-          const usuario = await this.model.login(email); 
-          if (contrasenia === usuario.contrasenia) {
-            console.log("Inicio de sesión exitoso de " + email);
-            return usuario;
-          } else {
+          const usuarioLogin = await this.model.buscarEmail(usuario.email);
+          if (!usuarioLogin) {
+            throw new Error("El email " + usuario.email + " no se encuentra registrado!");
+          }
+          if (usuarioLogin.contrasenia !== usuario.contrasenia) {
             throw new Error("Contraseña incorrecta");
           }
+          return usuarioLogin;
         } catch (error) {
           throw new Error(error);
         }
@@ -39,6 +46,9 @@ class ServicioUsuario{
         try {
           const idUsuario = new ObjectId(id)
           const usuario = await this.model.obtenerUsuario(idUsuario);
+          if (!usuario) {
+            throw new Error("Usuario no encontrado")
+          }
           return usuario;
         } catch (error) {
           throw new Error(error);
@@ -46,9 +56,11 @@ class ServicioUsuario{
       }
 
       editarUsuario = async (id, datos) => {
-        const filter = {_id:new ObjectId(id)}
         try {
-          const respuesta = await this.model.editarUsuario(filter, datos)
+          const usuario = this.obtenerUsuario(id)
+          const filter = {_id:new ObjectId(id)}
+          const respuesta = await this.model.editarUsuario(usuario, datos, filter)
+          console.log(respuesta);
           if(!respuesta){
             throw new Error("No se pudo editar el usuario")
           }
@@ -61,14 +73,17 @@ class ServicioUsuario{
       eliminarCuenta = async (id) => {
         const filter = {_id:new ObjectId(id)}
         try {
-          return await this.model.eliminarCuenta(filter);
+          const usuarioEliminado = await this.model.eliminarCuenta(filter)
+          if (!usuarioEliminado) {
+            throw new Error("El id que esta pasando no corresponde a un usuario registrado")
+        }
+        console.log("La cuenta con el email " + usuarioEliminado.email +" ha sido borrada correctamente");
+        return usuarioEliminado
         } catch (error) {
           throw new Error(error);
         }
       };
 
-      
-      
       getAll= async () => {
         try {
           const listaUsuarios = await this.model.getAll()
@@ -79,9 +94,10 @@ class ServicioUsuario{
       }
 
       //Logica reservar
-      reservar = async (reqReserva) => {
+      reservar = async (id, reqReserva) => {
         try {
-          const usuarioActualizado = await this.model.guardarReserva(reqReserva)
+          await this.puedeReservar(id, reqReserva.dia)
+          const usuarioActualizado = await this.model.guardarReserva(id,reqReserva)
           if(!usuarioActualizado){
             this.servicioCanchas.agregarDatos(reqReserva)
             throw new Error("No se pudo guardar la reserva")
@@ -92,7 +108,6 @@ class ServicioUsuario{
         }
       }
 
-
       puedeReservar = async (id, dia) => {
         try {
           const usuario = await this.obtenerUsuario(id)
@@ -102,8 +117,6 @@ class ServicioUsuario{
         }
       }
       
-
-
       //Logica Eliminar Reservas
       eliminarReserva = async (reqReserva ) => {
         const filter = new ObjectId(reqReserva.id)
@@ -112,14 +125,16 @@ class ServicioUsuario{
           if (tieneMulta) {
             await this.model.multar(filter);
           }
-          const respuesta = await this.model.eliminarReserva(filter,reqReserva)
+          const usuario = await this.model.eliminarReserva(filter,reqReserva)
+          if(!usuario){
+            throw new Error("Reserva no encontrada");
+          }
           await this.servicioCanchas.agregarDatos(reqReserva)
           console.log(respuesta);
           return respuesta
         } catch (error) {
           throw new Error(error);
         }
-      }
-      
+      }    
 }
 export default ServicioUsuario

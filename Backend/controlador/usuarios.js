@@ -11,35 +11,24 @@ class ControladorUsuario {
   }
 
   registro = async (req, res) => {
-    try {
-    const { email, username, contrasenia } = req.body
     const usuario = req.body
-    const validado = validaciones.validar(usuario)
-    if (validado.result) {
-      const newUser = await this.servicioUsuario.registro(email, username, contrasenia);
-      res.status(200).send(newUser);
+    try {
+    validaciones.validarBodyRegistro(usuario)
+    const newUser = await this.servicioUsuario.registro(usuario);
+    res.status(200).send(newUser);
     }
-    else {
-      throw validado.error;
-    }
-    } catch (error) {
-      console.log(error.message)
+    catch (error) {
       res.status(400).send(error.message);
     }
   };
 
   login = async (req, res) => {
-    const { email, contrasenia } = req.body
-    const usuarioAValidar = { email, contrasenia };
+    const usuario = req.body
     try {
-      const validado = validaciones.validarLogin(usuarioAValidar);
-      if (!validado.result) {
-        throw validacion.error;
-      }
-      const usuario = await this.servicioUsuario.login(email, contrasenia);
-      res.status(200).json(usuario);
+      validaciones.validarBodyLogin(usuario);
+      const usuarioRes = await this.servicioUsuario.login(usuario);
+      res.status(200).json(usuarioRes);
     } catch (error) {
-      console.log(error.message)
       res.status(400).send(error.message);
     }
   };

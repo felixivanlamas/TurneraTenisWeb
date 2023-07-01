@@ -4,7 +4,7 @@ const tituloValido = ["Cancha n°1", "Cancha n°2", "Cancha n°3", "Cancha n°4"
 const diaValido = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"];
 
 // Validaciones del body
-const validarReserva = (titulo,  dia, horario) => {
+const validarReserva = reqReserva => {
   const reservaSchema = Joi.object({
     titulo: Joi.string().valid(...tituloValido).required(),
     dia: Joi.string().valid(...diaValido).required(),
@@ -12,14 +12,11 @@ const validarReserva = (titulo,  dia, horario) => {
   
   });
 
-  const { error } = reservaSchema.validate({titulo,  dia, horario});
+  const { error } = reservaSchema.validate(reqReserva);
   if (error) {
     throw new Error(error)
   }
 };
-
-
-
 
 
 export default {

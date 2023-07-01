@@ -26,17 +26,9 @@ class UsuarioRepositorio {
     }
   }
 
-    async registro(email, username, contrasenia) {
+    async registro(usuario) {
         try {
-            const userEmail = await this.usuariosCollection.findOne({ email: email });
-            if (userEmail) {
-                throw new Error(`El correo ${email} ya fue ingresado`);
-            }
-            const userUsername = await this.usuariosCollection.findOne({ username: username });
-            if (userUsername) {
-              throw new Error(`El username ${username} ya fue ingresado`)
-            }
-            const newUser = new Usuario(username, email, contrasenia);
+            const newUser = new Usuario(usuario.username, usuario.email, usuario.contrasenia);
             await this.usuariosCollection.insertOne(newUser);
             return newUser;
         } catch (error) {
@@ -44,44 +36,34 @@ class UsuarioRepositorio {
         }
     }
 
-
-    async login(email) {
-        try {
-            const usuario = await this.usuariosCollection.findOne({ email: email });
-            if (!usuario) {
-                throw new Error(`El ${email} no está registrado`);
-            }
-            return usuario;
-        } catch (error) {
-            throw new Error(error.message);
-        }
+    async buscarEmail(email){
+        return await this.usuariosCollection.findOne({ email: email });
     }
 
-    async editarUsuario(filter, conditions) {
-      const datosAEditar = { $set: { } };
-      const usuarioViejo = await this.obtenerUsuario(filter);
-      
-      datosAEditar.$set.email = conditions.email ?? usuarioViejo.email;
-      datosAEditar.$set.contrasenia = conditions.contrasenia ?? usuarioViejo.contrasenia;
-      datosAEditar.$set.username = conditions.username ?? usuarioViejo.username;
-      
-      const usuarioEditado = await this.usuariosCollection.findOneAndUpdate(filter, datosAEditar, { returnDocument: "after" });
-      if (!usuarioEditado) {
-        throw new Error("Error al editar el usuario");
+
+    async buscarUsername(username){
+      return await this.usuariosCollection.findOne({ username: username });
+    }
+
+    async editarUsuario(usuarioViejo, datos, filter) {
+      try {
+        const datosAEditar = { $set: { } };      
+        datosAEditar.$set.email = datos.email ?? usuarioViejo.email;
+        datosAEditar.$set.contrasenia = datos.contrasenia ?? usuarioViejo.contrasenia;
+        datosAEditar.$set.username = datos.username ?? usuarioViejo.username;
+        const usuarioEditado = await this.usuariosCollection.findOneAndUpdate(filter, datosAEditar, { returnDocument: "after" });
+        return usuarioEditado.value;
+      } catch (error) {
+        throw new Error("Error al editar usuario: " + error);
       }
-      return usuarioEditado.value;
     }
     
     async eliminarCuenta(filter) {
         try {
             const usuarioEliminado = await this.usuariosCollection.findOneAndDelete(filter);
-            if (!usuarioEliminado) {
-                throw new Error("Usuario no encontrado")
-            }
-            console.log("La cuenta con el email " + usuarioEliminado.value.email +" ha sido borrada correctamente");
             return usuarioEliminado.value
         }catch (error) {
-            throw new Error(error.message);
+            throw new Error("Error al eliminar usuario: " + error);
         }
     };
 
@@ -99,12 +81,12 @@ class UsuarioRepositorio {
             const usuario = await this.usuariosCollection.findOne(idUsuario);
             return usuario
         } catch (error) {
-            return error;
+          throw new Error("Error al obtener usuario: " + error);
         }
     };
       
-    async guardarReserva(reqReserva) {
-        const idUsuario = new ObjectId(reqReserva.id);
+    async guardarReserva(id,reqReserva) {
+        const idUsuario = new ObjectId(id);
         const newReserva = new Reserva(reqReserva.titulo, reqReserva.dia,reqReserva.horario);
         try {
           const usuario = await this.usuariosCollection.findOneAndUpdate(
@@ -114,8 +96,7 @@ class UsuarioRepositorio {
           );
           return usuario;
         } catch (error) {
-          console.error("Error al guardar la reserva:", error);
-          throw error;
+          throw new Error("Error al reservar: " + error);
         }
       }
 
@@ -127,12 +108,9 @@ class UsuarioRepositorio {
             { $pull: { reservas: reservaAEliminar } },
             { returnDocument: "after" }
           );
-          if (!usuario) {
-            throw new Error("Reserva no encontrada");
-          }
           return usuario.value;
         } catch (error) {
-          throw new Error(error.message);
+          throw new Error("Error al eliminar reserva: " + error);
         }
       }
       

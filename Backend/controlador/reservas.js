@@ -12,14 +12,12 @@ class ControladorReserva {
 
   reservarCancha = async (req, res) => {
     const {id} = req.params
-    const {titulo,  dia, horario } = req.body
-    const reqReserva={id, titulo, dia, horario}
+    const reqReserva = req.body
     try {
       //Regla de Negocio reserva
-      reservasValidacion.validarReserva(titulo,  dia, horario);
-      await this.servicioUsuario.puedeReservar(reqReserva.id, reqReserva.dia);
-      await this.servicioCancha.modificarCancha(titulo, dia, horario);
-      const usuario = await this.servicioUsuario.reservar(reqReserva);
+      reservasValidacion.validarReserva(reqReserva);
+      const usuario = await this.servicioUsuario.reservar(id, reqReserva);
+      await this.servicioCancha.modificarCancha(reqReserva);
       res.status(200).json(usuario.value);
     } catch (error) {
       if (error.message === "El usuario es null") {

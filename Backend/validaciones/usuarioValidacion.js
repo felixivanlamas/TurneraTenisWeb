@@ -8,12 +8,11 @@ const usuarioSchema = Joi.object({
   contrasenia: Joi.string().required(),
 });
 
-const validar = usuario => {
+const validarBodyRegistro = usuario => {
     const { error } = usuarioSchema.validate(usuario);
     if (error) {
-      return { result: false, error };
+      throw new Error(error)
     }
-    return { result: true };
 }
 
 const usuarioSchemaLogin = Joi.object({
@@ -21,17 +20,18 @@ const usuarioSchemaLogin = Joi.object({
   contrasenia: Joi.string().required(),
 });
 
-const validarLogin = usuario => {
+const validarBodyLogin = usuario => {
   const { error } = usuarioSchemaLogin.validate(usuario);
   if (error) {
-    return { result: false, error };
+    throw new Error(error)
   }
-  return { result: true };
 }
 
 
 //Valicadiciones del Servicio
 
+
+//reservar
 const puedeReservar = async (usuario, dia) => {
   if (usuario.debe > 0) {
     throw new Error('El usuario debe '+ usuario.debe+'$');
@@ -83,8 +83,8 @@ const calcularFechaLimite = (dia, horario) => {
 
 
 export default {
-    validar,
-    validarLogin,
+    validarBodyRegistro,
+    validarBodyLogin,
     multar,
     puedeReservar,
     calcularFechaLimite,
