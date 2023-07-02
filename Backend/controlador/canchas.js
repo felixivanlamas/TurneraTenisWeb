@@ -18,10 +18,7 @@ class ControladorCanchas {
   }
 
   crearCancha = async(req,res) => {
-    const {titulo, tipo, imagen} = req.body
-    const cancha = { titulo, tipo, imagen };
-    
-    
+    const cancha = req.body
     try {
         const validacion = canchasValidacion.validarCancha(cancha);
         if (!validacion.result) {
@@ -47,8 +44,6 @@ class ControladorCanchas {
       res.status(400).send(error.message);
     }
   }
-
-   
 };
 
 
