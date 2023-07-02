@@ -22,7 +22,7 @@ class ServicioUsuario{
           const newUser = await this.model.registro(usuario)
           return newUser;
         } catch (error) {
-          throw new Error(error);
+          throw error;
         }
       };
 
@@ -37,7 +37,7 @@ class ServicioUsuario{
           }
           return usuarioLogin;
         } catch (error) {
-          throw new Error(error);
+          throw error;
         }
       };
 
@@ -52,7 +52,7 @@ class ServicioUsuario{
         } catch (error) {
           throw error;
         }
-      }
+      };
 
       editarUsuario = async (id, datos) => {
         const filter = {_id:new ObjectId(id)} 
@@ -70,7 +70,7 @@ class ServicioUsuario{
           }
           return respuesta
         } catch (error) {
-          throw new Error(error);
+          throw error;
         }
       };
 
@@ -84,7 +84,7 @@ class ServicioUsuario{
         console.log("La cuenta con el email " + usuarioEliminado.email +" ha sido borrada correctamente");
         return usuarioEliminado
         } catch (error) {
-          throw new Error(error);
+          throw error;
         }
       };
 
@@ -93,7 +93,16 @@ class ServicioUsuario{
           const listaUsuarios = await this.model.getAll()
           return listaUsuarios
         } catch (error) {
-          throw new Error(error);
+          throw error;
+        }
+      };
+
+      obtenerReservas = async (id) => {
+        try{
+          const usuario = await this.obtenerUsuario(id)
+          return usuario.reservas
+        }catch{
+          throw error
         }
       }
 
@@ -113,7 +122,7 @@ class ServicioUsuario{
         } catch (error) {
           throw error;
         }
-      }
+      };
 
       puedeReservar = async (id, dia) => {
         try {
@@ -122,26 +131,30 @@ class ServicioUsuario{
         } catch (error) {
           throw error;
         }
-      }
+      };
       
       //Logica Eliminar Reservas
       eliminarReserva = async (id, reqReserva ) => {
         const filter = {_id:new ObjectId(id)}
         try {
+          const reservasUsuario = await this.obtenerReservas(id);
+          if (!reservasUsuario.includes(reqReserva)) {
+            throw new Error("La reserva no existe");
+          }
           const tieneMulta = await usuarioValidacion.multar(reqReserva.dia,reqReserva.horario)
           if (tieneMulta) {
             await this.model.multar(filter);
           }
           const reservaAEliminar = new Reserva(reqReserva.titulo, reqReserva.dia, reqReserva.horario);
           const usuario = await this.model.eliminarReserva(filter,reservaAEliminar)
-          //error
-          if(!usuario){
-            throw new Error("Reserva no encontrada");
+          if (!usuario) {
+            throw new Error("No se pudo eliminar la reserva");
           }
           return usuario
         } catch (error) {
-          throw new Error(error);
+          throw error;
         }
-      }    
+      };
+
 }
 export default ServicioUsuario

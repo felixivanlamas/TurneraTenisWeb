@@ -37,14 +37,10 @@ class ControladorReserva {
     const reqReserva = req.body
     try {
       reservasValidacion.validarReserva(reqReserva);
-      await this.servicioCanchas.agregarDatos(reqReserva)
       const usuario = await this.servicioUsuario.eliminarReserva(id, reqReserva)
+      await this.servicioCanchas.agregarDatos(reqReserva)
       res.status(200).json(usuario);
     }catch (error) {
-      if (error.message == "Reserva no encontrada") {
-        await this.servicioCanchas.modificarCancha(reqReserva)
-        res.status(400).json(error.message)
-      }
       res.status(400).json(error.message);
     }
   }

@@ -119,7 +119,6 @@ class UsuarioRepositorio {
           { $inc: { debe: 2000 } },
           { returnDocument: "after" }
         );
-        return
       }
       
 }
