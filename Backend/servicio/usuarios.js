@@ -8,7 +8,6 @@ class ServicioUsuario{
 
     constructor() {
         this.model = new ModelUsuario()
-        this.servicioCanchas = new ServicioCanchas()
       }
 
       registro = async (usuario) => {
@@ -57,11 +56,16 @@ class ServicioUsuario{
       }
 
       editarUsuario = async (id, datos) => {
+        const filter = {_id:new ObjectId(id)} 
+       
         try {
-          const usuario = this.obtenerUsuario(id)
-          const filter = {_id:new ObjectId(id)}
-          const respuesta = await this.model.editarUsuario(usuario, datos, filter)
-          console.log(respuesta);
+          if(datos.username){
+            const username = await this.model.buscarUsername(datos.username)
+            if (username) {
+              throw new Error ("El username " + datos.username + " ya esta registrado, por favor ingrese otro")
+            }
+          }
+          const respuesta = await this.model.editarUsuario(datos, filter)
           if(!respuesta){
             throw new Error("No se pudo editar el usuario")
           }
@@ -102,9 +106,9 @@ class ServicioUsuario{
           //se crea la nueva reserva y el repositorio se encarga de agregarlo a la reservas del usuario
           const newReserva = new Reserva(reqReserva.titulo, reqReserva.dia, reqReserva.horario);
           const usuarioActualizado = await this.model.guardarReserva(filter,newReserva)
-          if(!usuarioActualizado){
-            this.servicioCanchas.agregarDatos(reqReserva)
-            throw new Error("No se pudo guardar la reserva")
+          //error
+          if (!usuarioActualizado) {
+            throw new Error("No se pudo guardar la reserva");
           }
           return usuarioActualizado
         } catch (error) {
@@ -131,11 +135,11 @@ class ServicioUsuario{
           }
           const reservaAEliminar = new Reserva(reqReserva.titulo, reqReserva.dia, reqReserva.horario);
           const usuario = await this.model.eliminarReserva(filter,reservaAEliminar)
+          //error
           if(!usuario){
             throw new Error("Reserva no encontrada");
           }
-          const respuesta = await this.servicioCanchas.agregarDatos(reqReserva)
-          return respuesta
+          return usuario
         } catch (error) {
           throw new Error(error);
         }

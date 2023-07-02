@@ -6,7 +6,7 @@ import reservasValidacion from "../validaciones/reservasValidacion.js";
 class ControladorReserva {
 
   constructor() {
-    this.servicioCancha = new ServicioCanchas()
+    this.servicioCanchas = new ServicioCanchas()
     this.servicioUsuario = new ServicioUsuario()
   }
 
@@ -16,14 +16,15 @@ class ControladorReserva {
     try {
       //Regla de Negocio reserva
       reservasValidacion.validarReserva(reqReserva);
+      await this.servicioCanchas.modificarCancha(reqReserva);
       const usuario = await this.servicioUsuario.reservar(id, reqReserva);
-      await this.servicioCancha.modificarCancha(reqReserva);
-      res.status(200).json(usuario.value);
+      res.status(200).json(usuario);
     } catch (error) {
-      if (error.message === "El usuario es null") {
-        res.status(404).json({ error: error.message });
+      if (error.message == "No se pudo guardar la reserva") {
+        await this.servicioCanchas.agregarDatos(reqReserva)
+        res.status(422).json(error.message)
       }
-      res.status(422).json(error.message);
+      res.status(400).json(error.message);
     }
   }
 
@@ -33,14 +34,15 @@ class ControladorReserva {
     const reqReserva = req.body
     try {
       reservasValidacion.validarReserva(reqReserva);
-      const respuesta = await this.servicioUsuario.eliminarReserva(id, reqReserva)
-      res.status(200).json(respuesta);
+      await this.servicioCanchas.agregarDatos(reqReserva)
+      const usuario = await this.servicioUsuario.eliminarReserva(id, reqReserva)
+      res.status(200).json(usuario);
     }catch (error) {
-      if (error.message === "2000$ fueron agregados a tu deuda") {
-        res.status(400).json({ error: error.message, respuesta: respuesta });
-      } else {
-        res.status(401).json(error.message);
+      if (error.message == "Reserva no encontrada") {
+        await this.servicioCanchas.modificarCancha(reqReserva)
+        res.status(400).json(error.message)
       }
+      res.status(400).json(error.message);
     }
   }
 }

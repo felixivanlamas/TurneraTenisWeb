@@ -2,30 +2,43 @@ import Joi from "joi"
 
 
 // Validaciones del body
-const usuarioSchema = Joi.object({
-  username: Joi.string().required(),
-  email: Joi.string().email().required(),
-  contrasenia: Joi.string().required(),
-});
-
 const validarBodyRegistro = usuario => {
-    const { error } = usuarioSchema.validate(usuario);
+  const usuarioSchema = Joi.object({
+    username: Joi.string().required(),
+    email: Joi.string().email().required(),
+    contrasenia: Joi.string().required(),
+  });
+
+  const { error } = usuarioSchema.validate(usuario);
     if (error) {
       throw new Error(error)
     }
 }
 
-const usuarioSchemaLogin = Joi.object({
-  email: Joi.string().email().required(),
-  contrasenia: Joi.string().required(),
-});
-
 const validarBodyLogin = usuario => {
+  const usuarioSchemaLogin = Joi.object({
+    email: Joi.string().email().required(),
+    contrasenia: Joi.string().required(),
+  });
+
   const { error } = usuarioSchemaLogin.validate(usuario);
   if (error) {
     throw new Error(error)
   }
 }
+
+const validarBodyEditar = datos => {
+  const schema = Joi.object({
+    username: Joi.string(),
+    contrasenia: Joi.string()
+  }).min(1).max(2).or('username', 'contrasenia');
+
+  const { error } = schema.validate(datos);
+  if (error) {
+    throw new Error(error);
+  }
+}
+
 
 
 //Valicadiciones del Servicio
@@ -85,6 +98,7 @@ const calcularFechaLimite = (dia, horario) => {
 export default {
     validarBodyRegistro,
     validarBodyLogin,
+    validarBodyEditar,
     multar,
     puedeReservar,
     calcularFechaLimite,

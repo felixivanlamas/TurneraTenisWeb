@@ -1,5 +1,3 @@
-import { ObjectId } from 'mongodb';
-import Reserva from '../clases/reserva.js';
 import Usuario from '../clases/usuario.js';
 import ConexionMongo from './conexionMongoDb.js';
 
@@ -45,18 +43,22 @@ class UsuarioRepositorio {
       return await this.usuariosCollection.findOne({ username: username });
     }
 
-    async editarUsuario(usuarioViejo, datos, filter) {
+    async editarUsuario(datos, filter) {
       try {
         const datosAEditar = { $set: { } };      
-        datosAEditar.$set.email = datos.email ?? usuarioViejo.email;
-        datosAEditar.$set.contrasenia = datos.contrasenia ?? usuarioViejo.contrasenia;
-        datosAEditar.$set.username = datos.username ?? usuarioViejo.username;
+        if (datos.contrasenia !== undefined) {
+          datosAEditar.$set.contrasenia = datos.contrasenia;
+        }
+        if (datos.username !== undefined) {
+          datosAEditar.$set.username = datos.username;
+        }
         const usuarioEditado = await this.usuariosCollection.findOneAndUpdate(filter, datosAEditar, { returnDocument: "after" });
         return usuarioEditado.value;
       } catch (error) {
         throw new Error("Error al editar usuario: " + error);
       }
     }
+    
     
     async eliminarCuenta(filter) {
         try {
@@ -92,7 +94,7 @@ class UsuarioRepositorio {
             { $push: { reservas: newReserva } },
             { returnDocument: "after" }
           );
-          return usuario;
+          return usuario.value;
         } catch (error) {
           throw new Error("Error al reservar: " + error);
         }

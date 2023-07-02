@@ -18,7 +18,7 @@ class ControladorUsuario {
     res.status(200).send(newUser);
     }
     catch (error) {
-      res.status(400).send(error.message);
+      res.status(401).send(error.message);
     }
   };
 
@@ -29,7 +29,7 @@ class ControladorUsuario {
       const usuarioRes = await this.servicioUsuario.login(usuario);
       res.status(200).json(usuarioRes);
     } catch (error) {
-      res.status(400).send(error.message);
+      res.status(401).send(error.message);
     }
   };
 
@@ -37,11 +37,11 @@ class ControladorUsuario {
     const {id} = req.params
     const datos = req.body
     try {
+      validaciones.validarBodyEditar(datos);
       const respuesta = await this.servicioUsuario.editarUsuario(id, datos);
       res.status(200).send(respuesta);
     } catch (error) {
-      console.error(error.message);
-      res.status(400).send(error.message);
+      res.status(401).send(error.message);
     }
   }
 

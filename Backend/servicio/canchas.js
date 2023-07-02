@@ -71,7 +71,7 @@ class ServicioCanchas{
     agregarArrayDatos = async(arrayReserva)=>{
         try {
             arrayReserva.forEach(r => {
-                this.model.agregarDatos(r);
+                this.agregarDatos(r);
             });
             return "Reservas agregadas Correctamente"
         } catch (error) {
