@@ -138,7 +138,8 @@ class ServicioUsuario{
         const filter = {_id:new ObjectId(id)}
         try {
           const reservasUsuario = await this.obtenerReservas(id);
-          if (!reservasUsuario.includes(reqReserva)) {
+          const contieneReserva = usuarioValidacion.contieneReserva(reqReserva,reservasUsuario)
+          if (!contieneReserva) {
             throw new Error("La reserva no existe");
           }
           const tieneMulta = await usuarioValidacion.multar(reqReserva.dia,reqReserva.horario)

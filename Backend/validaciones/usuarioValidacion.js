@@ -92,6 +92,17 @@ const calcularFechaLimite = (dia, horario) => {
 
   return false;
 };
+  
+
+
+  const contieneReserva = (reqReserva, reservasUsuario) => {
+    for (const reserva of reservasUsuario) {
+      if (reserva.titulo === reqReserva.titulo && reserva.dia === reqReserva.dia && reserva.horario === reqReserva.horario) {
+        return true;
+      }
+    }
+    return false;
+};
 
 
 
@@ -102,5 +113,6 @@ export default {
     multar,
     puedeReservar,
     calcularFechaLimite,
+    contieneReserva,
   };
   
