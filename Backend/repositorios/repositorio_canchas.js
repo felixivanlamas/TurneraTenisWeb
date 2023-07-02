@@ -68,8 +68,7 @@ class CanchaRepositorio {
             opciones
           );
         } catch (error) {
-          console.error('Error al actualizar la Cancha:', error);
-          throw error;
+          throw new Error("Error al modificar la cancha: " + error);
         }
       }
 

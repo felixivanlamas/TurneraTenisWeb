@@ -1,6 +1,5 @@
 import ModelUsuario from "../repositorios/repositorio_usuario.js"
 import { ObjectId } from 'mongodb';
-import  ServicioCanchas  from "./canchas.js"
 import usuarioValidacion from "../validaciones/usuarioValidacion.js";
 import Reserva from "../clases/reserva.js";
 
@@ -51,7 +50,7 @@ class ServicioUsuario{
           }
           return usuario;
         } catch (error) {
-          throw new Error(error);
+          throw error;
         }
       }
 
@@ -112,7 +111,7 @@ class ServicioUsuario{
           }
           return usuarioActualizado
         } catch (error) {
-          throw new Error(error);
+          throw error;
         }
       }
 
@@ -121,7 +120,7 @@ class ServicioUsuario{
           const usuario = await this.obtenerUsuario(id)
           await usuarioValidacion.puedeReservar(usuario,dia);
         } catch (error) {
-          throw new Error(error);
+          throw error;
         }
       }
       

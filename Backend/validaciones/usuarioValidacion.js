@@ -1,5 +1,5 @@
 import Joi from "joi"
-
+import {ValidateError} from "../errores.js"
 
 // Validaciones del body
 const validarBodyRegistro = usuario => {
@@ -47,14 +47,14 @@ const validarBodyEditar = datos => {
 //reservar
 const puedeReservar = async (usuario, dia) => {
   if (usuario.debe > 0) {
-    throw new Error('El usuario debe '+ usuario.debe+'$');
+    throw new ValidateError('El usuario debe '+ usuario.debe+'$');
   }
   if (usuario.reservas.length >= 3) {
-    throw new Error('El usuario ya tiene 3 reservas');
+    throw new ValidateError('El usuario ya tiene 3 reservas');
   } else {
     for (const reserva of usuario.reservas) {
       if (reserva.dia === dia) {
-        throw new Error('El usuario no puede reservar dos veces un mismo dia');
+        throw new ValidateError('El usuario no puede reservar dos veces en un mismo dia');
       }
     }
   }

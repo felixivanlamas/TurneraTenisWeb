@@ -12,3 +12,9 @@ export  class DatabaseError extends Error {
         this.name = "DatabaseError";
     }
 }
+export  class ValidateError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "ValidateError";
+    }
+}

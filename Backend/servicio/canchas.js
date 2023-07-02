@@ -1,5 +1,4 @@
 import ModelCancha from "../repositorios/repositorio_canchas.js"
-import { InvalidCredentialsError } from "../errores.js"
 
 class ServicioCanchas{
 
@@ -45,11 +44,11 @@ class ServicioCanchas{
     modificarCancha = async(reqReserva)=>{
         const cancha = await this.getCancha(reqReserva.titulo);
         try{
-            if(!cancha.reservasDisponibles.dias[reqReserva.dia]){
-                throw new Error("El dia "+ dia +" no tiene mas reservas")
+            if(cancha.reservasDisponibles.dias[reqReserva.dia].length === 0){
+                throw new Error("El dia "+ reqReserva.dia +" no se encuentra disponible")
             }
             if(!cancha.reservasDisponibles.dias[reqReserva.dia].includes(reqReserva.horario)){
-                throw new Error("El horario "+ horario +" no se encuentra disponible")
+                throw new Error("El horario "+ reqReserva.horario +" no se encuentra disponible")
             }
             const canchaModificada = await this.model.modificarCancha(cancha.titulo,reqReserva.dia,reqReserva.horario);
             return canchaModificada.value.titulo
