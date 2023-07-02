@@ -74,15 +74,13 @@ class CanchaRepositorio {
       }
 
       async agregarDatos(reqReserva) {
-        const nuevosDatos = {
-          $push: {
-            [`reservasDisponibles.dias.${reqReserva.dia}`]: reqReserva.horario
-          }
-        };
         try {
-          
+          const nuevosDatos = {
+            $push: {
+              [`reservasDisponibles.dias.${reqReserva.dia}`]: reqReserva.horario
+            }
+          };
           const opciones = { returnDocument: "after" };
-      
           const canchasActualizada = await this.canchasCollection.findOneAndUpdate(
             { titulo: reqReserva.titulo },
             nuevosDatos,

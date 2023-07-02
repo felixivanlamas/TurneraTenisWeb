@@ -2,6 +2,7 @@ import ModelUsuario from "../repositorios/repositorio_usuario.js"
 import { ObjectId } from 'mongodb';
 import  ServicioCanchas  from "./canchas.js"
 import usuarioValidacion from "../validaciones/usuarioValidacion.js";
+import Reserva from "../clases/reserva.js";
 
 class ServicioUsuario{
 
@@ -96,8 +97,11 @@ class ServicioUsuario{
       //Logica reservar
       reservar = async (id, reqReserva) => {
         try {
+          const filter = {_id:new ObjectId(id)}
           await this.puedeReservar(id, reqReserva.dia)
-          const usuarioActualizado = await this.model.guardarReserva(id,reqReserva)
+          //se crea la nueva reserva y el repositorio se encarga de agregarlo a la reservas del usuario
+          const newReserva = new Reserva(reqReserva.titulo, reqReserva.dia, reqReserva.horario);
+          const usuarioActualizado = await this.model.guardarReserva(filter,newReserva)
           if(!usuarioActualizado){
             this.servicioCanchas.agregarDatos(reqReserva)
             throw new Error("No se pudo guardar la reserva")
@@ -118,19 +122,19 @@ class ServicioUsuario{
       }
       
       //Logica Eliminar Reservas
-      eliminarReserva = async (reqReserva ) => {
-        const filter = new ObjectId(reqReserva.id)
+      eliminarReserva = async (id, reqReserva ) => {
+        const filter = {_id:new ObjectId(id)}
         try {
           const tieneMulta = await usuarioValidacion.multar(reqReserva.dia,reqReserva.horario)
           if (tieneMulta) {
             await this.model.multar(filter);
           }
-          const usuario = await this.model.eliminarReserva(filter,reqReserva)
+          const reservaAEliminar = new Reserva(reqReserva.titulo, reqReserva.dia, reqReserva.horario);
+          const usuario = await this.model.eliminarReserva(filter,reservaAEliminar)
           if(!usuario){
             throw new Error("Reserva no encontrada");
           }
-          await this.servicioCanchas.agregarDatos(reqReserva)
-          console.log(respuesta);
+          const respuesta = await this.servicioCanchas.agregarDatos(reqReserva)
           return respuesta
         } catch (error) {
           throw new Error(error);

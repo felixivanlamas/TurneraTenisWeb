@@ -30,11 +30,10 @@ class ControladorReserva {
   eliminarReserva = async (req, res) => {
     // terminar de modificar lo necesario para que funcione
     const {id} = req.params
-    const reserva = req.body
-    const reqReserva={id,reserva}
+    const reqReserva = req.body
     try {
-      reservasValidacion.validarReserva(titulo, dia, horario);
-      const respuesta = await this.servicioUsuario.eliminarReserva(reqReserva)
+      reservasValidacion.validarReserva(reqReserva);
+      const respuesta = await this.servicioUsuario.eliminarReserva(id, reqReserva)
       res.status(200).json(respuesta);
     }catch (error) {
       if (error.message === "2000$ fueron agregados a tu deuda") {
@@ -43,9 +42,6 @@ class ControladorReserva {
         res.status(401).json(error.message);
       }
     }
-    
   }
-
-
 }
 export default ControladorReserva 

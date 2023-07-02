@@ -85,12 +85,10 @@ class UsuarioRepositorio {
         }
     };
       
-    async guardarReserva(id,reqReserva) {
-        const idUsuario = new ObjectId(id);
-        const newReserva = new Reserva(reqReserva.titulo, reqReserva.dia,reqReserva.horario);
+    async guardarReserva(filter,newReserva) {
         try {
           const usuario = await this.usuariosCollection.findOneAndUpdate(
-            { _id: idUsuario },
+            filter,
             { $push: { reservas: newReserva } },
             { returnDocument: "after" }
           );
@@ -100,11 +98,10 @@ class UsuarioRepositorio {
         }
       }
 
-      async eliminarReserva(filter, reqReserva) {
-        const reservaAEliminar = new Reserva(reqReserva.titulo, reqReserva.dia, reqReserva.horario);
+      async eliminarReserva(filter, reservaAEliminar) {
         try {
           const usuario = await this.usuariosCollection.findOneAndUpdate(
-            {_id: filter},
+            filter,
             { $pull: { reservas: reservaAEliminar } },
             { returnDocument: "after" }
           );
@@ -114,9 +111,9 @@ class UsuarioRepositorio {
         }
       }
       
-      async multar(id) {
+      async multar(filter) {
         await this.usuariosCollection.findOneAndUpdate(
-          { _id: id },
+          filter,
           { $inc: { debe: 2000 } },
           { returnDocument: "after" }
         );
