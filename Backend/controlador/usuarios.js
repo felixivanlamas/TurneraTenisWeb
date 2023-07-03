@@ -15,10 +15,10 @@ class ControladorUsuario {
     try {
     validaciones.validarBodyRegistro(usuario)
     const newUser = await this.servicioUsuario.registro(usuario);
-    res.status(200).send(newUser);
+    res.status(200).json(newUser);
     }
     catch (error) {
-      res.status(401).send(error.message);
+      res.status(401).json(error.message);
     }
   };
 
@@ -29,7 +29,7 @@ class ControladorUsuario {
       const usuarioRes = await this.servicioUsuario.login(usuario);
       res.status(200).json(usuarioRes);
     } catch (error) {
-      res.status(401).send(error.message);
+      res.status(401).json(error.message);
     }
   };
 
@@ -39,9 +39,9 @@ class ControladorUsuario {
     try {
       validaciones.validarBodyEditar(datos);
       const respuesta = await this.servicioUsuario.editarUsuario(id, datos);
-      res.status(200).send(respuesta);
+      res.status(200).json(respuesta);
     } catch (error) {
-      res.status(401).send(error.message);
+      res.status(401).json(error.message);
     }
   }
 
@@ -50,9 +50,9 @@ class ControladorUsuario {
     try {
       const usuarioEliminado = await this.servicioUsuario.eliminarCuenta(id);
       await this.servicioCancha.agregarArrayDatos(usuarioEliminado.reservas)
-      res.status(200).send(usuarioEliminado);
+      res.status(200).json(usuarioEliminado);
     } catch (error) {
-      res.status(400).send(error.message);
+      res.status(400).json(error.message);
     }
   }
 
@@ -80,7 +80,7 @@ class ControladorUsuario {
       const listaUsuarios = await this.servicioUsuario.getAll();
       res.status(200).json(listaUsuarios);
     } catch (error) {
-      res.status(400).send(error.message);
+      res.status(400).json(error.message);
     }
   }
 

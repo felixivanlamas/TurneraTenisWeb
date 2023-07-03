@@ -13,7 +13,7 @@ class ControladorCanchas {
       res.status(200).json(respuesta);
     } catch (error) {
       console.log(error.message)
-      res.status(400).send(error.message);
+      res.status(400).json(error.message);
     }
   }
 
@@ -25,12 +25,12 @@ class ControladorCanchas {
           throw validacion.error;
         }
         const respuesta = await this.servicio.crearCancha(titulo,tipo,imagen)
-        res.status(200).send(respuesta)
+        res.status(200).json(respuesta)
     } catch (error) {
-      if(error.message === "Esta cancha ya existe"){
-        res.status(400).send(error.message)
+      if(error instanceof ServicioError){
+        res.status(400).json(error.message)
       }else{
-        res.status(422).send(error.message);
+        res.status(422).json(error.message);
       }
     }
   }
@@ -39,9 +39,9 @@ class ControladorCanchas {
     try {
         const {id} = req.params
         const cancha = await this.servicio.getCancha(id)
-        res.status(200).send(cancha)
+        res.status(200).json(cancha)
     } catch (error) { 
-      res.status(400).send(error.message);
+      res.status(400).json(error.message);
     }
   }
 };

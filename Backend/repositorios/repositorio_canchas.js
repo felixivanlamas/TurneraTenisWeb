@@ -1,5 +1,6 @@
 import ConexionMongo from './conexionMongoDb.js';
 import Cancha from '../clases/cancha.js'
+import { DatabaseError } from '../errores.js';
 
 class CanchaRepositorio {
     constructor() {
@@ -28,7 +29,7 @@ class CanchaRepositorio {
             const canchas = await this.canchasCollection.find().toArray();
             return canchas;
         } catch (error) {
-            throw new Error("No hay canchas para mostrar: "  + error);
+            throw new DatabaseError("No hay canchas para mostrar: "  + error);
         }
     }
 
@@ -38,7 +39,7 @@ class CanchaRepositorio {
             const canchaCreada= await this.canchasCollection.insertOne(newCancha)
             return canchaCreada
         } catch(error){
-            throw new Error("Error al crear la cancha: " + error)
+            throw new DatabaseError("Error al crear la cancha: " + error)
         }
     }
 
@@ -47,7 +48,7 @@ class CanchaRepositorio {
             const cancha = await this.canchasCollection.findOne({titulo: titulo});
             return cancha;
         } catch (error) {
-            throw new Error("Error al obtener la cancha: " + error) 
+            throw new DatabaseError("Error al obtener la cancha: " + error) 
         }
     }
    
@@ -68,7 +69,7 @@ class CanchaRepositorio {
             opciones
           );
         } catch (error) {
-          throw new Error("Error al modificar la cancha: " + error);
+          throw new DatabaseError("Error al modificar la cancha: " + error);
         }
       }
 
@@ -87,8 +88,7 @@ class CanchaRepositorio {
             );
           return canchasActualizada.value
         } catch (error) {
-          console.error('Error al agregar los datos:', error);
-          throw error;
+          throw new DatabaseError("Error al agregar la cancha: " + error);
         }
       }
       

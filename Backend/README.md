@@ -16,15 +16,7 @@ disfrutar de su deporte favorito.
   específicas, y recibir una confirmación de su reserva.
 - Cancelación de reservas: opción de cancelar reservas si surge algún imprevisto aplicando
   políticas de cancelación con reglas claras para garantizar la disponibilidad de las pistas.
-- Pagos: permitir a los usuarios pagar por sus reservas directamente en la plataforma o en
-  la instalación al momento de jugar.
-- Notificaciones: envio de notificaciones a los usuarios sobre sus reservas, cancelaciones
-  y recordatorios de próximas partidas.
-- Clasificaciones: mostrar clasificacion de jugadores previamente registrados basado en sus
-  habilidades y puntajes obtenidos en partidas anteriores.
-- Comentarios y opiniones: permitir a los usuarios dar su opinión sobre las instalaciones,
-  los horarios y la calidad de las pistas, y mostrar esos comentarios y opiniones a otros
-  usuarios.
+
   \## 2.2 No funcionales
 - Usabilidad: la aplicación debe ser fácil de usar para los usuarios, con una interfaz
   clara e intuitiva que permita a los usuarios realizar reservas sin dificultad.
@@ -34,8 +26,6 @@ disfrutar de su deporte favorito.
   personales de los usuarios y los pagos realizados en la plataforma.
 - Rendimiento: la aplicación debe tener un alto rendimiento para garantizar que las reservas
   se realicen de manera eficiente y sin demoras.
-- Escalabilidad: la aplicación debe ser escalable para permitir el crecimiento de usuarios
-  y nuevas instalaciones.
 - Mantenimiento: la aplicación debe ser fácil de mantener y actualizar para corregir errores
   y agregar nuevas funcionalidades sin afectar a los usuarios.
 - Compatibilidad: la aplicación debe ser compatible con diferentes dispositivos y sistemas
@@ -43,14 +33,19 @@ disfrutar de su deporte favorito.
 - Experiencia de usuario: la aplicación debe proporcionar una experiencia de usuario
   satisfactoria, con diseños y funcionalidades atractivas que mejoren la interacción y satisfacción de los usuarios.
 - Cumplimiento normativo: la aplicación debe cumplir con las regulaciones y leyes
-  aplicables para garantizar la protección de datos personales y la seguridad en los pagos.
+  aplicables para garantizar la protección de datos personales .
   \# 3. Reglas de negocio
 
+-Politica de usuario:
+-item1: El correo electrónico del usuario debe ser único y no puede modificarse una vez registrado. 
+-item2: El usuario tiene la capacidad de modificar sus atributos, pero el nombre de usuario debe mantener su autenticidad.
+
 - Política de reservas:
--item1: los usuarios solo pueden reservar una pista por día
--item2: los usuarios pueden tener un maximo de 3 reservas
--item3: si los usuarios debe no puede realizar una reserva
+-item1: Los usuarios solo pueden reservar una pista por día.
+-item2: Los usuarios solo pueden reservar una pista por día.
+-item3: Los usuarios con deudas pendientes no pueden realizar una reserva.
 
 - Politica de Cancelacion: 
--item1: al usuario se le da la posibilidad de cancelar la reserva, con menos de 24hs de anticipacion se le cobra una multa de 2000$(valor de la reserva)
+-item1: Los usuarios tienen la posibilidad de cancelar una reserva.
+-item2: Si la cancelación se realiza con menos de 24 horas de anticipación, se aplicará una multa de $2000, que equivale al valor de la reserva.
 

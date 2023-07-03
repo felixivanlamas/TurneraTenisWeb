@@ -1,7 +1,8 @@
 import ServicioUsuario from "../servicio/usuarios.js"
 import ServicioCanchas from "../servicio/canchas.js"
 import reservasValidacion from "../validaciones/reservasValidacion.js";
-import {ValidateError} from "../errores.js"
+import { ValidateError } from "../errores.js";
+import { ServicioError } from "../errores.js";
 
 
 class ControladorReserva {
@@ -21,9 +22,9 @@ class ControladorReserva {
       const usuario = await this.servicioUsuario.reservar(id, reqReserva);
       res.status(200).json(usuario);
     } catch (error) {
-        if (error instanceof ValidateError || error.message == "No se pudo guardar la reserva") {
+        if (error instanceof ServicioError  || error instanceof ValidateError) {
           await this.servicioCanchas.agregarDatos(reqReserva)
-          res.status(422).json(error.message)
+          res.status(422).json({ error: error.message });
         }
         else{
           res.status(400).json(error.message)
@@ -32,7 +33,6 @@ class ControladorReserva {
     }
 
   eliminarReserva = async (req, res) => {
-    // terminar de modificar lo necesario para que funcione
     const {id} = req.params
     const reqReserva = req.body
     try {

@@ -1,5 +1,6 @@
 import Usuario from '../clases/usuario.js';
 import ConexionMongo from './conexionMongoDb.js';
+import { DatabaseError } from '../errores.js';
 
 class UsuarioRepositorio {
   constructor() {
@@ -30,7 +31,7 @@ class UsuarioRepositorio {
             await this.usuariosCollection.insertOne(newUser);
             return newUser;
         } catch (error) {
-            throw new Error("Error al registrar usuario: " + error);
+            throw new DatabaseError("Error al registrar usuario: " + error);
         }
     }
 
@@ -55,7 +56,7 @@ class UsuarioRepositorio {
         const usuarioEditado = await this.usuariosCollection.findOneAndUpdate(filter, datosAEditar, { returnDocument: "after" });
         return usuarioEditado.value;
       } catch (error) {
-        throw new Error("Error al editar usuario: " + error);
+        throw new DatabaseError("Error al editar usuario: " + error);
       }
     }
     
@@ -65,7 +66,7 @@ class UsuarioRepositorio {
             const usuarioEliminado = await this.usuariosCollection.findOneAndDelete(filter);
             return usuarioEliminado.value
         }catch (error) {
-            throw new Error("Error al eliminar usuario: " + error);
+            throw new DatabaseError("Error al eliminar usuario: " + error);
         }
     };
 
@@ -74,7 +75,7 @@ class UsuarioRepositorio {
           const result = await this.usuariosCollection.find().toArray();
           return result
         } catch (error) {
-          throw new Error(error);
+          throw new DatabaseError(error);
         }
       } 
 
@@ -83,7 +84,7 @@ class UsuarioRepositorio {
             const usuario = await this.usuariosCollection.findOne(idUsuario);
             return usuario
         } catch (error) {
-          throw new Error("Error al obtener usuario: " + error);
+          throw new DatabaseError("Error al obtener usuario: " + error);
         }
     };
       
@@ -96,7 +97,7 @@ class UsuarioRepositorio {
           );
           return usuario.value;
         } catch (error) {
-          throw new Error("Error al reservar: " + error);
+          throw new DatabaseError("Error al reservar: " + error);
         }
       }
 
@@ -109,7 +110,7 @@ class UsuarioRepositorio {
           );
           return usuario.value;
         } catch (error) {
-          throw new Error("Error al eliminar reserva: " + error);
+          throw new DatabaseError("Error al eliminar reserva: " + error);
         }
       }
       

@@ -18,3 +18,10 @@ export  class ValidateError extends Error {
         this.name = "ValidateError";
     }
 }
+
+export class ServicioError extends Error{
+    constructor(message) {
+        super(message);
+        this.name = "ServicioError";
+    }
+}
