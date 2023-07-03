@@ -1,5 +1,6 @@
 import ServicioCanchas from "../servicio/canchas.js"
 import canchasValidacion from "../validaciones/canchasValidacion.js";
+import {ServicioError} from "../errores.js";
 
 class ControladorCanchas {
 

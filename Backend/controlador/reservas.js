@@ -1,8 +1,7 @@
 import ServicioUsuario from "../servicio/usuarios.js"
 import ServicioCanchas from "../servicio/canchas.js"
 import reservasValidacion from "../validaciones/reservasValidacion.js";
-import { ValidateError } from "../errores.js";
-import { ServicioError } from "../errores.js";
+import { ValidateError, ServicioError} from "../errores.js";
 
 
 class ControladorReserva {

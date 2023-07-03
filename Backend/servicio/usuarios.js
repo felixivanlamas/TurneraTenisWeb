@@ -2,8 +2,7 @@ import ModelUsuario from "../repositorios/repositorio_usuario.js"
 import { ObjectId } from 'mongodb';
 import usuarioValidacion from "../validaciones/usuarioValidacion.js";
 import Reserva from "../clases/reserva.js";
-import { InvalidCredentialsError } from "../errores.js";
-import { ServicioError } from "../errores.js";
+import { ServicioError,InvalidCredentialsError } from "../errores.js";
 
 class ServicioUsuario{
 
