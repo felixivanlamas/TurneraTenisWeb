@@ -46,12 +46,16 @@ class UsuarioRepositorio {
 
     async editarUsuario(datos, filter) {
       try {
+
         const datosAEditar = { $set: { } };      
         if (datos.contrasenia !== undefined) {
           datosAEditar.$set.contrasenia = datos.contrasenia;
         }
         if (datos.username !== undefined) {
           datosAEditar.$set.username = datos.username;
+        }
+        if(datos.debe !== undefined){
+          datosAEditar.$set.debe = datos.debe;
         }
         const usuarioEditado = await this.usuariosCollection.findOneAndUpdate(filter, datosAEditar, { returnDocument: "after" });
         return usuarioEditado.value;

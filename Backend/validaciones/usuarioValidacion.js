@@ -30,8 +30,9 @@ const validarBodyLogin = usuario => {
 const validarBodyEditar = datos => {
   const schema = Joi.object({
     username: Joi.string(),
-    contrasenia: Joi.string()
-  }).min(1).max(2).or('username', 'contrasenia');
+    contrasenia: Joi.string(),
+    debe: Joi.number(),
+  }).min(1).max(3).or('username', 'contrasenia','debe');
 
   const { error } = schema.validate(datos);
   if (error) {
