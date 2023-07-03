@@ -1,13 +1,11 @@
 import ServicioUsuario from "../servicio/usuarios.js"
 import {InvalidCredentialsError} from "../errores.js"
-import ServicioCanchas from "../servicio/canchas.js"
 import validaciones from '../validaciones/usuarioValidacion.js'
 
 class ControladorUsuario {
 
   constructor() {
     this.servicioUsuario = new ServicioUsuario()
-    this.servicioCancha = new ServicioCanchas()
   }
 
   registro = async (req, res) => {
@@ -70,7 +68,6 @@ class ControladorUsuario {
     } catch (error) {
        if (error instanceof InvalidCredentialsError) {
             res.status(400).json(error.message);
-           
         }
     }
   };
