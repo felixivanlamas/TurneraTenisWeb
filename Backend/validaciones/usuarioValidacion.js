@@ -47,7 +47,7 @@ const validarBodyEditar = datos => {
 //reservar
 const puedeReservar = async (usuario, dia) => {
   if (usuario.debe > 0) {
-    throw new ValidateError('El usuario debe '+ usuario.debe+'$');
+    throw new ValidateError('El usuario debe $'+usuario.debe);
   }
   if (usuario.reservas.length >= 3) {
     throw new ValidateError('El usuario ya tiene 3 reservas');
