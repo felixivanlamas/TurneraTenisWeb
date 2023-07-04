@@ -1,6 +1,6 @@
 <script>
-import { useCanchasStore } from "../stores/canchas.js";
-import { useUserStore } from "../stores/user.js";
+import { useCanchasStore } from "../../stores/canchas.js";
+import { useUserStore } from "../../stores/user.js";
 export default {
   data() {
     return {

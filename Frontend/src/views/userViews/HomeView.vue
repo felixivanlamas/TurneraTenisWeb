@@ -1,8 +1,8 @@
 <script>
 //import { canchasService } from "../services/canchasService.js"
-import {useCanchasStore} from "../stores/canchas.js"
-import {useUserStore} from "../stores/user.js"
-import TablaTurnos from '../components/TablaTurnos.vue'
+import {useCanchasStore} from "../../stores/canchas.js"
+import {useUserStore} from "../../stores/user.js"
+import TablaTurnos from '../../components/TablaTurnos.vue'
 
 export default {
   data() {

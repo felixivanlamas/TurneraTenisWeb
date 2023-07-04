@@ -1,5 +1,5 @@
 <script>
-import {useUserStore} from "../stores/user.js"
+import {useUserStore} from "../../stores/user.js";
 
 
 export default {
@@ -10,7 +10,7 @@ export default {
         username:"",
         email: "",
         contrasenia: "",
-        debe:"",
+        debe:0,
       },
     };
   },
@@ -59,11 +59,12 @@ export default {
       }else{
         delete usuarioEditado.contrasenia
       }
-      if(this.usuarioNuevo.debe ){
+      if (this.usuarioNuevo.debe !== null && this.usuarioNuevo.debe !== undefined) {
         usuarioEditado.debe = this.usuarioNuevo.debe
-      }else{
+      } else {
         delete usuarioEditado.debe
       }
+
 
       if(usuarioEditado == {}){
         alert("Completa los campos por favor");
