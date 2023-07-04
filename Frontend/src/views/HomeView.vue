@@ -2,6 +2,7 @@
 //import { canchasService } from "../services/canchasService.js"
 import {useCanchasStore} from "../stores/canchas.js"
 import {useUserStore} from "../stores/user.js"
+import TablaTurnos from '../components/TablaTurnos.vue'
 
 export default {
   data() {
@@ -20,6 +21,10 @@ export default {
   async mounted(){ 
     this.fetchCanchas();
     this.getUser();
+  },
+
+  components: {
+    TablaTurnos,
   },
 
   methods: {
@@ -92,21 +97,13 @@ export default {
           </div>
         </div>
 
-        <table v-show="canchaSeleccionada!=null" class="table col-sm-6">
-          <thead>
-            <tr>
-              <th class="text-center">Turnos Disponibles</th>
-            </tr>
-          </thead>
-          <tbody class="text-justify" v-for="dia in this.reservasDisponibles">
-            <tr>
-              <th>{{ dia.dia }}:
-              <div class="btn-group" v-for="horario in dia.horarios">
-                <div class="btn btn-primary" @click="guardarDatos(canchaSeleccionada.titulo,dia.dia,horario)">{{ horario }}</div></div>
-              </th>
-            </tr>
-          </tbody>
-        </table>
+        <TablaTurnos
+          v-show="canchaSeleccionada != null"
+          :canchaSeleccionada="canchaSeleccionada"
+          :reservasDisponibles="reservasDisponibles"
+          @guardar-datos="guardarDatos"
+        />
+
       </div>
   </template>
 

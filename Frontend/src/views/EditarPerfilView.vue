@@ -10,6 +10,7 @@ export default {
         username:"",
         email: "",
         contrasenia: "",
+        debe:"",
       },
     };
   },
@@ -40,7 +41,8 @@ export default {
         const usuarioEditado = {
         username: '',
         email: '',
-        contrasenia: ''
+        contrasenia: '',
+        debe: '',
       }
       if(this.usuarioNuevo.username){
         usuarioEditado.username = this.usuarioNuevo.username
@@ -56,6 +58,11 @@ export default {
         usuarioEditado.contrasenia = this.usuarioNuevo.contrasenia
       }else{
         delete usuarioEditado.contrasenia
+      }
+      if(this.usuarioNuevo.debe ){
+        usuarioEditado.debe = this.usuarioNuevo.debe
+      }else{
+        delete usuarioEditado.debe
       }
 
       if(usuarioEditado == {}){
@@ -107,6 +114,15 @@ export default {
         <input
         type="email"
         v-model="this.usuarioNuevo.email"
+        class="form-control"
+        id="exampleInputPassword1"        
+        />
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Debe</label>
+        <input
+        type="number"
+        v-model="this.usuarioNuevo.debe"
         class="form-control"
         id="exampleInputPassword1"        
         />

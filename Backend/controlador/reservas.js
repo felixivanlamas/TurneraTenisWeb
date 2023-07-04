@@ -16,6 +16,7 @@ class ControladorReserva {
     const reqReserva = req.body
     try {
       //Regla de Negocio reserva
+      console.log(reqReserva);
       reservasValidacion.validarReserva(reqReserva);
       await this.servicioCanchas.modificarCancha(reqReserva);
       const usuario = await this.servicioUsuario.reservar(id, reqReserva);
