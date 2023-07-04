@@ -60,32 +60,34 @@ export default {
       }
       }
     },
+    
     esFechaPosteriorHoy(dia) {
-  // Verificar si el parámetro 'dia' está presente
-  if (!dia) {
-    return false;
-  }
+    // Verificar si el parámetro 'dia' está presente
+    if (!dia) {
+      return false;
+    }
 
-  const hoy = new Date();
-  const diaSemanaHoy = hoy.getDay();
-  const diaSemanaReserva = this.obtenerNumeroDia(dia);
+    const hoy = new Date();
+    const diaSemanaHoy = hoy.getDay();
+    const diaSemanaReserva = this.obtenerNumeroDia(dia);
 
-  // Verificar si el día proporcionado es válido
-  if (diaSemanaReserva === -1) {
-    return false;
-  }
+    // Verificar si el día proporcionado es válido
+    if (diaSemanaReserva === -1) {
+      return false;
+    }
 
-  let diferenciaDias = diaSemanaReserva - diaSemanaHoy;
+    let diferenciaDias = diaSemanaReserva - diaSemanaHoy;
 
-  // Verificar si la diferencia está dentro de los próximos 7 días
-  return diferenciaDias > 0 && diferenciaDias <= 7;
-},
+    // Verificar si la diferencia está dentro de los próximos 7 días
+    return diferenciaDias > 0 && diferenciaDias <= 7;
+    },
+
 obtenerNumeroDia(dia) {
   const diasSemana = [
     "Domingo",
     "Lunes",
     "Martes",
-    "Miércoles",
+    "Miercoles",
     "Jueves",
     "Viernes",
     "Sábado",
