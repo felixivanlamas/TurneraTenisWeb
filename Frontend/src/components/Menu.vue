@@ -16,6 +16,13 @@ export default {
   },
 
   methods:{
+    getNavigationRoute() {
+    if (this.usuario && this.usuario.email && this.usuario.email.includes('@admin')) {
+      return '/admin';
+    } else {
+      return '/';
+    }
+  },
     logout() {
       const store = useUserStore();
       this.usuario = store.logout()
@@ -27,7 +34,7 @@ export default {
 
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <RouterLink class="navbar-brand" to="/">
+    <RouterLink class="navbar-brand" :to="getNavigationRoute()">
       <img src="../assets/IconoTT.jpg" class="logo" alt="Logo" />
       <span class="brand-text">TurneraTenis</span>
     </RouterLink>
@@ -46,9 +53,9 @@ export default {
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item" v-if="usuario.username != ''">
-          <RouterLink class="nav-link" to="/reservations">
+          <RouterLink class="nav-link" to="/reservations" v-if="!usuario.email.includes('@admin')">
             <button class="btn btn-info">Mis Reservas</button>
-          </RouterLink>
+          </RouterLink> 
         </li>
         <li v-if="usuario.username != ''" class="nav-item dropdown">
           <a

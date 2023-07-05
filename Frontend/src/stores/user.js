@@ -17,7 +17,12 @@ export const useUserStore = defineStore("usuario", {
     async getAll(){
       try {
         const response = await userService.getAll();
-        this.listaUsuarios = response.data;
+        for (const u of response.data) {
+          if(!u.email.includes('@admin')){
+            this.listaUsuarios.push(u)
+          }
+        }
+        return this.listaUsuarios
       } catch (error) {
         console.log(error);
       }

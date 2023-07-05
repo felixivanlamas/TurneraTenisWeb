@@ -35,7 +35,6 @@ class ControladorUsuario {
     const {id} = req.params
     const datos = req.body
     try {
-      console.log(datos+' controlador user');
       validaciones.validarBodyEditar(datos);
       const respuesta = await this.servicioUsuario.editarUsuario(id, datos);
       res.status(200).json(respuesta);

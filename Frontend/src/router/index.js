@@ -4,6 +4,7 @@ import Login from "../views/userViews/Login.vue"
 import RegisterView from "../views/userViews/RegisterView.vue"
 import ReservasView from "../views/userViews/ReservasView.vue"
 import EditarPerfilViewVue from "../views/userViews/EditarPerfilView.vue";
+import HomeAdmin from "../views/adminViews/HomeAdmin.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,11 @@ const router = createRouter({
       path: "/editProfile",
       name: "editProfile",
       component: EditarPerfilViewVue,
+    },
+    {
+      path: "/admin",
+      name: "admin",
+      component: HomeAdmin
     }
   ],
 });
