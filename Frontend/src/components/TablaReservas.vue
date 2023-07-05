@@ -14,7 +14,7 @@
           <td>
             <ul>
               <li v-for="reserva in reservaDia.reservas" :key="reserva.username">
-                {{ reserva.username }}
+                {{ reserva.username }} - {{ reserva.horario }}
               </li>
             </ul>
           </td>
