@@ -26,6 +26,7 @@
         v-if="canchaSeleccionada"
         :canchaSeleccionada="canchaSeleccionada"
         :reservas="reservasCanchaOrdenadas"
+        :eliminarReserva="eliminarReserva"
       />
     </div>
   </div>
@@ -58,6 +59,21 @@ export default {
     TablaReservas,
   },
   methods: {
+    async eliminarReserva(r) {
+      //que se fije también por hora
+      const reserva={
+        titulo: r.titulo,
+        dia: r.dia,
+        horario: r.horario
+      }
+      if (confirm("¿Estás seguro de que deseas eliminar esta reserva?")) {
+        try {
+        this.user = await useUserStore().eliminarReservaAdministrador(reserva.id, reserva)
+      } catch (error) {
+        console.log(error);
+      }
+      }
+    },
     async getAll() {
       this.usuarios = await useUserStore().getAll();
     },
@@ -76,6 +92,7 @@ export default {
       for (const usuario of this.usuarios) {
         for (const r of usuario.reservas) {
           const reserva = {
+            idUsuario: usuario.id,
             username: usuario.username,
             titulo: r.titulo,
             dia: r.dia,

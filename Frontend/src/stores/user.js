@@ -82,6 +82,16 @@ export const useUserStore = defineStore("usuario", {
       }
     },
 
+    async eliminarReservaAdministrador(id, reserva){
+      try {
+        const response = await reservasService.eliminarReserva(id,reserva);
+        this.usuario = response.data; // Acceder al usuario actualizado
+        return this.usuario;
+      } catch (error) {
+        throw error;
+      }
+    },
+
     async cambioDePerfil(usuarioAEditar){
       try {
         const response = await userService.cambioDePerfil(this.usuario._id,usuarioAEditar);

@@ -7,6 +7,7 @@
           <th>Día</th>
           <th>Horario</th>
           <th>Usuario</th>
+          <th>Eliminar Reserva</th>
         </tr>
       </thead>
       <tbody>
@@ -17,6 +18,9 @@
             </td>
             <td>{{ reserva.horario }}</td>
             <td>{{ reserva.username }}</td>
+            <td class="d-flex justify-content-center align-items-center">
+              <button class="btn-danger" @click="eliminarReserva(reserva)">X</button>
+            </td>
           </tr>
         </template>
       </tbody>
@@ -25,6 +29,7 @@
 </template>
 
 <script>
+
 export default {
   props: {
     canchaSeleccionada: {
@@ -35,6 +40,10 @@ export default {
       type: Array,
       required: true,
     },
+    eliminarReserva: {
+      type: Function,
+      required: true,
+    }
   },
   computed: {
     reservasPorDia() {
