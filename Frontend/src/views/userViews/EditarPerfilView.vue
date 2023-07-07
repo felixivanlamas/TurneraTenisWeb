@@ -40,29 +40,17 @@ export default {
         const userStore = useUserStore();
         const usuarioEditado = {
         username: '',
-        email: '',
         contrasenia: '',
-        debe: '',
       }
       if(this.usuarioNuevo.username){
         usuarioEditado.username = this.usuarioNuevo.username
       }else{
         delete usuarioEditado.username
       }
-      if(this.usuarioNuevo.email ){
-        usuarioEditado.email = this.usuarioNuevo.email
-      }else{
-        delete usuarioEditado.email
-      }
       if(this.usuarioNuevo.contrasenia ){
         usuarioEditado.contrasenia = this.usuarioNuevo.contrasenia
       }else{
         delete usuarioEditado.contrasenia
-      }
-      if (this.usuarioNuevo.debe !== null && this.usuarioNuevo.debe !== undefined) {
-        usuarioEditado.debe = this.usuarioNuevo.debe
-      } else {
-        delete usuarioEditado.debe
       }
 
 
