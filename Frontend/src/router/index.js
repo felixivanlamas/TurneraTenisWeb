@@ -5,6 +5,7 @@ import RegisterView from "../views/userViews/RegisterView.vue"
 import ReservasView from "../views/userViews/ReservasView.vue"
 import EditarPerfilViewVue from "../views/userViews/EditarPerfilView.vue";
 import HomeAdmin from "../views/adminViews/HomeAdmin.vue"
+import PaymentView from "../views/userViews/PaymentView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,7 +39,12 @@ const router = createRouter({
       path: "/admin",
       name: "admin",
       component: HomeAdmin
-    }
+    },
+    {
+      path:"/payment",
+      name:"payment",
+      component: PaymentView
+    },
   ],
 });
 
