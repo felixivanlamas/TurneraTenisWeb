@@ -1,5 +1,7 @@
 <template>
-    <table v-show="canchaSeleccionada != null" class="table col-sm-6">
+  <div v-if="canchaSeleccionada != null"  class="table-responsive">
+  
+    <table class="table">
       <thead>
         <tr>
           <th class="text-center">Turnos Disponibles</th>
@@ -16,6 +18,7 @@
         </tr>
       </tbody>
     </table>
+  </div>
   </template>
   
   <script>

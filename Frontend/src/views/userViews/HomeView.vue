@@ -96,14 +96,14 @@ export default {
               </div>
           </div>
         </div>
-
-        <TablaTurnos
-          v-show="canchaSeleccionada != null"
-          :canchaSeleccionada="canchaSeleccionada"
-          :reservasDisponibles="reservasDisponibles"
-          @guardar-datos="guardarDatos"
-        />
-
+        <div class="col-sm-6">
+          <TablaTurnos
+            v-show="canchaSeleccionada != null"
+            :canchaSeleccionada="canchaSeleccionada"
+            :reservasDisponibles="reservasDisponibles"
+            @guardar-datos="guardarDatos"
+          />
+        </div>
       </div>
   </template>
 
