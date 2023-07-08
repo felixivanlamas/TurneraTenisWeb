@@ -65,7 +65,6 @@ export const useUserStore = defineStore("usuario", {
       try {
         const response = await reservasService.reservar(this.usuario._id,reserva);
         this.usuario = response.data;
-        console.log(this.usuario);
         return this.usuario;
       } catch (error) {
         throw error;
@@ -85,10 +84,18 @@ export const useUserStore = defineStore("usuario", {
     async eliminarReservaAdministrador(id, reserva){
       try {
         const response = await reservasService.eliminarReserva(id,reserva);
-        this.usuario = response.data; // Acceder al usuario actualizado
-        return this.usuario;
+        const usuarioActualizado = response.data; // Acceder al usuario actualizado
+        this.actualizarUsuarios(usuarioActualizado)
+        return this.listaUsuarios
       } catch (error) {
         throw error;
+      }
+    },
+
+    actualizarUsuarios(usuario) {
+      const index = this.listaUsuarios.findIndex(u => u._id === usuario._id);
+      if (index !== -1) {
+        this.listaUsuarios.splice(index, 1, usuario);
       }
     },
 
@@ -117,13 +124,8 @@ export const useUserStore = defineStore("usuario", {
         username: "",
         email: "",
         contrasenia:"",
-        reservas: [
-          {
-            titulo: "",
-            dia: "",
-            horario: "",
-          },
-        ]};
+        reservas: []
+      };
     }
 
   }

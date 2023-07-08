@@ -45,6 +45,7 @@ export default {
       required: true,
     }
   },
+
   computed: {
     reservasPorDia() {
       const reservasPorDia = [];
