@@ -14,19 +14,23 @@ export default {
 
     methods:{
         async pagarReservas(){
-        const res = await useUserStore().borrarCuenta();
-        if (res) {
-          useUserStore().logout();
-          this.$router.push("/")
+            const usuario = {debe:0}
+            const res = await useUserStore().cambioDePerfil(usuario);
+            if (res) {
+                this.$router.push("/reservations")
+            }else{
+                alert("El Pago no se pudo realizar")
+            }
         }
-      
     }
-    }
-
-
-
 }  
 </script>
 
 <template>
+    <br>
+    <h2>Pago de reservas</h2>
+    <br>
+    <h6>El monto total a pagar es de: ${{usuario.debe}}</h6>
+    <br>
+    <button type="submit" class="btn btn-primary" v-if="usuario.debe>0" @click="pagarReservas">Pagar</button>
 </template>

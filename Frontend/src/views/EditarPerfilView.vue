@@ -8,9 +8,7 @@ export default {
         usuario: {},
         usuarioNuevo: {
         username:"",
-        email: "",
         contrasenia: "",
-        debe:0,
       },
     };
   },
