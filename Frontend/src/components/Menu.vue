@@ -24,9 +24,15 @@
           </RouterLink>
         </li>
         <li class="nav-item" v-if="usuario.username !== ''">
-          <RouterLink class="nav-link" to="/reservations" v-if="!usuario.email.includes('@admin')">
-            <button class="btn btn-info" @click="mostrarBotonPagar">Mis Reservas</button>
-          </RouterLink> 
+          <RouterLink
+            class="nav-link"
+            to="/reservations"
+            v-if="!usuario.email.includes('@admin')"
+          >
+            <button class="btn btn-info" @click="mostrarBotonPagar">
+              Mis Reservas
+            </button>
+          </RouterLink>
         </li>
         <li v-if="usuario.username !== ''" class="nav-item dropdown">
           <a
@@ -44,10 +50,7 @@
             </RouterLink>
             <div class="dropdown-divider"></div>
             <RouterLink to="/" class="dropdown-item">
-              <button
-                @click="logout"
-                class="btn btn-outline-info btn-block"
-              >
+              <button @click="logout" class="btn btn-outline-info btn-block">
                 Cerrar Sesión
               </button>
             </RouterLink>
@@ -59,7 +62,7 @@
         v-if="usuario.username === ''"
       >
         <RouterLink to="/login">
-          <button class="btn btn-warning">Iniciar Sesión</button>
+          <button class="btn btn-warning mr-3">Iniciar Sesión</button>
         </RouterLink>
         <RouterLink to="/register">
           <button class="btn btn-warning">Registrarse</button>
@@ -86,10 +89,14 @@ export default {
     };
 
     const getNavigationRoute = () => {
-      if (usuario.value && usuario.value.email && usuario.value.email.includes('@admin')) {
-        return '/admin';
+      if (
+        usuario.value &&
+        usuario.value.email &&
+        usuario.value.email.includes("@admin")
+      ) {
+        return "/admin";
       } else {
-        return '/';
+        return "/";
       }
     };
 
@@ -98,11 +105,13 @@ export default {
     };
 
     onMounted(() => {
-      mostrarPagar.value = route.path === '/payment' || route.path === '/reservations';
+      mostrarPagar.value =
+        route.path === "/payment" || route.path === "/reservations";
     });
 
     watch(route, () => {
-      mostrarPagar.value = route.path === '/payment' || route.path === '/reservations';
+      mostrarPagar.value =
+        route.path === "/payment" || route.path === "/reservations";
     });
 
     /*Por supuesto, puedo explicarte los cambios realizados y cómo funciona la lógica añadida.
@@ -120,8 +129,8 @@ export default {
 
     En resumen, el código añadido utiliza los ganchos `onMounted` y `watch` para actualizar dinámicamente la variable `mostrarPagar`
     basándose en la ruta actual. Esto asegura que el botón "Pagar" se muestre solo cuando el usuario se encuentre 
-    en las vistas "payment" o "reservations" y se oculte en cualquier otra vista.*/ 
-    
+    en las vistas "payment" o "reservations" y se oculte en cualquier otra vista.*/
+
     return {
       mostrarPagar,
       usuario,
@@ -203,5 +212,4 @@ export default {
   background-color: #0727bb;
   color: #fff;
 }
-
 </style>
