@@ -14,9 +14,6 @@ export default {
       },
     };
   },
-  created() {
-
-  },
   async mounted(){ 
     this.getUser();
   },
@@ -94,24 +91,6 @@ export default {
         <input
         type="password"
         v-model="this.usuarioNuevo.contrasenia"
-        class="form-control"
-        id="exampleInputPassword1"        
-        />
-    </div>
-    <div class="form-group">
-        <label for="exampleInputPassword1">Email</label>
-        <input
-        type="email"
-        v-model="this.usuarioNuevo.email"
-        class="form-control"
-        id="exampleInputPassword1"        
-        />
-    </div>
-    <div class="form-group">
-        <label for="exampleInputPassword1">Debe</label>
-        <input
-        type="number"
-        v-model="this.usuarioNuevo.debe"
         class="form-control"
         id="exampleInputPassword1"        
         />
