@@ -9,6 +9,7 @@ export default {
         email: "",
         contrasenia: "",
         reservas: [],
+        debe: 0,
       },
       canchas: [],
     };
@@ -52,14 +53,42 @@ export default {
         dia: dia,
         horario: horario,
       };
-      if (confirm("¿Estás seguro de que deseas eliminar esta reserva?")) {
+      let mensaje =
+        this.getDiferenciaDias(dia) == 1
+          ? "¿Estás seguro de que deseas eliminar esta reserva?\n\n Se le cobrará una multa de $2000 por cancelar la reserva con menos de dos días de anticipación."
+          : "¿Estás seguro de que deseas eliminar esta reserva?";
+      if (confirm(mensaje)) {
         try {
           this.user = await useUserStore().eliminarReserva(reserva);
+          if (getDiferenciaDias(dia) == 1) {
+            const user = {
+              username: this.user.username,
+              email: this.user.email,
+              contrasenia: this.user.contrasenia,
+              reservas: this.user.reservas,
+              debe: this.user.debe + 2000,
+            };
+            await useUserStore().actualizarUsuarios(user);
+          }
           this.$router.push("/reservations");
         } catch (error) {
           console.log(error);
         }
       }
+    },
+
+    getDiferenciaDias(dia) {
+      const hoy = new Date();
+      const diaSemanaHoy = hoy.getDay() + 1;
+      const diaSemanaReserva = this.obtenerNumeroDia(dia);
+
+      if (diaSemanaReserva === -1) {
+        return false;
+      }
+
+      let diferenciaDias = diaSemanaReserva - diaSemanaHoy;
+
+      return diferenciaDias;
     },
 
     puedeCancelar(dia) {
@@ -68,18 +97,10 @@ export default {
         return false;
       }
 
-      const hoy = new Date();
-      const diaSemanaHoy = hoy.getDay() + 1;
-      const diaSemanaReserva = this.obtenerNumeroDia(dia);
-
-      // Verificar si el día proporcionado es válido
-      if (diaSemanaReserva === -1) {
-        return false;
-      }
-      let diferenciaDias = diaSemanaReserva - diaSemanaHoy;
+      let diferenciaDias = this.getDiferenciaDias(dia);
 
       // Verificar si la diferencia está dentro de los próximos 7 días
-      return diferenciaDias > 1 && diferenciaDias <= 7;
+      return diferenciaDias > 0 && diferenciaDias <= 7;
     },
 
     obtenerNumeroDia(dia) {
