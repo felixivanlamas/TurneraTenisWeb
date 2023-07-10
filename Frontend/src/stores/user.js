@@ -10,6 +10,7 @@ export const useUserStore = defineStore("usuario", {
         _id: null,
         username: "",
       },
+      error:'',
     };
   },
 
@@ -57,7 +58,7 @@ export const useUserStore = defineStore("usuario", {
         }
         return this.usuario;
       } catch (error) {
-        throw new Error(error);
+        throw error;
       }
     },
 
@@ -67,7 +68,7 @@ export const useUserStore = defineStore("usuario", {
         this.usuario = response.data;
         return this.usuario;
       } catch (error) {
-        throw error;
+        alert(error.request.response)
       }
     },
 
