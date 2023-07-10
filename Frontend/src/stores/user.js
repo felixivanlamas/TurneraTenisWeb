@@ -86,7 +86,7 @@ export const useUserStore = defineStore("usuario", {
       try {
         const response = await reservasService.eliminarReserva(id,reserva);
         const usuarioActualizado = response.data; // Acceder al usuario actualizado
-        this.actualizarUsuarios(usuarioActualizado)
+        this.actualizarUsuarios(usuarioActualizado);
         return this.listaUsuarios
       } catch (error) {
         throw error;
@@ -96,7 +96,8 @@ export const useUserStore = defineStore("usuario", {
     actualizarUsuarios(usuario) {
       const index = this.listaUsuarios.findIndex(u => u._id === usuario._id);
       if (index !== -1) {
-        this.listaUsuarios.splice(index, 1, usuario);
+        this.listaUsuarios.splice(index, 1);
+        this.listaUsuarios.push(usuario)
       }
     },
 

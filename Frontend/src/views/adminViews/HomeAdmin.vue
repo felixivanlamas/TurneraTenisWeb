@@ -62,21 +62,22 @@ export default {
   methods: {
     async eliminarReserva(r) {
       // Eliminar una reserva
+      this.reservasCanchaOrdenadas.splice(this.reservasCanchaOrdenadas.indexOf(r), 1);
+      this.reservas.splice(this.reservas.indexOf(r), 1);
       const reserva={
         titulo: r.titulo,
         dia: r.dia,
         horario: r.horario
       }
-      if (confirm("¿Estás seguro de que deseas eliminar esta reserva?")) {
         try {
            // Llamar a la función para eliminar la reserva del usuario
           this.usuarios = await useUserStore().eliminarReservaAdministrador(r.idUsuario, reserva)
 
           // Actualizar las reservas de la cancha seleccionada
           await this.mostrarReservas(this.canchaSeleccionada);
+
         } catch (error) {
           console.log(error);
-      }
       }
     },
     async getAll() {
