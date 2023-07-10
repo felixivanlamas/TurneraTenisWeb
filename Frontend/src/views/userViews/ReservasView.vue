@@ -53,27 +53,21 @@ export default {
         dia: dia,
         horario: horario,
       };
-      let mensaje =
-        this.getDiferenciaDias(dia) == 1
-          ? "¿Estás seguro de que deseas eliminar esta reserva?\n\n Se le cobrará una multa de $2000 por cancelar la reserva con menos de dos días de anticipación."
-          : "¿Estás seguro de que deseas eliminar esta reserva?";
-      if (confirm(mensaje)) {
-        try {
-          this.user = await useUserStore().eliminarReserva(reserva);
-          if (getDiferenciaDias(dia) == 1) {
-            const user = {
-              username: this.user.username,
-              email: this.user.email,
-              contrasenia: this.user.contrasenia,
-              reservas: this.user.reservas,
-              debe: this.user.debe + 2000,
-            };
-            await useUserStore().actualizarUsuarios(user);
-          }
-          this.$router.push("/reservations");
-        } catch (error) {
-          console.log(error);
+      try {
+        this.user = await useUserStore().eliminarReserva(reserva);
+        if (getDiferenciaDias(dia) == 1) {
+          const user = {
+            username: this.user.username,
+            email: this.user.email,
+            contrasenia: this.user.contrasenia,
+            reservas: this.user.reservas,
+            debe: this.user.debe + 2000,
+          };
+          await useUserStore().actualizarUsuarios(user);
         }
+        this.$router.push("/reservations");
+      } catch (error) {
+        console.log(error);
       }
     },
 
