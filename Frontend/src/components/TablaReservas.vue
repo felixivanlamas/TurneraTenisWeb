@@ -29,7 +29,6 @@
 <script>
 import { computed } from "vue";
 
-import { storeToRefs } from "pinia";
 import { useReservaStore } from "../stores/reservas.js";
 
 export default {
