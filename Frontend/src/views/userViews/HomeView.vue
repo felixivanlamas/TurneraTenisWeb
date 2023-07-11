@@ -12,6 +12,7 @@ export default {
         canchaSeleccionada:null,
         reservasDisponibles:[],
         usuario:{},
+        fechaActual:new Date(),
     };
   },
   created() {
@@ -42,13 +43,33 @@ export default {
           console.error(error);
         });
     },
+    ordenar(canchas){
+      for (const cancha of canchas) {
+        for (const dia in cancha.reservasDisponibles.dias) {
+          const horariosDia = cancha.reservasDisponibles.dias[dia];
+          horariosDia.sort();
+        }
+      }
+      return canchas;
+    },
     seleccionarCancha(cancha) {
       this.reservasDisponibles.splice(0)
       for (const dia in cancha.reservasDisponibles.dias ) {
-      const horariosDia = cancha.reservasDisponibles.dias[dia];
-      this.reservasDisponibles.push({ dia, horarios: horariosDia });
+        if(this.mismoDiaOPosterior(dia)){
+          this.reservasDisponibles.push({ dia, horarios: cancha.reservasDisponibles.dias[dia] })
+        }
       }
       this.canchaSeleccionada = cancha;
+    },
+    mismoDiaOPosterior(dia) {
+      const diasSemana = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado"];
+      const indiceDia = diasSemana.indexOf(dia);
+      const indiceDiaActual = this.fechaActual.getDay();
+      if(indiceDia < indiceDiaActual){
+        return false
+      }else{
+        return true
+      }
     },
     async guardarDatos(titulo,dia,horario){
       const reserva={titulo,dia,horario}
@@ -59,15 +80,6 @@ export default {
         this.usuario = response
         this.$router.push('/reservations')
       }
-    },
-    ordenar(canchas){
-      for (const cancha of canchas) {
-        for (const dia in cancha.reservasDisponibles.dias) {
-          const horariosDia = cancha.reservasDisponibles.dias[dia];
-          horariosDia.sort();
-        }
-      }
-      return canchas;
     },
   },
 };

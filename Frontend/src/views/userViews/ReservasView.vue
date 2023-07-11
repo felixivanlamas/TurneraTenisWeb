@@ -135,7 +135,6 @@ export default {
             </div>
             <div class="eliminar-container">
               <button
-                v-if="puedeCancelar(reserva.dia)"
                 class="eliminar-btn"
                 @click="
                   eliminarReserva(reserva.titulo, reserva.dia, reserva.horario)
