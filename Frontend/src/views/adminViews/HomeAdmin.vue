@@ -25,16 +25,14 @@
       <TablaReservas
         v-if="canchaSeleccionada"
         :canchaSeleccionada="canchaSeleccionada"
-        :reservas="reservasCanchaOrdenadas"
-        :eliminarReserva="eliminarReserva"
       />
+
     </div>
   </div>
 </template>
 
 <script>
 import { useCanchasStore } from "../../stores/canchas.js";
-import { useUserStore } from "../../stores/user.js";
 import TablaReservas from "../../components/TablaReservas.vue";
 
 export default {
@@ -45,7 +43,6 @@ export default {
       canchas: [],
       canchaSeleccionada: null,
       reservas: [],
-      reservasCanchaOrdenadas: [],
     };
   },
   created() {
@@ -54,33 +51,17 @@ export default {
   },
   mounted() {
     this.fetchCanchas();
-    this.getAll();
-    this.obtenerReservas();
   },
   components: {
     TablaReservas,
   },
   methods: {
-    async getAll() {
-      // Obtener todos los usuarios
-      const users = await useUserStore().getAll();
-      const usuariosUnicos = {};
-      
-      // Filtrar usuarios duplicados y mantener solo un usuario por ID
-      if(users.length > 0) {
-        for (const usuario of users) {
-          if (!usuariosUnicos[usuario._id]) {
-            usuariosUnicos[usuario._id] = usuario;
-          }
-        }
-      }else{
-        console.log("No hay usuarios");
-      }
-      
-      // Actualizar el arreglo de usuarios con los usuarios únicos
-      this.usuarios = Object.values(usuariosUnicos);
-    }
-    ,
+    async getReservas(){
+      const reservaStore = useReservaStore();
+      await reservaStore.getUsers(); 
+      this.reservas = reservaStore.getReservas;
+      console.log(JSON.stringify(this.reservas));
+    },
     fetchCanchas() {
       const canchasStore = useCanchasStore();
       canchasStore.fetchCanchas()
@@ -92,80 +73,15 @@ export default {
         console.error(error);
       });
     },
-    async eliminarReserva(r) {
-      // Eliminar una reserva
-      this.reservasCanchaOrdenadas.splice(this.reservasCanchaOrdenadas.indexOf(r), 1);
-      this.reservas.splice(this.reservas.indexOf(r), 1);
-      const reservaBackend={
-        titulo: r.titulo,
-        dia: r.dia,
-        horario: r.horario
-      }
-        try {
-           // Llamar a la función para eliminar la reserva del usuario
-          this.usuarios = await useUserStore().eliminarReservaAdministrador(r.idUsuario, reservaBackend)
-          // Actualizar las reservas de la cancha seleccionada
-          console.log(JSON.stringify(this.usuarios) + ' usuarios actualizados');
-          await this.mostrarReservas(this.canchaSeleccionada)
-        } catch (error) {
-          console.log(error);
-      }
-    },
-    async mostrarReservas(cancha) {
-      await this.obtenerReservas();
-      if(this.canchaSeleccionada === null) {
+    ordenarCanchas(canchas) {
+    return canchas.sort((a, b) => a.titulo.localeCompare(b.titulo));
+  },
+    mostrarReservas(cancha){
+      this.reservas.splice(0)
+      this.getReservas();
+      if(!this.canchaSeleccionada && this.canchaSeleccionada !== cancha ){
         this.canchaSeleccionada = cancha;
       }
-      const reservasCancha = this.reservas.filter((r) => r.titulo === cancha.titulo);
-      
-      // Limpiar las reservas existentes antes de asignar las nuevas reservas
-      this.reservasCanchaOrdenadas.splice(0, this.reservasCanchaOrdenadas.length, ...reservasCancha);
-      console.log(JSON.stringify(this.reservasCanchaOrdenadas)+ ' MOSTRAR RESERVAS');
-    },
-    async obtenerReservas() {
-      await this.getAll();
-      // Obtener todas las reservas de los usuarios
-      this.reservas = [];
-      for (const usuario of this.usuarios) {
-        for (const r of usuario.reservas) {
-          const reserva = {
-            idUsuario: usuario._id,
-            username: usuario.username,
-            titulo: r.titulo,
-            dia: r.dia,
-            horario: r.horario,
-          };
-          this.reservas.push(reserva);
-        }
-      }
-      console.log(JSON.stringify(this.reservas)+ ' obtenerReservas');
-    },
-    ordenarReservas(reservas) {
-      // Ordenar las reservas por día y horario
-      return reservas.sort((a, b) => {
-        const diaA = a.dia;
-        const diaB = b.dia;
-        const horarioA = a.horario;
-        const horarioB = b.horario;
-
-        // Comparar por día
-        if (diaA !== diaB) {
-          return diaA.localeCompare(diaB);
-        }
-
-        // Si los días son iguales, comparar por horario
-        return horarioA.localeCompare(horarioB);
-      });
-    },
-    ordenarCanchas(canchas) {
-      // Ordenar las canchas y sus horarios disponibles      
-      for (const cancha of canchas) {
-        for (const dia in cancha.reservasDisponibles.dias) {
-          const horariosDia = cancha.reservasDisponibles.dias[dia];
-          horariosDia.sort();
-        }
-      }
-      return canchas;
     },
   },
 };

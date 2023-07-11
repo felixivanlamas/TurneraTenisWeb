@@ -11,25 +11,24 @@
         </tr>
       </thead>
       <tbody>
-        <template>
-          <span>HOLA</span>
-          <tr v-for="reserva in reservaDia.reservas" :key="reserva.id">
-            <td v-if="reservaDia.reservas.indexOf(reserva) === 0" :rowspan="reservaDia.reservas.length">
-              {{ reservaDia.dia }}
-            </td>
-            <td>{{ reserva.horario }}</td>
-            <td>{{ reserva.username }}</td>
-            <td class="d-flex justify-content-center align-items-center">
-              <button class="btn-danger" @click="eliminarReserva(reserva)">X</button>
-            </td>
-          </tr>
-        </template>
+        <tr v-for="reserva in reservas" :key="reserva.id">
+          <td>{{ reserva.dia }}</td>
+          <td>{{ reserva.horario }}</td>
+          <td>{{ reserva.username }}</td>
+          <td class="d-flex justify-content-center align-items-center">
+            <button class="btn-danger" @click="eliminar_Reserva(reserva)">X</button>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
 </template>
 
 <script>
+import { useReservaStore } from "../stores/reservas.js";
+import { useUserStore } from "../stores/user";
+
+
 export default {
   props: {
     canchaSeleccionada: {
@@ -37,6 +36,25 @@ export default {
       required: true,
     },
   },
+
+  setup() {
+    const reservaStore = useReservaStore();
+    const userStore = useUserStore();
+    const reservas = computed(() => {
+      const tituloCancha = props.canchaSeleccionada.titulo;
+      const usuarioActual = userStore.usuario;
+      return usuarioActual.reservas.filter(reserva => reserva.titulo === tituloCancha);
+    });
+    const eliminar_Reserva = (reserva) => {
+      const reservaBackend ={titulo:reserva.titulo,dia:reserva.dia,horario:reserva.horario};
+      userStore.eliminarReservaAdministradora(reserva.id,reservaBackend);
+    }
+
+    return {
+      reservas,
+      eliminar_Reserva,
+    }
+  }
 };
 </script>
 
