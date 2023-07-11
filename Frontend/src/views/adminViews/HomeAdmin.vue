@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { useReservaStore } from "../../stores/reservas.js";
 import { useCanchasStore } from "../../stores/canchas.js";
 import TablaReservas from "../../components/TablaReservas.vue";
 
@@ -51,16 +52,15 @@ export default {
   },
   mounted() {
     this.fetchCanchas();
+    this.setReservas()
   },
   components: {
     TablaReservas,
   },
   methods: {
-    async getReservas(){
+    async setReservas(){
       const reservaStore = useReservaStore();
-      await reservaStore.getUsers(); 
-      this.reservas = reservaStore.getReservas;
-      console.log(JSON.stringify(this.reservas));
+      await reservaStore.setReservas; 
     },
     fetchCanchas() {
       const canchasStore = useCanchasStore();
@@ -77,8 +77,6 @@ export default {
     return canchas.sort((a, b) => a.titulo.localeCompare(b.titulo));
   },
     mostrarReservas(cancha){
-      this.reservas.splice(0)
-      this.getReservas();
       if(!this.canchaSeleccionada && this.canchaSeleccionada !== cancha ){
         this.canchaSeleccionada = cancha;
       }

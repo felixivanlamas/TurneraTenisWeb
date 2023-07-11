@@ -25,8 +25,10 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+
+import { storeToRefs } from "pinia";
 import { useReservaStore } from "../stores/reservas.js";
-import { useUserStore } from "../stores/user";
 
 
 export default {
@@ -39,22 +41,20 @@ export default {
 
   setup() {
     const reservaStore = useReservaStore();
-    const userStore = useUserStore();
-    const reservas = computed(() => {
-      const tituloCancha = props.canchaSeleccionada.titulo;
-      const usuarioActual = userStore.usuario;
-      return usuarioActual.reservas.filter(reserva => reserva.titulo === tituloCancha);
+
+    // Filtrar las reservas basadas en el título de la reserva y la cancha seleccionada
+    const reservasFiltradas = computed(() => {
+      const tituloCanchaSeleccionada = this.canchaSeleccionada.titulo;
+
+      return reservaStore.reservas.value.filter(
+        (reserva) => reserva.titulo === tituloCanchaSeleccionada
+      );
     });
-    const eliminar_Reserva = (reserva) => {
-      const reservaBackend ={titulo:reserva.titulo,dia:reserva.dia,horario:reserva.horario};
-      userStore.eliminarReservaAdministradora(reserva.id,reservaBackend);
-    }
 
     return {
-      reservas,
-      eliminar_Reserva,
-    }
-  }
+      reservas: reservasFiltradas,
+    };
+  },
 };
 </script>
 
