@@ -94,11 +94,23 @@ export const useUserStore = defineStore("usuario", {
     },
 
     actualizarUsuarios(usuario) {
-      const index = this.listaUsuarios.findIndex(u => u._id === usuario._id);
-      if (index !== -1) {
-        this.listaUsuarios.splice(index, 1);
-        this.listaUsuarios.push(usuario)
+      // Filtrar usuarios duplicados y mantener solo un usuario por ID
+      const usuariosUnicos = {};
+      if (this.listaUsuarios.length > 0) {
+        for (const u of this.listaUsuarios) {
+          if (!usuariosUnicos[u._id]) {
+            usuariosUnicos[u._id] = u;
+          }
+        }
+      } else {
+        console.log("No hay usuarios");
       }
+    
+      // Reemplazar el usuario existente con el usuario actualizado
+      usuariosUnicos[usuario._id] = usuario;
+    
+      // Actualizar la lista de usuarios con los usuarios únicos
+      this.listaUsuarios = Object.values(usuariosUnicos);
     },
 
     async cambioDePerfil(usuarioAEditar){
