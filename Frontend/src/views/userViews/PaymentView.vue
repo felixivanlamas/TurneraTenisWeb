@@ -17,7 +17,7 @@ export default {
             const usuario = {debe:0}
             const res = await useUserStore().cambioDePerfil(usuario);
             if (res) {
-                this.$router.push("/reservations")
+                this.$router.push("/")
             }else{
                 alert("El Pago no se pudo realizar")
             }

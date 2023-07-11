@@ -68,7 +68,7 @@ export const useUserStore = defineStore("usuario", {
         this.usuario = response.data;
         return this.usuario;
       } catch (error) {
-        alert(error.request.response)
+        throw error;
       }
     },
 

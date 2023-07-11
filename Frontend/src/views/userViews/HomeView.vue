@@ -1,5 +1,4 @@
 <script>
-//import { canchasService } from "../services/canchasService.js"
 import {useCanchasStore} from "../../stores/canchas.js"
 import {useUserStore} from "../../stores/user.js"
 import TablaTurnos from '../../components/TablaTurnos.vue'
@@ -74,11 +73,14 @@ export default {
     async guardarDatos(titulo,dia,horario){
       const reserva={titulo,dia,horario}
       await this.getUser();
-      if(this.usuario._id!==null){
-        //alerta para decirle al user que se loguee
-        const response = await useUserStore().reservar(reserva);
-        this.usuario = response
-        this.$router.push('/reservations')
+      try {
+        if(this.usuario._id!==null){
+          const response = await useUserStore().reservar(reserva);
+          this.usuario = response
+          this.$router.push('/reservations')
+        }
+      } catch (error) {
+        alert(error.request.response)
       }
     },
   },
