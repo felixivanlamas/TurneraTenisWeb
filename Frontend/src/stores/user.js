@@ -82,17 +82,6 @@ export const useUserStore = defineStore("usuario", {
       }
     },
 
-    async eliminarReservaAdministrador(id, reserva){
-      try {
-        const response = await reservasService.eliminarReserva(id,reserva);
-        const usuarioActualizado = response.data; // Acceder al usuario actualizado
-        this.actualizarUsuarios(usuarioActualizado);
-        return this.listaUsuarios
-      } catch (error) {
-        throw error;
-      }
-    },
-
     actualizarUsuarios(usuario) {
       // Filtrar usuarios duplicados y mantener solo un usuario por ID
       const usuariosUnicos = {};

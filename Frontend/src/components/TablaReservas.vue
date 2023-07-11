@@ -16,7 +16,7 @@
           <td>{{ reserva.horario }}</td>
           <td>{{ reserva.username }}</td>
           <td class="d-flex justify-content-center align-items-center">
-            <button class="btn-danger" @click="eliminar_Reserva(reserva)">X</button>
+            <button class="btn-danger" @click="eliminarReservaAdmin(reserva)">X</button>
           </td>
         </tr>
       </tbody>
@@ -24,7 +24,7 @@
   </div>
 </template>
 
-<script>
+<script >
 import { computed } from 'vue';
 
 import { storeToRefs } from "pinia";
@@ -39,20 +39,22 @@ export default {
     },
   },
 
-  setup() {
+  setup(props) {
     const reservaStore = useReservaStore();
+    const { eliminarReservaAdmin } = reservaStore;
 
     // Filtrar las reservas basadas en el título de la reserva y la cancha seleccionada
     const reservasFiltradas = computed(() => {
-      const tituloCanchaSeleccionada = this.canchaSeleccionada.titulo;
+      const tituloCanchaSeleccionada = props.canchaSeleccionada.titulo;
 
-      return reservaStore.reservas.value.filter(
+      return reservaStore.reservas.filter(
         (reserva) => reserva.titulo === tituloCanchaSeleccionada
       );
     });
 
     return {
       reservas: reservasFiltradas,
+      eliminarReservaAdmin
     };
   },
 };

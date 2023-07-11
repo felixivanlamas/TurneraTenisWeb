@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div>
     <button style="margin-top: 20px;" class="btn btn-secondary" @click="canchaSeleccionada = null" v-if="canchaSeleccionada != null">Volver</button>
     <select style="margin-top: 20px;" class="btn btn-info" v-model="selectedTipo" v-if="canchaSeleccionada == null">
@@ -60,7 +60,7 @@ export default {
   methods: {
     async setReservas(){
       const reservaStore = useReservaStore();
-      await reservaStore.setReservas; 
+      await reservaStore.setReservas(); 
     },
     fetchCanchas() {
       const canchasStore = useCanchasStore();
