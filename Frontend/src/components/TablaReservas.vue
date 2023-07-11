@@ -16,7 +16,9 @@
           <td>{{ reserva.horario }}</td>
           <td>{{ reserva.username }}</td>
           <td class="d-flex justify-content-center align-items-center">
-            <button class="btn-danger" @click="eliminarReservaAdmin(reserva)">X</button>
+            <button class="btn-danger" @click="confirmEliminarReserva(reserva)">
+              X
+            </button>
           </td>
         </tr>
       </tbody>
@@ -24,18 +26,25 @@
   </div>
 </template>
 
-<script >
-import { computed } from 'vue';
+<script>
+import { computed } from "vue";
 
 import { storeToRefs } from "pinia";
 import { useReservaStore } from "../stores/reservas.js";
-
 
 export default {
   props: {
     canchaSeleccionada: {
       type: Object,
       required: true,
+    },
+  },
+
+  methods: {
+    confirmEliminarReserva(reserva) {
+      if (confirm("¿Estás seguro de eliminar la reserva?")) {
+        this.eliminarReservaAdmin(reserva);
+      }
     },
   },
 
@@ -52,9 +61,23 @@ export default {
       );
     });
 
+    const reservasOrdenadas = computed(() => {
+      return reservasFiltradas.value.slice().sort((a, b) => {
+        // Compara los días
+        const compareDia = a.dia.localeCompare(b.dia);
+
+        if (compareDia === 0) {
+          // Si los días son iguales, compara los horarios
+          return a.horario.localeCompare(b.horario);
+        }
+
+        return compareDia;
+      });
+    });
+
     return {
-      reservas: reservasFiltradas,
-      eliminarReservaAdmin
+      reservas: reservasOrdenadas,
+      eliminarReservaAdmin,
     };
   },
 };

@@ -52,7 +52,11 @@ export default {
         dia: dia,
         horario: horario,
       };
-      if (confirm("¿Estás seguro de que deseas eliminar esta reserva?")) {
+      let mensaje =
+        this.getDiferenciaDias(dia) == 0
+          ? "¿Estás seguro de que deseas eliminar esta reserva?\n\n Se le cobrará una multa de $2000 por cancelar la reserva con menos de dos días de anticipación."
+          : "¿Estás seguro de que deseas eliminar esta reserva?";
+      if (confirm(mensaje)) {
         try {
           this.user = await useUserStore().eliminarReserva(reserva);
         } catch (error) {
@@ -75,12 +79,23 @@ export default {
       if (diaSemanaReserva === -1) {
         return false;
       }
-      let diferenciaDias = diaSemanaReserva - diaSemanaHoy;
+      let diferenciaDias = this.getDiferenciaDias(dia);
 
       // Verificar si la diferencia está dentro de los próximos 7 días
       return diferenciaDias > 1 && diferenciaDias <= 7;
     },
 
+    getDiferenciaDias(dia) {
+      const hoy = new Date();
+      const diaSemanaHoy = hoy.getDay() + 1;
+      const diaSemanaReserva = this.obtenerNumeroDia(dia);
+      // Verificar si el día proporcionado es válido
+      if (diaSemanaReserva === -1) {
+        return false;
+      }
+      let diferenciaDias = diaSemanaReserva - diaSemanaHoy;
+      return diferenciaDias;
+    },
     obtenerNumeroDia(dia) {
       const diasSemana = [
         "Domingo",
