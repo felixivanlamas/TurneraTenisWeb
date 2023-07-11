@@ -1,5 +1,4 @@
 <script>
-//import { canchasService } from "../services/canchasService.js"
 import {useCanchasStore} from "../../stores/canchas.js"
 import {useUserStore} from "../../stores/user.js"
 import TablaTurnos from '../../components/TablaTurnos.vue'
@@ -12,6 +11,7 @@ export default {
         canchaSeleccionada:null,
         reservasDisponibles:[],
         usuario:{},
+        fechaActual:new Date(),
     };
   },
   created() {
@@ -42,24 +42,6 @@ export default {
           console.error(error);
         });
     },
-    seleccionarCancha(cancha) {
-      this.reservasDisponibles.splice(0)
-      for (const dia in cancha.reservasDisponibles.dias ) {
-      const horariosDia = cancha.reservasDisponibles.dias[dia];
-      this.reservasDisponibles.push({ dia, horarios: horariosDia });
-      }
-      this.canchaSeleccionada = cancha;
-    },
-    async guardarDatos(titulo,dia,horario){
-      const reserva={titulo,dia,horario}
-      await this.getUser();
-      if(this.usuario._id!==null){
-        //alerta para decirle al user que se loguee
-        const response = await useUserStore().reservar(reserva);
-        this.usuario = response
-        this.$router.push('/reservations')
-      }
-    },
     ordenar(canchas){
       for (const cancha of canchas) {
         for (const dia in cancha.reservasDisponibles.dias) {
@@ -68,6 +50,38 @@ export default {
         }
       }
       return canchas;
+    },
+    seleccionarCancha(cancha) {
+      this.reservasDisponibles.splice(0)
+      for (const dia in cancha.reservasDisponibles.dias ) {
+        if(this.mismoDiaOPosterior(dia)){
+          this.reservasDisponibles.push({ dia, horarios: cancha.reservasDisponibles.dias[dia] })
+        }
+      }
+      this.canchaSeleccionada = cancha;
+    },
+    mismoDiaOPosterior(dia) {
+      const diasSemana = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado"];
+      const indiceDia = diasSemana.indexOf(dia);
+      const indiceDiaActual = this.fechaActual.getDay();
+      if(indiceDia < indiceDiaActual){
+        return false
+      }else{
+        return true
+      }
+    },
+    async guardarDatos(titulo,dia,horario){
+      const reserva={titulo,dia,horario}
+      await this.getUser();
+      try {
+        if(this.usuario._id!==null){
+          const response = await useUserStore().reservar(reserva);
+          this.usuario = response
+          this.$router.push('/reservations')
+        }
+      } catch (error) {
+        alert(error.request.response)
+      }
     },
   },
 };
