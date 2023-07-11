@@ -1,29 +1,29 @@
 import { defineStore } from "pinia";
-import { userService } from "../services/userService.js"
+import { userService } from "../services/userService.js";
 import { reservasService } from "../services/reservaService.js";
 
 export const useUserStore = defineStore("usuario", {
   state: () => {
     return {
-      listaUsuarios:[],
+      listaUsuarios: [],
       usuario: {
         _id: null,
         username: "",
       },
-      error:'',
+      error: "",
     };
   },
 
   actions: {
-    async getAll(){
+    async getAll() {
       try {
         const response = await userService.getAll();
         for (const u of response.data) {
-          if(!u.email.includes('@admin')){
-            this.listaUsuarios.push(u)
+          if (!u.email.includes("@admin")) {
+            this.listaUsuarios.push(u);
           }
         }
-        return this.listaUsuarios
+        return this.listaUsuarios;
       } catch (error) {
         console.log(error);
       }
@@ -34,7 +34,7 @@ export const useUserStore = defineStore("usuario", {
         this.usuario = response.data;
         return this.usuario;
       } catch (error) {
-        alert("Email y/o contraseña es incorrecto!")
+        alert("Email y/o contraseña es incorrecto!");
         throw error;
       }
     },
@@ -52,8 +52,8 @@ export const useUserStore = defineStore("usuario", {
 
     async getUser() {
       try {
-        if(this.usuario._id==null){
-          response = await userService.getUser(this.usuario._id); 
+        if (this.usuario._id == null) {
+          response = await userService.getUser(this.usuario._id);
           this.usuario = response.data;
         }
         return this.usuario;
@@ -64,7 +64,10 @@ export const useUserStore = defineStore("usuario", {
 
     async reservar(reserva) {
       try {
-        const response = await reservasService.reservar(this.usuario._id,reserva);
+        const response = await reservasService.reservar(
+          this.usuario._id,
+          reserva
+        );
         this.usuario = response.data;
         return this.usuario;
       } catch (error) {
@@ -72,9 +75,12 @@ export const useUserStore = defineStore("usuario", {
       }
     },
 
-    async eliminarReserva(reserva){
+    async eliminarReserva(reserva) {
       try {
-        const response = await reservasService.eliminarReserva(this.usuario._id,reserva);
+        const response = await reservasService.eliminarReserva(
+          this.usuario._id,
+          reserva
+        );
         this.usuario = response.data; // Acceder al usuario actualizado
         return this.usuario;
       } catch (error) {
@@ -94,42 +100,45 @@ export const useUserStore = defineStore("usuario", {
       } else {
         console.log("No hay usuarios");
       }
-    
+
       // Reemplazar el usuario existente con el usuario actualizado
       usuariosUnicos[usuario._id] = usuario;
-    
+
       // Actualizar la lista de usuarios con los usuarios únicos
       this.listaUsuarios = Object.values(usuariosUnicos);
     },
 
-    async cambioDePerfil(usuarioAEditar){
+    async cambioDePerfil(usuarioAEditar) {
       try {
-        const response = await userService.cambioDePerfil(this.usuario._id,usuarioAEditar);
-        this.usuario = response.data; 
+        const response = await userService.cambioDePerfil(
+          this.usuario._id,
+          usuarioAEditar
+        );
+        this.usuario = response.data;
         return this.usuario;
       } catch (error) {
         throw error;
       }
     },
 
-    async borrarCuenta(){
+    async borrarCuenta() {
       try {
-        const res = await userService.borrarCuenta(this.usuario._id)
-        return res
+        const res = await userService.borrarCuenta(this.usuario._id);
+        this.logout();
+        return res;
       } catch (error) {
         console.error("Error al eliminar la cuenta:", error);
-      }  
+      }
     },
 
-    logout () {
-      return this.usuario={ 
+    logout() {
+      return (this.usuario = {
         _id: null,
         username: "",
         email: "",
-        contrasenia:"",
-        reservas: []
-      };
-    }
-
-  }
+        contrasenia: "",
+        reservas: [],
+      });
+    },
+  },
 });
