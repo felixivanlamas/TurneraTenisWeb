@@ -54,7 +54,7 @@ export default {
       };
       let mensaje =
         this.getDiferenciaDias(dia) == 0
-          ? "¿Estás seguro de que deseas eliminar esta reserva?\n\n Se le cobrará una multa de $2000 por cancelar la reserva con menos de dos días de anticipación."
+          ? "¿Estás seguro de que deseas eliminar esta reserva?\n\n Se le cobrará una multa de $2000 por cancelar la reserva con menos de un día de anticipación."
           : "¿Estás seguro de que deseas eliminar esta reserva?";
       if (confirm(mensaje)) {
         try {
